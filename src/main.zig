@@ -21,6 +21,8 @@ const zig_code =
     \\/// Here
     \\/// For this struct
     \\pub const X = struct {
+    \\  /// THIS IS A
+    \\  /// DOC COMMENT PUNNY
     \\  a: u32,
     \\  b: usize,
     \\  c: f32,
@@ -31,6 +33,9 @@ const zig_code =
     \\  /// LOLLOLOLO
     \\  pub const ARST = 1;
     \\};
+    \\pub fn b() void {
+    \\  return;
+    \\}
 ;
 
 var tree: ast.Tree = undefined;
@@ -65,10 +70,14 @@ const AnalysedDecl = struct {
         /// The signature of the function (non-optional)
         /// Should have the lifetime of the src code input
         nocontainer: []const u8,
+        // TODO add default value to field
+        field: struct {
+            name: []const u8,
+            type: []const u8,
+        },
         container: struct {
             name: []const u8,
             type: []const u8,
-            fields: [][]const u8,
         },
     },
 
@@ -97,10 +106,10 @@ const AnalysedDecl = struct {
         switch (self.type) {
             .nocontainer => |sig| try writer.writeAll(sig),
             .container => |nf| {
-                try writer.print("const {s} = {s} {{", .{ nf.name, nf.type });
-                for (nf.fields) |f| {
-                    try writer.print("{s},", .{f});
-                }
+                try writer.print("const {s} = {s}\n", .{ nf.name, nf.type });
+            },
+            .field => |f| {
+                try writer.print("{s}: {s}\n", .{ f.name, f.type });
             },
         }
         if (self.more_decls) |more| {
@@ -120,13 +129,12 @@ const AnalysedDecl = struct {
         switch (self.type) {
             .nocontainer => |sig| try writer.writeAll(sig),
             .container => |nf| {
-                try writer.print("const {s} = {s} {{", .{ nf.name, nf.type });
-                for (nf.fields) |f| {
-                    try writer.print("\t{s},", .{f});
-                }
-                try writer.writeByte('\n');
                 try writer.writeByteNTimes(' ', indentx4);
-                try writer.writeByte('}');
+                try writer.print("const {s} = {s}\n", .{ nf.name, nf.type });
+            },
+            .field => |f| {
+                try writer.writeByteNTimes(' ', indentx4);
+                try writer.print("{s}: {s}\n", .{ f.name, f.type });
             },
         }
         if (self.more_decls) |more| {
@@ -203,10 +211,10 @@ fn analyzeFromSource(ally: *std.mem.Allocator, src: []const u8) ![]AnalysedDecl 
 fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) error{OutOfMemory}![]AnalysedDecl {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
+    const main_tokens = tree.nodes.items(.main_token);
     var list = std.ArrayList(AnalysedDecl).init(ally);
     for (container.ast.members) |member| {
         const tag = node_tags[member];
-        if (tag == .container_field or tag == .container_field_align) continue;
 
         // we know it has to be a vardecl now
         const decl_addr = member;
@@ -216,7 +224,14 @@ fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) erro
         if (try util.getDocComments(ally, tree, decl_addr)) |dc| {
             doc = dc;
         }
-        if (tag == .fn_decl) {
+        if (tag == .container_field or tag == .container_field_align or tag == .container_field_init) {
+            try list.append(.{
+                .type = .{ .field = .{ .name = tree.tokenSlice(main_tokens[member]), .type = tree.tokenSlice(main_tokens[member + 1]) } },
+                .doc_comment = doc,
+                .more_decls = null,
+            });
+            continue;
+        } else if (tag == .fn_decl) {
             // handle if it is a function
             const proto = node_datas[decl_addr].lhs;
             const block = node_datas[decl_addr].rhs;
@@ -226,6 +241,14 @@ fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) erro
                 proto,
                 &params,
             ).?);
+            var ad: AnalysedDecl = .{
+                .type = .{ .nocontainer = sig.? },
+                .doc_comment = doc,
+                // TODO fill in struct functions inside a function
+                .more_decls = null,
+            };
+            try list.append(ad);
+            continue;
         } else if (tag == .global_var_decl or
             tag == .local_var_decl or
             tag == .simple_var_decl or
@@ -248,19 +271,28 @@ fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) erro
             }
             if (cd) |container_decl| {
                 more = try recAnalDecl(ally, container_decl);
+                var ad: AnalysedDecl = .{
+                    .type = .{ .container = .{ .name = name, .type = "TODO" } },
+                    .doc_comment = doc,
+                    .more_decls = more,
+                };
+                try list.append(ad);
+                continue;
+            } else {
+                sig = util.getVariableSignature(tree, vardecl);
+                var ad: AnalysedDecl = .{
+                    .type = .{ .nocontainer = sig.? },
+                    .doc_comment = doc,
+                    .more_decls = null,
+                };
+                try list.append(ad);
+                continue;
             }
-            sig = util.getVariableSignature(tree, vardecl);
         } else {
-            std.debug.print("we need more stuff: {}", .{tag});
+            std.debug.print("TODO: we need more stuff: {}", .{tag});
             continue;
         }
-
-        var ad: AnalysedDecl = .{
-            .type = .{ .nocontainer = sig.? },
-            .doc_comment = doc,
-            .more_decls = more,
-        };
-        try list.append(ad);
+        unreachable;
     }
     return list.toOwnedSlice();
 }
