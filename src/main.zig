@@ -5,59 +5,26 @@ const ast = std.zig.ast;
 const util = @import("utils.zig");
 
 const zig_code =
-    \\/// Heres a function
-    \\pub fn main() void {
-    \\  bruh();
+    \\a: usize,
+    \\pub fn x() void {
+    \\    return;
     \\}
-    \\/// another function (not pub)
-    \\fn brhu(aoen, aosiet ) vart {
-    \\  return 2;
-    \\}
-    \\/// Heres a const
-    \\pub var B = 0;
-    \\/// Heres a vardecl
-    \\pub const A = 0;
-    \\/// Some doc comments
-    \\/// Here
-    \\/// For this struct
-    \\pub const X = struct {
-    \\  /// THIS IS A
-    \\  /// DOC COMMENT PUNNY
-    \\  a: u32,
-    \\  b: usize,
-    \\  c: f32,
-    \\  /// Returns 1
-    \\  pub fn x() u32 {
-    \\    return 1;
-    \\  }
-    \\  /// LOLLOLOLO
-    \\  pub const ARST = 1;
+    \\pub const A = 1;
+    \\const B = 2;
+    \\/// Here is our z struct
+    \\pub const D = struct {
+    \\    /// This preforms the z function
+    \\    pub fn z(self: @This()) u32 {
+    \\        return 1;
+    \\    }
+    \\    /// WOW: even more
+    \\    pub const EvenMoreInner = struct {
+    \\        pub fn v() void {}
+    \\    };
     \\};
-    \\pub fn b() void {
-    \\  return;
-    \\}
 ;
 
 var tree: ast.Tree = undefined;
-
-pub fn main() anyerror!void {
-    var general_pa = std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 8 }){};
-    defer _ = general_pa.deinit();
-
-    const ally = &general_pa.allocator;
-
-    var anal_list = try analyzeFromSource(ally, zig_code);
-    defer {
-        for (anal_list) |*anal| {
-            anal.deinit(ally);
-        }
-        ally.free(anal_list);
-    }
-
-    for (anal_list) |anal| {
-        std.debug.print("{}\n", .{anal});
-    }
-}
 
 const AnalysedDecl = struct {
     /// The doc comment of the decl
@@ -120,7 +87,7 @@ const AnalysedDecl = struct {
     }
 
     pub fn formatIndent(self: AnalysedDecl, indent_level: u32, writer: anytype) std.os.WriteError!void {
-        try writer.writeAll("\n----------\n");
+        try writer.writeAll("----------\n");
         const indentx4 = indent_level * 4;
         try writer.writeByteNTimes(' ', indentx4);
         try writer.writeAll(if (self.doc_comment) |dc| dc else "No Doc Comment");
@@ -130,13 +97,14 @@ const AnalysedDecl = struct {
             .nocontainer => |sig| try writer.writeAll(sig),
             .container => |nf| {
                 try writer.writeByteNTimes(' ', indentx4);
-                try writer.print("const {s} = {s}\n", .{ nf.name, nf.type });
+                try writer.print("const {s} = {s}", .{ nf.name, nf.type });
             },
             .field => |f| {
                 try writer.writeByteNTimes(' ', indentx4);
-                try writer.print("{s}: {s}\n", .{ f.name, f.type });
+                try writer.print("{s}: {s}", .{ f.name, f.type });
             },
         }
+        try writer.writeByte('\n');
         if (self.more_decls) |more| {
             for (more) |anal| {
                 try anal.formatIndent(indent_level + 1, writer);
@@ -145,75 +113,43 @@ const AnalysedDecl = struct {
     }
 };
 
-/// The result must be freed
-fn analyzeFromSource(ally: *std.mem.Allocator, src: []const u8) ![]AnalysedDecl {
+pub fn main() anyerror!void {
+    var general_pa = std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 8 }){};
+    defer _ = general_pa.deinit();
+
+    const ally = &general_pa.allocator;
+
+    std.debug.print("src:\n{s}\nparsed:", .{zig_code});
+
     tree = try std.zig.parse(ally, zig_code);
     defer tree.deinit(ally);
+    const decls = tree.rootDecls();
 
-    const node_tags = tree.nodes.items(.tag);
-    const node_datas = tree.nodes.items(.data);
+    var anal_list = try recAnalListOfDecls(ally, decls);
 
-    var list = std.ArrayList(AnalysedDecl).init(ally);
-
-    for (tree.rootDecls()) |decl_addr| if (util.isNodePublic(tree, decl_addr)) {
-        var doc: ?[]const u8 = null;
-        var sig: ?[]const u8 = null;
-        var more: ?[]AnalysedDecl = null;
-        if (try util.getDocComments(ally, tree, decl_addr)) |dc| {
-            doc = dc;
+    defer {
+        for (anal_list) |*anal| {
+            anal.deinit(ally);
         }
+        ally.free(anal_list);
+    }
 
-        const tag = node_tags[decl_addr];
-
-        if (tag == .fn_decl) {
-            // handle if it is a function
-            const proto = node_datas[decl_addr].lhs;
-            const block = node_datas[decl_addr].rhs;
-            var params: [1]ast.Node.Index = undefined;
-            sig = util.getFunctionSignature(tree, util.fnProto(
-                tree,
-                proto,
-                &params,
-            ).?);
-        } else if (tag == .global_var_decl or
-            tag == .local_var_decl or
-            tag == .simple_var_decl or
-            tag == .aligned_var_decl)
-        {
-            // handle if it is a vardecl
-            const vardecl = util.varDecl(tree, decl_addr).?;
-
-            const init = node_datas[decl_addr].rhs;
-            const rhst = node_tags[init];
-            var cd: ?ast.full.ContainerDecl = null;
-            if (rhst == .container_decl or rhst == .container_decl_trailing) {
-                cd = tree.containerDecl(init);
-            }
-            if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing) {
-                cd = tree.containerDeclArg(init);
-            }
-            if (cd) |container_decl| {
-                more = try recAnalDecl(ally, container_decl);
-            }
-            sig = util.getVariableSignature(tree, vardecl);
-        } else std.debug.panic("we need more stuff: {}", .{tag});
-
-        var ad: AnalysedDecl = .{
-            .type = .{ .nocontainer = sig.? },
-            .doc_comment = doc,
-            .more_decls = more,
-        };
-        try list.append(ad);
-    };
-    return list.toOwnedSlice();
+    for (anal_list) |anal| {
+        std.debug.print("{}\n", .{anal});
+    }
 }
 
-fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) error{OutOfMemory}![]AnalysedDecl {
+fn recAnalListOfDecls(
+    ally: *std.mem.Allocator,
+    list_d: []const ast.Node.Index,
+) error{OutOfMemory}![]AnalysedDecl {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
+
     var list = std.ArrayList(AnalysedDecl).init(ally);
-    for (container.ast.members) |member| {
+
+    for (list_d) |member| if (util.isNodePublic(tree, member)) {
         const tag = node_tags[member];
 
         // we know it has to be a vardecl now
@@ -260,23 +196,26 @@ fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) erro
             const name_loc = vardecl.ast.mut_token + 1;
             const name = tree.tokenSlice(name_loc);
 
-            const init = node_datas[decl_addr].lhs;
-            const lhst = node_tags[init];
+            const init = node_datas[decl_addr].rhs;
+            const rhst = node_tags[init];
             var cd: ?ast.full.ContainerDecl = null;
-            if (lhst == .container_decl or lhst == .container_decl_trailing) {
+            if (rhst == .container_decl or rhst == .container_decl_trailing) {
                 cd = tree.containerDecl(init);
             }
-            if (lhst == .container_decl_arg or lhst == .container_decl_arg_trailing) {
+            if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing) {
                 cd = tree.containerDeclArg(init);
             }
+            if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) {
+                var buf: [2]ast.Node.Index = undefined;
+                cd = tree.containerDeclTwo(&buf, init);
+            }
             if (cd) |container_decl| {
-                more = try recAnalDecl(ally, container_decl);
-                var ad: AnalysedDecl = .{
-                    .type = .{ .container = .{ .name = name, .type = "TODO" } },
+                more = try recAnalListOfDecls(ally, container_decl.ast.members);
+                try list.append(.{
+                    .type = .{ .container = .{ .name = name, .type = tree.tokenSlice(main_tokens[init]) } },
                     .doc_comment = doc,
                     .more_decls = more,
-                };
-                try list.append(ad);
+                });
                 continue;
             } else {
                 sig = util.getVariableSignature(tree, vardecl);
@@ -293,6 +232,6 @@ fn recAnalDecl(ally: *std.mem.Allocator, container: ast.full.ContainerDecl) erro
             continue;
         }
         unreachable;
-    }
+    };
     return list.toOwnedSlice();
 }
