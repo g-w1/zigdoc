@@ -12,7 +12,9 @@ const zig_code =
     \\pub const A = 1;
     \\const B = 2;
     \\/// Here is our z struct
-    \\pub const D = struct {
+    \\pub const D = union(enum) {
+    \\    /// Here is the index of the rust code
+    \\    rust: u32,
     \\    /// This preforms the z function
     \\    pub fn z(self: @This()) u32 {
     \\        return 1;
@@ -33,20 +35,7 @@ const AnalysedDecl = struct {
 
     more_decls: ?[]AnalysedDecl = null,
 
-    type: union(enum) {
-        /// The signature of the function (non-optional)
-        /// Should have the lifetime of the src code input
-        nocontainer: []const u8,
-        // TODO add default value to field
-        field: struct {
-            name: []const u8,
-            type: []const u8,
-        },
-        container: struct {
-            name: []const u8,
-            type: []const u8,
-        },
-    },
+    payload: []const u8,
 
     fn deinit(self: *@This(), ally: *std.mem.Allocator) void {
         if (self.more_decls) |more| {
@@ -67,49 +56,22 @@ const AnalysedDecl = struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
-        try writer.writeAll("\n----------\n");
-        try writer.writeAll(if (self.doc_comment) |dc| dc else "No Doc Comment");
-        try writer.writeByte('\n');
-        switch (self.type) {
-            .nocontainer => |sig| try writer.writeAll(sig),
-            .container => |nf| {
-                try writer.print("const {s} = {s}\n", .{ nf.name, nf.type });
-            },
-            .field => |f| {
-                try writer.print("{s}: {s}\n", .{ f.name, f.type });
-            },
+        try writer.writeByte('{');
+        // TODO escape strings
+        try writer.print("payload:\"{s}\",", .{self.payload});
+        if (self.doc_comment) |dc| {
+            // TODO escape strings
+            try writer.print("doccomment:\"{s}\",", .{dc});
         }
         if (self.more_decls) |more| {
+            try writer.writeAll("more:[");
             for (more) |anal| {
-                try anal.formatIndent(1, writer);
+                // TODO make no terminating commas
+                try writer.print("{},", .{anal});
             }
+            try writer.writeByte(']');
         }
-    }
-
-    pub fn formatIndent(self: AnalysedDecl, indent_level: u32, writer: anytype) std.os.WriteError!void {
-        try writer.writeAll("----------\n");
-        const indentx4 = indent_level * 4;
-        try writer.writeByteNTimes(' ', indentx4);
-        try writer.writeAll(if (self.doc_comment) |dc| dc else "No Doc Comment");
-        try writer.writeByte('\n');
-        try writer.writeByteNTimes(' ', indentx4);
-        switch (self.type) {
-            .nocontainer => |sig| try writer.writeAll(sig),
-            .container => |nf| {
-                try writer.writeByteNTimes(' ', indentx4);
-                try writer.print("const {s} = {s}", .{ nf.name, nf.type });
-            },
-            .field => |f| {
-                try writer.writeByteNTimes(' ', indentx4);
-                try writer.print("{s}: {s}", .{ f.name, f.type });
-            },
-        }
-        try writer.writeByte('\n');
-        if (self.more_decls) |more| {
-            for (more) |anal| {
-                try anal.formatIndent(indent_level + 1, writer);
-            }
-        }
+        try writer.writeByte('}');
     }
 };
 
@@ -119,7 +81,7 @@ pub fn main() anyerror!void {
 
     const ally = &general_pa.allocator;
 
-    std.debug.print("src:\n{s}\nparsed:", .{zig_code});
+    std.debug.print("src:\n{s}\nparsed:\n", .{zig_code});
 
     tree = try std.zig.parse(ally, zig_code);
     defer tree.deinit(ally);
@@ -134,9 +96,17 @@ pub fn main() anyerror!void {
         ally.free(anal_list);
     }
 
-    for (anal_list) |anal| {
-        std.debug.print("{}\n", .{anal});
+    const stdout = std.io.getStdOut().writer();
+    try renderListAnalDeclsToJsonArray(stdout, anal_list);
+}
+
+fn renderListAnalDeclsToJsonArray(writer: anytype, l: []const AnalysedDecl) !void {
+    try writer.writeByte('[');
+    for (l) |anal| {
+        // TODO make no terminating comma
+        try writer.print("{},", .{anal});
     }
+    try writer.writeByte(']');
 }
 
 fn recAnalListOfDecls(
@@ -146,6 +116,7 @@ fn recAnalListOfDecls(
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
+    const token_starts = tree.tokens.items(.start);
 
     var list = std.ArrayList(AnalysedDecl).init(ally);
 
@@ -155,14 +126,16 @@ fn recAnalListOfDecls(
         // we know it has to be a vardecl now
         const decl_addr = member;
         var doc: ?[]const u8 = null;
-        var sig: ?[]const u8 = null;
-        var more: ?[]AnalysedDecl = null;
         if (try util.getDocComments(ally, tree, decl_addr)) |dc| {
             doc = dc;
         }
         if (tag == .container_field or tag == .container_field_align or tag == .container_field_init) {
+            const ftoken = tree.firstToken(member);
+            const ltoken = tree.lastToken(member);
+            const start = token_starts[ftoken];
+            const end = token_starts[ltoken + 1];
             try list.append(.{
-                .type = .{ .field = .{ .name = tree.tokenSlice(main_tokens[member]), .type = tree.tokenSlice(main_tokens[member + 1]) } },
+                .payload = tree.source[start..end],
                 .doc_comment = doc,
                 .more_decls = null,
             });
@@ -172,13 +145,13 @@ fn recAnalListOfDecls(
             const proto = node_datas[decl_addr].lhs;
             const block = node_datas[decl_addr].rhs;
             var params: [1]ast.Node.Index = undefined;
-            sig = util.getFunctionSignature(tree, util.fnProto(
+            const sig = util.getFunctionSignature(tree, util.fnProto(
                 tree,
                 proto,
                 &params,
             ).?);
             var ad: AnalysedDecl = .{
-                .type = .{ .nocontainer = sig.? },
+                .payload = sig,
                 .doc_comment = doc,
                 // TODO fill in struct functions inside a function
                 .more_decls = null,
@@ -198,6 +171,9 @@ fn recAnalListOfDecls(
 
             const init = node_datas[decl_addr].rhs;
             const rhst = node_tags[init];
+
+            // we find if the var is a container, we dont wanna display the full thing if it is
+            // then we recurse over it
             var cd: ?ast.full.ContainerDecl = null;
             if (rhst == .container_decl or rhst == .container_decl_trailing) {
                 cd = tree.containerDecl(init);
@@ -209,18 +185,38 @@ fn recAnalListOfDecls(
                 var buf: [2]ast.Node.Index = undefined;
                 cd = tree.containerDeclTwo(&buf, init);
             }
+            if (rhst == .tagged_union or
+                rhst == .tagged_union_trailing)
+            {
+                cd = tree.taggedUnion(init);
+            }
+            if (rhst == .tagged_union_two or
+                rhst == .tagged_union_two_trailing)
+            {
+                var buf: [2]ast.Node.Index = undefined;
+                cd = tree.taggedUnionTwo(&buf, init);
+            }
+            if (rhst == .tagged_union_enum_tag or
+                rhst == .tagged_union_enum_tag_trailing)
+            {
+                cd = tree.taggedUnionEnumTag(init);
+            }
             if (cd) |container_decl| {
-                more = try recAnalListOfDecls(ally, container_decl.ast.members);
+                const more = try recAnalListOfDecls(ally, container_decl.ast.members);
                 try list.append(.{
-                    .type = .{ .container = .{ .name = name, .type = tree.tokenSlice(main_tokens[init]) } },
+                    .payload = tree.source[token_starts[tree.firstToken(member)]..token_starts[
+                        main_tokens[init] +
+                            // TODO correctly handle tagged union(enum(u32))
+                            if (container_decl.ast.enum_token != null) @as(u32, 4) else @as(u32, 1)
+                    ]],
                     .doc_comment = doc,
                     .more_decls = more,
                 });
                 continue;
             } else {
-                sig = util.getVariableSignature(tree, vardecl);
+                const sig = util.getVariableSignature(tree, vardecl);
                 var ad: AnalysedDecl = .{
-                    .type = .{ .nocontainer = sig.? },
+                    .payload = sig,
                     .doc_comment = doc,
                     .more_decls = null,
                 };
