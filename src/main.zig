@@ -5,24 +5,42 @@ const ast = std.zig.ast;
 const util = @import("utils.zig");
 
 const zig_code =
+    \\/// Here is our a
     \\a: usize,
+    \\
+    \\
+    \\
     \\pub fn x() void {
     \\    return;
     \\}
     \\pub const A = 1;
     \\const B = 2;
+    \\
     \\/// Here is our z struct
     \\pub const D = union(enum) {
+    \\
+    \\
     \\    /// Here is the index of the rust code
     \\    rust: u32,
     \\    /// This preforms the z function
     \\    pub fn z(self: @This()) u32 {
     \\        return 1;
     \\    }
+    \\
+    \\
+    \\
+    \\
     \\    /// WOW: even more
     \\    pub const EvenMoreInner = struct {
     \\        pub fn v() void {}
     \\    };
+    \\
+    \\
+    \\
+    \\};
+    \\pub const V = union(enum(u32)) {
+    \\    /// Our special u32 type. we ***need*** "distinct types"
+    \\    pub const A = u32;
     \\};
 ;
 
@@ -31,47 +49,23 @@ var tree: ast.Tree = undefined;
 const AnalysedDecl = struct {
     /// The doc comment of the decl
     /// Owned by this decl
-    doc_comment: ?[]const u8,
+    dc: ?[]const u8,
 
-    more_decls: ?[]AnalysedDecl = null,
+    pl: []const u8,
 
-    payload: []const u8,
+    md: ?[]AnalysedDecl = null,
 
     fn deinit(self: *@This(), ally: *std.mem.Allocator) void {
-        if (self.more_decls) |more| {
+        if (self.md) |more| {
             for (more) |*item| {
                 item.deinit(ally);
             }
             ally.free(more);
         }
-        if (self.doc_comment) |dc| {
+        if (self.dc) |dc| {
             ally.free(dc);
         }
         self.* = undefined;
-    }
-
-    pub fn format(
-        self: AnalysedDecl,
-        comptime fmt: []const u8,
-        options: std.fmt.FormatOptions,
-        writer: anytype,
-    ) !void {
-        try writer.writeByte('{');
-        // TODO escape strings
-        try writer.print("payload:\"{s}\",", .{self.payload});
-        if (self.doc_comment) |dc| {
-            // TODO escape strings
-            try writer.print("doccomment:\"{s}\",", .{dc});
-        }
-        if (self.more_decls) |more| {
-            try writer.writeAll("more:[");
-            for (more) |anal| {
-                // TODO make no terminating commas
-                try writer.print("{},", .{anal});
-            }
-            try writer.writeByte(']');
-        }
-        try writer.writeByte('}');
     }
 };
 
@@ -97,16 +91,7 @@ pub fn main() anyerror!void {
     }
 
     const stdout = std.io.getStdOut().writer();
-    try renderListAnalDeclsToJsonArray(stdout, anal_list);
-}
-
-fn renderListAnalDeclsToJsonArray(writer: anytype, l: []const AnalysedDecl) !void {
-    try writer.writeByte('[');
-    for (l) |anal| {
-        // TODO make no terminating comma
-        try writer.print("{},", .{anal});
-    }
-    try writer.writeByte(']');
+    try std.json.stringify(anal_list, .{ .whitespace = .{} }, stdout);
 }
 
 fn recAnalListOfDecls(
@@ -135,28 +120,15 @@ fn recAnalListOfDecls(
             const start = token_starts[ftoken];
             const end = token_starts[ltoken + 1];
             try list.append(.{
-                .payload = tree.source[start..end],
-                .doc_comment = doc,
-                .more_decls = null,
+                .pl = tree.source[start..end],
+                .dc = doc,
+                .md = null,
             });
             continue;
         } else if (tag == .fn_decl) {
-            // handle if it is a function
-            const proto = node_datas[decl_addr].lhs;
-            const block = node_datas[decl_addr].rhs;
-            var params: [1]ast.Node.Index = undefined;
-            const sig = util.getFunctionSignature(tree, util.fnProto(
-                tree,
-                proto,
-                &params,
-            ).?);
-            var ad: AnalysedDecl = .{
-                .payload = sig,
-                .doc_comment = doc,
-                // TODO fill in struct functions inside a function
-                .more_decls = null,
-            };
-            try list.append(ad);
+            var d = doFunction(decl_addr);
+            d.dc = doc;
+            try list.append(d);
             continue;
         } else if (tag == .global_var_decl or
             tag == .local_var_decl or
@@ -174,51 +146,24 @@ fn recAnalListOfDecls(
 
             // we find if the var is a container, we dont wanna display the full thing if it is
             // then we recurse over it
-            var cd: ?ast.full.ContainerDecl = null;
-            if (rhst == .container_decl or rhst == .container_decl_trailing) {
-                cd = tree.containerDecl(init);
-            }
-            if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing) {
-                cd = tree.containerDeclArg(init);
-            }
-            if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) {
-                var buf: [2]ast.Node.Index = undefined;
-                cd = tree.containerDeclTwo(&buf, init);
-            }
-            if (rhst == .tagged_union or
-                rhst == .tagged_union_trailing)
-            {
-                cd = tree.taggedUnion(init);
-            }
-            if (rhst == .tagged_union_two or
-                rhst == .tagged_union_two_trailing)
-            {
-                var buf: [2]ast.Node.Index = undefined;
-                cd = tree.taggedUnionTwo(&buf, init);
-            }
-            if (rhst == .tagged_union_enum_tag or
-                rhst == .tagged_union_enum_tag_trailing)
-            {
-                cd = tree.taggedUnionEnumTag(init);
-            }
+            var cd = getContainer(vardecl, decl_addr);
             if (cd) |container_decl| {
+                const offset = if (container_decl.ast.enum_token != null) if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing) @as(u32, 7) else @as(u32, 4) else @as(u32, 1);
                 const more = try recAnalListOfDecls(ally, container_decl.ast.members);
                 try list.append(.{
-                    .payload = tree.source[token_starts[tree.firstToken(member)]..token_starts[
-                        main_tokens[init] +
-                            // TODO correctly handle tagged union(enum(u32))
-                            if (container_decl.ast.enum_token != null) @as(u32, 4) else @as(u32, 1)
+                    .pl = tree.source[token_starts[tree.firstToken(member)]..token_starts[
+                        main_tokens[init] + offset
                     ]],
-                    .doc_comment = doc,
-                    .more_decls = more,
+                    .dc = doc,
+                    .md = more,
                 });
                 continue;
             } else {
                 const sig = util.getVariableSignature(tree, vardecl);
                 var ad: AnalysedDecl = .{
-                    .payload = sig,
-                    .doc_comment = doc,
-                    .more_decls = null,
+                    .pl = sig,
+                    .dc = doc,
+                    .md = null,
                 };
                 try list.append(ad);
                 continue;
@@ -230,4 +175,72 @@ fn recAnalListOfDecls(
         unreachable;
     };
     return list.toOwnedSlice();
+}
+
+fn doFunction(decl_addr: ast.Node.Index) AnalysedDecl {
+    const node_tags = tree.nodes.items(.tag);
+    const node_datas = tree.nodes.items(.data);
+    const main_tokens = tree.nodes.items(.main_token);
+    const token_starts = tree.tokens.items(.start);
+
+    // handle if it is a function
+    const proto = node_datas[decl_addr].lhs;
+    const block = node_datas[decl_addr].rhs;
+    var params: [1]ast.Node.Index = undefined;
+    const sig = util.getFunctionSignature(tree, util.fnProto(
+        tree,
+        proto,
+        &params,
+    ).?);
+    return .{
+        .pl = sig,
+        // TO be filled in later
+        .dc = undefined,
+        // TODO fill in struct functions inside a function
+        .md = null,
+    };
+}
+
+fn getContainer(vardecl: ast.full.VarDecl, decl_addr: ast.Node.Index) ?ast.full.ContainerDecl {
+    const node_tags = tree.nodes.items(.tag);
+    const node_datas = tree.nodes.items(.data);
+    const main_tokens = tree.nodes.items(.main_token);
+    const token_starts = tree.tokens.items(.start);
+
+    const name_loc = vardecl.ast.mut_token + 1;
+    const name = tree.tokenSlice(name_loc);
+
+    const init = node_datas[decl_addr].rhs;
+    const rhst = node_tags[init];
+
+    // we find if the var is a container, we dont wanna display the full thing if it is
+    // then we recurse over it
+    var cd: ?ast.full.ContainerDecl = null;
+    if (rhst == .container_decl or rhst == .container_decl_trailing) {
+        cd = tree.containerDecl(init);
+    }
+    if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing) {
+        cd = tree.containerDeclArg(init);
+    }
+    if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) {
+        var buf: [2]ast.Node.Index = undefined;
+        cd = tree.containerDeclTwo(&buf, init);
+    }
+    if (rhst == .tagged_union or
+        rhst == .tagged_union_trailing)
+    {
+        cd = tree.taggedUnion(init);
+    }
+    if (rhst == .tagged_union_two or
+        rhst == .tagged_union_two_trailing)
+    {
+        var buf: [2]ast.Node.Index = undefined;
+        cd = tree.taggedUnionTwo(&buf, init);
+    }
+    if (rhst == .tagged_union_enum_tag or
+        rhst == .tagged_union_enum_tag_trailing)
+    {
+        cd = tree.taggedUnionEnumTag(init);
+    }
+    return cd;
 }
