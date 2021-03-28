@@ -8,34 +8,56 @@ const zig_code =
     \\/// Here is our a
     \\a: usize,
     \\
-    \\
-    \\
+    \\pub extern fn thing() c_int;
+    \\pub extern fn thing_largo(a: c_int, b: c_int, z: c_int) c_int;
     \\pub fn x() void {
     \\    return;
+    \\}
+    \\/// Z func
+    \\pub fn Z() type {
+    \\    return union(enum) {
+    \\        a: u32,
+    \\        b: usize,
+    \\        d: u32,
+    \\        pub fn bruh() nested {
+    \\            return "bruh";
+    \\        }
+    \\        pub const HAZE = bruh();
+    \\    };
     \\}
     \\pub const A = 1;
     \\const B = 2;
     \\
     \\/// Here is our z struct
     \\pub const D = union(enum) {
-    \\
-    \\
     \\    /// Here is the index of the rust code
     \\    rust: u32,
-    \\    /// This preforms the z function
+    \\    /// This performs the z function. big functions dont get inlined, but small ones do
     \\    pub fn z(self: @This()) u32 {
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
     \\        return 1;
     \\    }
-    \\
-    \\
-    \\
-    \\
     \\    /// WOW: even more
     \\    pub const EvenMoreInner = struct {
-    \\        pub fn v() void {}
+    \\        /// This function should get inlined because it is small
+    \\        pub fn v() void {
+    \\            return;
+    \\        }
     \\    };
-    \\
-    \\
     \\
     \\};
     \\pub const V = union(enum(u32)) {
@@ -52,6 +74,8 @@ const AnalysedDecl = struct {
     dc: ?[]const u8,
 
     pl: []const u8,
+
+    sub_cont_ty: ?[]const u8 = null,
 
     md: ?[]AnalysedDecl = null,
 
@@ -75,7 +99,9 @@ pub fn main() anyerror!void {
 
     const ally = &general_pa.allocator;
 
-    std.debug.print("src:\n{s}\nparsed:\n", .{zig_code});
+    const stdout = std.io.getStdOut().writer();
+
+    try stdout.print("src:\n{s}\nparsed:\n", .{zig_code});
 
     tree = try std.zig.parse(ally, zig_code);
     defer tree.deinit(ally);
@@ -90,7 +116,6 @@ pub fn main() anyerror!void {
         ally.free(anal_list);
     }
 
-    const stdout = std.io.getStdOut().writer();
     try std.json.stringify(anal_list, .{ .whitespace = .{} }, stdout);
 }
 
@@ -126,7 +151,7 @@ fn recAnalListOfDecls(
             });
             continue;
         } else if (tag == .fn_decl) {
-            var d = doFunction(decl_addr);
+            var d = try doFunction(ally, decl_addr);
             d.dc = doc;
             try list.append(d);
             continue;
@@ -146,9 +171,15 @@ fn recAnalListOfDecls(
 
             // we find if the var is a container, we dont wanna display the full thing if it is
             // then we recurse over it
-            var cd = getContainer(vardecl, decl_addr);
+            var cd = getContainer(node_datas[decl_addr].rhs);
             if (cd) |container_decl| {
-                const offset = if (container_decl.ast.enum_token != null) if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing) @as(u32, 7) else @as(u32, 4) else @as(u32, 1);
+                const offset = if (container_decl.ast.enum_token != null)
+                    if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing)
+                        @as(u32, 7)
+                    else
+                        @as(u32, 4)
+                else
+                    @as(u32, 1);
                 const more = try recAnalListOfDecls(ally, container_decl.ast.members);
                 try list.append(.{
                     .pl = tree.source[token_starts[tree.firstToken(member)]..token_starts[
@@ -168,8 +199,35 @@ fn recAnalListOfDecls(
                 try list.append(ad);
                 continue;
             }
+        } else if (tag == .fn_proto or
+            tag == .fn_proto_multi or
+            tag == .fn_proto_one or
+            tag == .fn_proto_simple)
+        {
+            var params: [1]ast.Node.Index = undefined;
+            const fn_proto = util.fnProto(
+                tree,
+                member,
+                &params,
+            ).?;
+
+            var sig: []const u8 = undefined;
+            {
+                var start = util.tokenLocation(tree, fn_proto.extern_export_token.?);
+                // return type can be 0 when user wrote incorrect fn signature
+                // to ensure we don't break, just end the signature at end of fn token
+                if (fn_proto.ast.return_type == 0) sig = tree.source[start.start..start.end];
+                const end = util.tokenLocation(tree, tree.lastToken(fn_proto.ast.return_type)).end;
+                sig = tree.source[start.start..end];
+            }
+            var ad: AnalysedDecl = .{
+                .pl = sig,
+                .dc = doc,
+                .md = null,
+            };
+            try list.append(ad);
+            continue;
         } else {
-            std.debug.print("TODO: we need more stuff: {}", .{tag});
             continue;
         }
         unreachable;
@@ -177,70 +235,97 @@ fn recAnalListOfDecls(
     return list.toOwnedSlice();
 }
 
-fn doFunction(decl_addr: ast.Node.Index) AnalysedDecl {
+fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
     const token_starts = tree.tokens.items(.start);
 
-    // handle if it is a function
-    const proto = node_datas[decl_addr].lhs;
-    const block = node_datas[decl_addr].rhs;
-    var params: [1]ast.Node.Index = undefined;
-    const sig = util.getFunctionSignature(tree, util.fnProto(
-        tree,
-        proto,
-        &params,
-    ).?);
-    return .{
-        .pl = sig,
-        // TO be filled in later
-        .dc = undefined,
-        // TODO fill in struct functions inside a function
-        .md = null,
-    };
+    const full_source = tree.source[token_starts[tree.firstToken(decl_addr)] .. token_starts[tree.lastToken(decl_addr)] + 1];
+
+    // TODO configure max
+    if (nlGtMax(full_source, 5)) {
+        // handle if it is a function and the number of lines is greater than max
+        const proto = node_datas[decl_addr].lhs;
+        const block = node_datas[decl_addr].rhs;
+        var params: [1]ast.Node.Index = undefined;
+
+        const fn_proto = util.fnProto(
+            tree,
+            proto,
+            &params,
+        ).?;
+
+        const sig = util.getFunctionSignature(tree, fn_proto);
+
+        var sub_cont_ty: ?[]const u8 = null;
+        const md = if (util.isTypeFunction(tree, fn_proto)) blk: {
+            const ret = util.findReturnStatement(tree, fn_proto, block) orelse break :blk null;
+            if (node_datas[ret].lhs == 0) break :blk null;
+            const container = getContainer(node_datas[ret].lhs) orelse break :blk null;
+
+            const offset = if (container.ast.enum_token != null)
+                if (node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag or
+                    node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag_trailing)
+                    @as(u32, 7)
+                else
+                    @as(u32, 4)
+            else
+                @as(u32, 1);
+
+            sub_cont_ty = tree.source[token_starts[tree.firstToken(node_datas[ret].lhs)]..token_starts[
+                main_tokens[node_datas[ret].lhs] + offset
+            ]];
+
+            break :blk try recAnalListOfDecls(ally, container.ast.members);
+        } else null;
+        return AnalysedDecl{
+            .pl = sig,
+            // to be filled in later
+            .dc = undefined,
+            .md = md,
+            .sub_cont_ty = sub_cont_ty,
+        };
+    } else {
+        return AnalysedDecl{
+            .pl = full_source,
+            .dc = undefined,
+            .md = null,
+        };
+    }
 }
 
-fn getContainer(vardecl: ast.full.VarDecl, decl_addr: ast.Node.Index) ?ast.full.ContainerDecl {
+fn getContainer(decl_addr: ast.Node.Index) ?ast.full.ContainerDecl {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
     const token_starts = tree.tokens.items(.start);
 
-    const name_loc = vardecl.ast.mut_token + 1;
-    const name = tree.tokenSlice(name_loc);
-
-    const init = node_datas[decl_addr].rhs;
-    const rhst = node_tags[init];
+    const rhst = node_tags[decl_addr];
 
     // we find if the var is a container, we dont wanna display the full thing if it is
     // then we recurse over it
-    var cd: ?ast.full.ContainerDecl = null;
-    if (rhst == .container_decl or rhst == .container_decl_trailing) {
-        cd = tree.containerDecl(init);
-    }
-    if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing) {
-        cd = tree.containerDeclArg(init);
-    }
-    if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) {
+    return if (rhst == .container_decl or rhst == .container_decl_trailing) tree.containerDecl(decl_addr) else if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing)
+        tree.containerDeclArg(decl_addr)
+    else if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) blk: {
         var buf: [2]ast.Node.Index = undefined;
-        cd = tree.containerDeclTwo(&buf, init);
-    }
-    if (rhst == .tagged_union or
-        rhst == .tagged_union_trailing)
-    {
-        cd = tree.taggedUnion(init);
-    }
-    if (rhst == .tagged_union_two or
-        rhst == .tagged_union_two_trailing)
-    {
+        break :blk tree.containerDeclTwo(&buf, decl_addr);
+    } else if (rhst == .tagged_union or rhst == .tagged_union_trailing)
+        tree.taggedUnion(decl_addr)
+    else if (rhst == .tagged_union_two or rhst == .tagged_union_two_trailing) blk: {
         var buf: [2]ast.Node.Index = undefined;
-        cd = tree.taggedUnionTwo(&buf, init);
+        break :blk tree.taggedUnionTwo(&buf, decl_addr);
+    } else if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing)
+        tree.taggedUnionEnumTag(decl_addr)
+    else
+        null;
+}
+
+fn nlGtMax(str: []const u8, max: usize) bool {
+    var n: usize = 0;
+    for (str) |c| {
+        if (c == '\n') n += 1;
+        if (n > max) return true;
     }
-    if (rhst == .tagged_union_enum_tag or
-        rhst == .tagged_union_enum_tag_trailing)
-    {
-        cd = tree.taggedUnionEnumTag(init);
-    }
-    return cd;
+    return false;
 }

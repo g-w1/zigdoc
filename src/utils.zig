@@ -684,3 +684,147 @@ pub fn isNodePublic(tree: ast.Tree, node: ast.Node.Index) bool {
         else => true,
     };
 }
+
+pub fn isTypeFunction(tree: ast.Tree, func: ast.full.FnProto) bool {
+    return typeIsType(tree, func.ast.return_type);
+}
+
+/// The type node is "type"
+fn typeIsType(tree: ast.Tree, node: ast.Node.Index) bool {
+    if (tree.nodes.items(.tag)[node] == .identifier) {
+        return std.mem.eql(u8, tree.tokenSlice(tree.nodes.items(.main_token)[node]), "type");
+    }
+    return false;
+}
+
+pub fn findReturnStatement(tree: ast.Tree, fn_decl: ast.full.FnProto, body: ast.Node.Index) ?ast.Node.Index {
+    var already_found = false;
+    return findReturnStatementInternal(tree, fn_decl, body, &already_found);
+}
+
+fn findReturnStatementInternal(
+    tree: ast.Tree,
+    fn_decl: ast.full.FnProto,
+    body: ast.Node.Index,
+    already_found: *bool,
+) ?ast.Node.Index {
+    var result: ?ast.Node.Index = null;
+
+    const node_tags = tree.nodes.items(.tag);
+    const datas = tree.nodes.items(.data);
+
+    if (!isBlock(tree, body)) return null;
+
+    const statements: []const ast.Node.Index = switch (node_tags[body]) {
+        .block, .block_semicolon => tree.extra_data[datas[body].lhs..datas[body].rhs],
+        .block_two, .block_two_semicolon => blk: {
+            const statements = &[_]ast.Node.Index{ datas[body].lhs, datas[body].rhs };
+            const len: usize = if (datas[body].lhs == 0)
+                @as(usize, 0)
+            else if (datas[body].rhs == 0)
+                @as(usize, 1)
+            else
+                @as(usize, 2);
+            break :blk statements[0..len];
+        },
+        else => unreachable,
+    };
+
+    for (statements) |child_idx| {
+        if (node_tags[child_idx] == .@"return") {
+            if (datas[child_idx].lhs != 0) {
+                const lhs = datas[child_idx].lhs;
+                if (isCall(tree, lhs)) {
+                    const call_name = getDeclName(tree, datas[lhs].lhs);
+                    if (call_name) |name| {
+                        if (std.mem.eql(u8, name, tree.tokenSlice(fn_decl.name_token.?))) {
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            if (already_found.*) return null;
+            already_found.* = true;
+            result = child_idx;
+            continue;
+        }
+
+        result = findReturnStatementInternal(tree, fn_decl, child_idx, already_found);
+    }
+
+    return result;
+}
+
+fn isBlock(tree: ast.Tree, node: ast.Node.Index) bool {
+    return switch (tree.nodes.items(.tag)[node]) {
+        .block,
+        .block_semicolon,
+        .block_two,
+        .block_two_semicolon,
+        => true,
+        else => false,
+    };
+}
+
+/// Returns `true` when the given `node` is one of the call tags
+fn isCall(tree: ast.Tree, node: ast.Node.Index) bool {
+    return switch (tree.nodes.items(.tag)[node]) {
+        .call,
+        .call_comma,
+        .call_one,
+        .call_one_comma,
+        .async_call,
+        .async_call_comma,
+        .async_call_one,
+        .async_call_one_comma,
+        => true,
+        else => false,
+    };
+}
+
+fn getDeclName(tree: ast.Tree, node: ast.Node.Index) ?[]const u8 {
+    const name = tree.tokenSlice(getDeclNameToken(tree, node) orelse return null);
+    return switch (tree.nodes.items(.tag)[node]) {
+        .test_decl => name[1 .. name.len - 1],
+        else => name,
+    };
+}
+
+pub fn getDeclNameToken(tree: ast.Tree, node: ast.Node.Index) ?ast.TokenIndex {
+    const tags = tree.nodes.items(.tag);
+    const main_token = tree.nodes.items(.main_token)[node];
+    return switch (tags[node]) {
+        // regular declaration names. + 1 to mut token because name comes after 'const'/'var'
+        .local_var_decl => tree.localVarDecl(node).ast.mut_token + 1,
+        .global_var_decl => tree.globalVarDecl(node).ast.mut_token + 1,
+        .simple_var_decl => tree.simpleVarDecl(node).ast.mut_token + 1,
+        .aligned_var_decl => tree.alignedVarDecl(node).ast.mut_token + 1,
+
+        // function declaration names
+        .fn_proto,
+        .fn_proto_multi,
+        .fn_proto_one,
+        .fn_proto_simple,
+        .fn_decl,
+        => blk: {
+            var params: [1]ast.Node.Index = undefined;
+            break :blk fnProto(tree, node, &params).?.name_token;
+        },
+
+        // containers
+        .container_field => tree.containerField(node).ast.name_token,
+        .container_field_init => tree.containerFieldInit(node).ast.name_token,
+        .container_field_align => tree.containerFieldAlign(node).ast.name_token,
+
+        .identifier => main_token,
+        .error_value => main_token + 2, // 'error'.<main_token +2>
+
+        // lhs of main token is name token, so use `node` - 1
+        .test_decl => if (tree.tokens.items(.tag)[main_token + 1] == .string_literal)
+            return main_token + 1
+        else
+            null,
+        else => null,
+    };
+}
