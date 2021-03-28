@@ -13,6 +13,19 @@ const zig_code =
     \\pub fn x() void {
     \\    return;
     \\}
+    \\pub export fn thinggy() void {
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\
+    \\}
     \\/// Z func
     \\pub fn Z() type {
     \\    return union(enum) {
