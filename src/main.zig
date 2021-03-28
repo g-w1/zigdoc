@@ -4,81 +4,6 @@ const ast = std.zig.ast;
 
 const util = @import("utils.zig");
 
-const zig_code =
-    \\/// Here is our a
-    \\a: usize,
-    \\
-    \\pub extern fn thing() c_int;
-    \\pub extern fn thing_largo(a: c_int, b: c_int, z: c_int) c_int;
-    \\pub fn x() void {
-    \\    return;
-    \\}
-    \\pub export fn thinggy() void {
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\}
-    \\/// Z func
-    \\pub fn Z() type {
-    \\    return union(enum) {
-    \\        a: u32,
-    \\        b: usize,
-    \\        d: u32,
-    \\        pub fn bruh() nested {
-    \\            return "bruh";
-    \\        }
-    \\        pub const HAZE = bruh();
-    \\    };
-    \\}
-    \\pub const A = 1;
-    \\const B = 2;
-    \\
-    \\/// Here is our z struct
-    \\pub const D = union(enum) {
-    \\    /// Here is the index of the rust code
-    \\    rust: u32,
-    \\    /// This performs the z function. big functions dont get inlined, but small ones do
-    \\    pub fn z(self: @This()) u32 {
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\
-    \\        return 1;
-    \\    }
-    \\    /// WOW: even more
-    \\    pub const EvenMoreInner = struct {
-    \\        /// This function should get inlined because it is small
-    \\        pub fn v() void {
-    \\            return;
-    \\        }
-    \\    };
-    \\
-    \\};
-    \\pub const V = union(enum(u32)) {
-    \\    /// Our special u32 type. we ***need*** "distinct types"
-    \\    pub const A = u32;
-    \\};
-;
-
 var tree: ast.Tree = undefined;
 
 const AnalysedDecl = struct {
@@ -104,17 +29,47 @@ const AnalysedDecl = struct {
         }
         self.* = undefined;
     }
+    pub fn jsonStringify(self: AnalysedDecl, options: anytype, writer: anytype) !void {
+        try writer.writeAll("{");
+        if (self.dc) |d| {
+            try writer.writeAll("\"doc_comment\":");
+            try std.json.stringify(d, options, writer);
+            try writer.writeAll(",");
+        }
+        try writer.writeAll("\"pl\":");
+        try std.json.stringify(self.pl, options, writer);
+        try writer.writeAll(",");
+        if (self.sub_cont_ty) |s| {
+            try writer.writeAll("\"sub_container_type\":");
+            try std.json.stringify(s, options, writer);
+            try writer.writeAll(",");
+        }
+        if (self.md) |m| {
+            try writer.writeAll("\"more_decls\":");
+            try std.json.stringify(m, options, writer);
+        } else {
+            try writer.writeAll("\"more_decls\":[]");
+        }
+        try writer.writeAll("}");
+    }
 };
 
+fn fatal(s: []const u8) noreturn {
+    std.log.emerg("{s}\n", .{s});
+    std.process.exit(1);
+}
+
 pub fn main() anyerror!void {
+    if (std.os.argv.len < 2)
+        fatal("the first argument needs to be the zig file to run zigdoc on");
+
     var general_pa = std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 8 }){};
     defer _ = general_pa.deinit();
 
     const ally = &general_pa.allocator;
 
-    const stdout = std.io.getStdOut().writer();
-
-    try stdout.print("src:\n{s}\nparsed:\n", .{zig_code});
+    const zig_code = std.fs.cwd().readFileAlloc(ally, std.mem.spanZ(std.os.argv[1]), 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
+    defer ally.free(zig_code);
 
     tree = try std.zig.parse(ally, zig_code);
     defer tree.deinit(ally);
@@ -129,7 +84,8 @@ pub fn main() anyerror!void {
         ally.free(anal_list);
     }
 
-    try std.json.stringify(anal_list, .{ .whitespace = .{} }, stdout);
+    const stdout = std.io.getStdOut().writer();
+    try std.json.stringify(anal_list, .{}, stdout);
 }
 
 fn recAnalListOfDecls(
