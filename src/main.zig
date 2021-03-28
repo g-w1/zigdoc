@@ -17,6 +17,11 @@ const AnalysedDecl = struct {
 
     md: ?[]AnalysedDecl = null,
 
+    src: struct {
+        line: usize,
+        column: usize,
+    },
+
     fn deinit(self: *@This(), ally: *std.mem.Allocator) void {
         if (self.md) |more| {
             for (more) |*item| {
@@ -44,6 +49,9 @@ const AnalysedDecl = struct {
             try std.json.stringify(s, options, writer);
             try writer.writeAll(",");
         }
+        try writer.writeAll("\"src\":");
+        try std.json.stringify(self.src, options, writer);
+        try writer.writeAll(",");
         if (self.md) |m| {
             try writer.writeAll("\"more_decls\":");
             try std.json.stringify(m, options, writer);
@@ -113,11 +121,10 @@ fn recAnalListOfDecls(
             const ltoken = tree.lastToken(member);
             const start = token_starts[ftoken];
             const end = token_starts[ltoken + 1];
-            try list.append(.{
-                .pl = tree.source[start..end],
-                .dc = doc,
-                .md = null,
-            });
+            try list.append(.{ .pl = tree.source[start..end], .dc = doc, .md = null, .src = blk: {
+                const src = std.zig.findLineColumn(tree.source, start);
+                break :blk .{ .line = src.line, .column = src.column };
+            } });
             continue;
         } else if (tag == .fn_decl) {
             var d = try doFunction(ally, decl_addr);
@@ -156,6 +163,10 @@ fn recAnalListOfDecls(
                     ]],
                     .dc = doc,
                     .md = more,
+                    .src = blk: {
+                        const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
+                        break :blk .{ .line = src.line, .column = src.column };
+                    },
                 });
                 continue;
             } else {
@@ -164,6 +175,10 @@ fn recAnalListOfDecls(
                     .pl = sig,
                     .dc = doc,
                     .md = null,
+                    .src = blk: {
+                        const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
+                        break :blk .{ .line = src.line, .column = src.column };
+                    },
                 };
                 try list.append(ad);
                 continue;
@@ -193,6 +208,10 @@ fn recAnalListOfDecls(
                 .pl = sig,
                 .dc = doc,
                 .md = null,
+                .src = blk: {
+                    const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
+                    break :blk .{ .line = src.line, .column = src.column };
+                },
             };
             try list.append(ad);
             continue;
@@ -254,12 +273,20 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             .dc = undefined,
             .md = md,
             .sub_cont_ty = sub_cont_ty,
+            .src = blk: {
+                const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
+                break :blk .{ .line = src.line, .column = src.column };
+            },
         };
     } else {
         return AnalysedDecl{
             .pl = full_source,
             .dc = undefined,
             .md = null,
+            .src = blk: {
+                const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
+                break :blk .{ .line = src.line, .column = src.column };
+            },
         };
     }
 }
