@@ -143,6 +143,19 @@ pub fn main() anyerror!void {
     if (opts.type == .json)
         try std.json.stringify(anal_list, .{}, stdout)
     else {
+        try stdout.writeAll(
+            \\<style type="text/css" >
+            \\ .more-decls {
+            \\     padding-left: 50px;
+            \\ }
+            \\ .anal-decl {
+            \\     background-color: #F7A41D77;
+            \\ }
+            \\ * {
+            \\     background-color: #F7A41D22;
+            \\ }
+            \\</style>
+        );
         try stdout.writeAll("<div class=\"more-decls\">");
         for (anal_list) |decl| {
             try decl.htmlStringify(stdout);
