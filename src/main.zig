@@ -32,6 +32,7 @@ const AnalysedDecl = struct {
         if (self.dc) |dc| {
             ally.free(dc);
         }
+        ally.free(self.pl);
         self.* = undefined;
     }
     pub fn jsonStringify(self: AnalysedDecl, options: anytype, writer: anytype) !void {
@@ -175,10 +176,15 @@ fn recAnalListOfDecls(
             const ltoken = tree.lastToken(member);
             const start = token_starts[ftoken];
             const end = token_starts[ltoken + 1];
-            try list.append(.{ .pl = tree.source[start..end], .dc = doc, .md = null, .src = blk: {
-                const src = std.zig.findLineColumn(tree.source, start);
-                break :blk .{ .line = src.line, .column = src.column };
-            } });
+            try list.append(.{
+                .pl = try ally.dupe(u8, tree.source[start..end]),
+                .dc = doc,
+                .md = null,
+                .src = blk: {
+                    const src = std.zig.findLineColumn(tree.source, start);
+                    break :blk .{ .line = src.line, .column = src.column };
+                },
+            });
             continue;
         } else if (tag == .fn_decl) {
             var d = try doFunction(ally, decl_addr);
@@ -212,9 +218,9 @@ fn recAnalListOfDecls(
                     @as(u32, 1);
                 const more = try recAnalListOfDecls(ally, container_decl.ast.members);
                 try list.append(.{
-                    .pl = tree.source[token_starts[tree.firstToken(member)]..token_starts[
+                    .pl = try ally.dupe(u8, tree.source[token_starts[tree.firstToken(member)]..token_starts[
                         main_tokens[init] + offset
-                    ]],
+                    ]]),
                     .dc = doc,
                     .md = more,
                     .src = blk: {
@@ -226,7 +232,7 @@ fn recAnalListOfDecls(
             } else {
                 const sig = util.getVariableSignature(tree, vardecl);
                 var ad: AnalysedDecl = .{
-                    .pl = sig,
+                    .pl = try ally.dupe(u8, sig),
                     .dc = doc,
                     .md = null,
                     .src = blk: {
@@ -258,6 +264,7 @@ fn recAnalListOfDecls(
                 const end = util.tokenLocation(tree, tree.lastToken(fn_proto.ast.return_type)).end;
                 sig = tree.source[start.start..end];
             }
+            sig = try ally.dupe(u8, sig);
             var ad: AnalysedDecl = .{
                 .pl = sig,
                 .dc = doc,
@@ -322,7 +329,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             break :blk try recAnalListOfDecls(ally, container.ast.members);
         } else null;
         return AnalysedDecl{
-            .pl = sig,
+            .pl = try ally.dupe(u8, sig),
             // to be filled in later
             .dc = undefined,
             .md = md,
@@ -334,7 +341,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
         };
     } else {
         return AnalysedDecl{
-            .pl = full_source,
+            .pl = try removeNewLinesFromRest(ally, full_source),
             .dc = undefined,
             .md = null,
             .src = blk: {
@@ -378,4 +385,46 @@ fn nlGtMax(str: []const u8, max: usize) bool {
         if (n > max) return true;
     }
     return false;
+}
+
+/// returns an owned slice
+/// O(2n)
+fn removeNewLinesFromRest(ally: *std.mem.Allocator, s: []const u8) ![]const u8 {
+    var numspaces: u32 = 0;
+    var pure = false;
+    var on_first_line = true;
+    for (s) |c, i| {
+        if (on_first_line) {
+            if (c == '\n') on_first_line = false else continue;
+        }
+        if (c == ' ') {
+            if (pure) numspaces += 1;
+        } else if (c == '\n') {
+            if (!(i == s.len - 1))
+                numspaces = 0;
+            pure = true;
+        } else pure = false;
+    }
+    on_first_line = true;
+    pure = true;
+    const num_on_last = numspaces;
+    var z = std.ArrayList(u8).init(ally);
+    for (s) |c| {
+        if (on_first_line) {
+            if (c == '\n') {
+                pure = false;
+                numspaces = 0;
+                on_first_line = false;
+            }
+            try z.append(c);
+            continue;
+        }
+        if (c == '\n') {
+            numspaces = 0;
+            try z.append('\n');
+        } else numspaces += 1;
+        if (!(numspaces <= num_on_last))
+            try z.append(c);
+    }
+    return z.toOwnedSlice();
 }
