@@ -82,6 +82,7 @@ const AnalysedDecl = struct {
     /// Owned by this decl
     dc: ?[]const u8,
 
+    /// Should be owned by this decl
     pl: []const u8,
 
     sub_cont_ty: ?[]const u8 = null,
@@ -93,7 +94,7 @@ const AnalysedDecl = struct {
         column: usize,
     },
 
-    fn deinit(self: *@This(), ally: *std.mem.Allocator) void {
+    fn deinit(self: *const @This(), ally: *std.mem.Allocator) void {
         if (self.md) |more| {
             for (more) |*item| {
                 item.deinit(ally);
@@ -103,9 +104,12 @@ const AnalysedDecl = struct {
         if (self.dc) |dc| {
             ally.free(dc);
         }
+        if (self.sub_cont_ty) |sc| {
+            ally.free(sc);
+        }
         ally.free(self.pl);
-        self.* = undefined;
     }
+
     pub fn jsonStringify(self: AnalysedDecl, options: anytype, writer: anytype) !void {
         try writer.writeAll("{");
         if (self.dc) |d| {
@@ -132,6 +136,7 @@ const AnalysedDecl = struct {
         }
         try writer.writeAll("}");
     }
+
     pub fn htmlStringify(self: AnalysedDecl, writer: anytype) std.fs.File.WriteError!void {
         try writer.writeAll("<div class=\"anal-decl\">");
         // doc comment
@@ -162,7 +167,7 @@ fn fatal(s: []const u8) noreturn {
 }
 
 const Args = struct {
-    fname: [:0]const u8,
+    dirname: [:0]const u8,
     docs_url: ?[:0]const u8 = null,
     type: enum { json, html } = .json,
 };
@@ -176,8 +181,8 @@ pub fn main() anyerror!void {
     const args = try std.process.argsAlloc(ally);
     defer ally.free(args);
     if (args.len < 2)
-        fatal("the first argument needs to be the zig file to run zigdoc on");
-    var opts: Args = .{ .fname = args[1] };
+        fatal("the first argument needs to be the directory to run zigdoc on");
+    var opts: Args = .{ .dirname = args[1] };
     if (args.len >= 3) {
         var i: usize = 2;
         while (i < args.len) : (i += 1) {
@@ -194,34 +199,63 @@ pub fn main() anyerror!void {
         }
     }
 
-    const zig_code = std.fs.cwd().readFileAlloc(ally, std.mem.spanZ(std.os.argv[1]), 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
+    var walker = try std.fs.walkPath(ally, opts.dirname);
+    defer walker.deinit();
+
+    var file_to_anal_map = std.StringHashMap([]const AnalysedDecl).init(ally);
+
+    while (try walker.next()) |entry| {
+        if (std.mem.endsWith(u8, entry.path, ".zig")) {
+            const strings = compareStrings(entry.path, opts.dirname);
+            std.log.info("strings: {s}", .{strings});
+            const str = try ally.dupe(u8, strings);
+            if (!(file_to_anal_map.contains(strings))) {
+                const list = try getAnalFromFile(ally, entry.path);
+                const pogr = try file_to_anal_map.put(str, list);
+            }
+        }
+    }
+
+    defer {
+        var iter = file_to_anal_map.iterator();
+        while (iter.next()) |entry| {
+            for (entry.value) |*anal| {
+                anal.deinit(ally);
+            }
+            ally.free(entry.key);
+            ally.free(entry.value);
+        }
+        file_to_anal_map.deinit();
+    }
+
+    // const stdout = std.io.getStdOut().writer();
+    // if (opts.type == .json)
+    //     try std.json.stringify(anal_list, .{}, stdout)
+    // else {
+    //     try stdout.print(our_css, .{ .our_background = background_color });
+    //     try stdout.writeAll(code_css);
+    //     try stdout.writeAll("<div class=\"more-decls\">");
+    //     for (anal_list) |decl| {
+    //         try decl.htmlStringify(stdout);
+    //     }
+    //     try stdout.writeAll("</div>");
+    // }
+}
+
+fn getAnalFromFile(
+    ally: *std.mem.Allocator,
+    fname: []const u8,
+) error{OutOfMemory}![]AnalysedDecl {
+    const zig_code = std.fs.cwd().readFileAlloc(ally, fname, 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
     defer ally.free(zig_code);
 
     tree = try std.zig.parse(ally, zig_code);
     defer tree.deinit(ally);
     const decls = tree.rootDecls();
 
-    var anal_list = try recAnalListOfDecls(ally, decls);
+    const anal_list = try recAnalListOfDecls(ally, decls);
 
-    defer {
-        for (anal_list) |*anal| {
-            anal.deinit(ally);
-        }
-        ally.free(anal_list);
-    }
-
-    const stdout = std.io.getStdOut().writer();
-    if (opts.type == .json)
-        try std.json.stringify(anal_list, .{}, stdout)
-    else {
-        try stdout.print(our_css, .{ .our_background = background_color });
-        try stdout.writeAll(code_css);
-        try stdout.writeAll("<div class=\"more-decls\">");
-        for (anal_list) |decl| {
-            try decl.htmlStringify(stdout);
-        }
-        try stdout.writeAll("</div>");
-    }
+    return anal_list;
 }
 
 fn recAnalListOfDecls(
@@ -408,7 +442,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             // to be filled in later
             .dc = undefined,
             .md = md,
-            .sub_cont_ty = sub_cont_ty,
+            .sub_cont_ty = if (sub_cont_ty) |sct| try ally.dupe(u8, sct) else null,
             .src = blk: {
                 const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
                 break :blk .{ .line = src.line, .column = src.column };
@@ -512,4 +546,11 @@ fn removeNewLinesFromRest(ally: *std.mem.Allocator, s: []const u8) ![]const u8 {
             try z.append(c);
     }
     return z.toOwnedSlice();
+}
+
+/// returns the difference of two strings reversed
+/// asserts b is in a
+fn compareStrings(a: []const u8, b: []const u8) []const u8 {
+    const diff = a.len - b.len;
+    return a[b.len..];
 }
