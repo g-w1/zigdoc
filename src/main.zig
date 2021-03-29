@@ -6,6 +6,77 @@ const util = @import("utils.zig");
 
 var tree: ast.Tree = undefined;
 
+const background_color = "#F7A41D77";
+const our_css =
+    \\<style type="text/css" >
+    \\.more-decls {{
+    \\    padding-left: 50px;
+    \\}}
+    \\.anal-decl {{
+    \\ background-color: {[our_background]s};
+    \\}}
+    \\code {{
+    \\ background-color: {[our_background]s};
+    \\}}
+    \\</style>
+;
+const code_css =
+    \\<style type="text/css" >
+    \\pre > code {
+    \\  display: block;
+    \\  overflow: auto;
+    \\  padding: 0.5em;
+    \\  color: black;
+    \\}
+    \\
+    \\.tok {
+    \\  color: #333;
+    \\  font-style: normal;
+    \\}
+    \\
+    \\.code {
+    \\  font-family: monospace;
+    \\  font-size: 0.8em;
+    \\}
+    \\
+    \\.tok-kw {
+    \\  color: #333;
+    \\  font-weight: bold;
+    \\}
+    \\
+    \\.tok-str {
+    \\  color: #d14;
+    \\}
+    \\
+    \\.tok-builtin {
+    \\  color: #0086b3;
+    \\}
+    \\
+    \\code.zig {
+    \\  color: #777;
+    \\  font-style: italic;
+    \\}
+    \\
+    \\.tok-fn {
+    \\  color: #900;
+    \\  font-weight: bold;
+    \\}
+    \\
+    \\.tok-null {
+    \\  color: #008080;
+    \\}
+    \\
+    \\.tok-number {
+    \\  color: #008080;
+    \\}
+    \\
+    \\.tok-type {
+    \\  color: #458;
+    \\  font-weight: bold;
+    \\}
+    \\</style>
+;
+
 const AnalysedDecl = struct {
     /// The doc comment of the decl
     /// Owned by this decl
@@ -65,13 +136,13 @@ const AnalysedDecl = struct {
         try writer.writeAll("<div class=\"anal-decl\">");
         // doc comment
         if (self.dc) |d| {
+            try writer.writeAll("<i>");
             try util.writeEscaped(writer, d);
             try writer.writeByte('\n');
+            try writer.writeAll("</i>");
         }
         // payload
-        try writer.writeAll("<pre><code class=\"zig\">");
-        try writer.writeAll(self.pl);
-        try writer.writeAll("</code></pre>");
+        try util.highlightZigCode(self.pl, writer);
 
         // TODO src loc
         if (self.md) |m| {
@@ -143,19 +214,8 @@ pub fn main() anyerror!void {
     if (opts.type == .json)
         try std.json.stringify(anal_list, .{}, stdout)
     else {
-        try stdout.writeAll(
-            \\<style type="text/css" >
-            \\ .more-decls {
-            \\     padding-left: 50px;
-            \\ }
-            \\ .anal-decl {
-            \\     background-color: #F7A41D77;
-            \\ }
-            \\ * {
-            \\     background-color: #F7A41D22;
-            \\ }
-            \\</style>
-        );
+        try stdout.print(our_css, .{ .our_background = background_color });
+        try stdout.writeAll(code_css);
         try stdout.writeAll("<div class=\"more-decls\">");
         for (anal_list) |decl| {
             try decl.htmlStringify(stdout);
@@ -344,7 +404,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             break :blk try recAnalListOfDecls(ally, container.ast.members);
         } else null;
         return AnalysedDecl{
-            .pl = try ally.dupe(u8, sig),
+            .pl = try removeNewLinesFromRest(ally, sig),
             // to be filled in later
             .dc = undefined,
             .md = md,
@@ -357,6 +417,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
     } else {
         return AnalysedDecl{
             .pl = try removeNewLinesFromRest(ally, full_source),
+            // filled in later
             .dc = undefined,
             .md = null,
             .src = blk: {
@@ -402,6 +463,17 @@ fn nlGtMax(str: []const u8, max: usize) bool {
 
 /// returns an owned slice
 /// O(2n)
+/// ```
+/// pub fn x() {
+///         a();
+///     }
+/// ```
+/// ->
+/// ```
+/// pub fn x() {
+///     a();
+/// }
+/// ```
 fn removeNewLinesFromRest(ally: *std.mem.Allocator, s: []const u8) ![]const u8 {
     var numspaces: u32 = 0;
     var pure = false;
