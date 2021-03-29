@@ -220,7 +220,8 @@ fn recAnalListOfDecls(
 
             // we find if the var is a container, we dont wanna display the full thing if it is
             // then we recurse over it
-            var cd = getContainer(node_datas[decl_addr].rhs);
+            var buf: [2]ast.Node.Index = undefined;
+            var cd = getContainer(node_datas[decl_addr].rhs, &buf);
             if (cd) |container_decl| {
                 const offset = if (container_decl.ast.enum_token != null)
                     if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing)
@@ -324,7 +325,8 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
         const md = if (util.isTypeFunction(tree, fn_proto)) blk: {
             const ret = util.findReturnStatement(tree, fn_proto, block) orelse break :blk null;
             if (node_datas[ret].lhs == 0) break :blk null;
-            const container = getContainer(node_datas[ret].lhs) orelse break :blk null;
+            var buf: [2]ast.Node.Index = undefined;
+            const container = getContainer(node_datas[ret].lhs, &buf) orelse break :blk null;
 
             const offset = if (container.ast.enum_token != null)
                 if (node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag or
@@ -365,7 +367,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
     }
 }
 
-fn getContainer(decl_addr: ast.Node.Index) ?ast.full.ContainerDecl {
+fn getContainer(decl_addr: ast.Node.Index, buf: *[2]ast.Node.Index) ?ast.full.ContainerDecl {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
@@ -378,13 +380,11 @@ fn getContainer(decl_addr: ast.Node.Index) ?ast.full.ContainerDecl {
     return if (rhst == .container_decl or rhst == .container_decl_trailing) tree.containerDecl(decl_addr) else if (rhst == .container_decl_arg or rhst == .container_decl_arg_trailing)
         tree.containerDeclArg(decl_addr)
     else if (rhst == .container_decl_two or rhst == .container_decl_two_trailing) blk: {
-        var buf: [2]ast.Node.Index = undefined;
-        break :blk tree.containerDeclTwo(&buf, decl_addr);
+        break :blk tree.containerDeclTwo(buf, decl_addr);
     } else if (rhst == .tagged_union or rhst == .tagged_union_trailing)
         tree.taggedUnion(decl_addr)
     else if (rhst == .tagged_union_two or rhst == .tagged_union_two_trailing) blk: {
-        var buf: [2]ast.Node.Index = undefined;
-        break :blk tree.taggedUnionTwo(&buf, decl_addr);
+        break :blk tree.taggedUnionTwo(buf, decl_addr);
     } else if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing)
         tree.taggedUnionEnumTag(decl_addr)
     else
