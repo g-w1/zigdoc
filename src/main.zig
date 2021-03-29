@@ -60,6 +60,28 @@ const AnalysedDecl = struct {
         }
         try writer.writeAll("}");
     }
+    pub fn htmlStringify(self: AnalysedDecl, writer: anytype) std.fs.File.WriteError!void {
+        try writer.writeAll("<div class=\"anal-decl\">");
+        // doc comment
+        if (self.dc) |d| {
+            try util.writeEscaped(writer, d);
+            try writer.writeByte('\n');
+        }
+        // payload
+        try writer.writeAll("<pre><code class=\"zig\">");
+        try writer.writeAll(self.pl);
+        try writer.writeAll("</code></pre>");
+
+        // TODO src loc
+        if (self.md) |m| {
+            try writer.writeAll("<div class=\"more-decls\">");
+            for (m) |decl| {
+                try decl.htmlStringify(writer);
+            }
+            try writer.writeAll("</div>");
+        }
+        try writer.writeAll("</div>");
+    }
 };
 
 fn fatal(s: []const u8) noreturn {
@@ -67,14 +89,38 @@ fn fatal(s: []const u8) noreturn {
     std.process.exit(1);
 }
 
-pub fn main() anyerror!void {
-    if (std.os.argv.len < 2)
-        fatal("the first argument needs to be the zig file to run zigdoc on");
+const Args = struct {
+    fname: [:0]const u8,
+    docs_url: ?[:0]const u8 = null,
+    type: enum { json, html } = .json,
+};
 
-    var general_pa = std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 8 }){};
+pub fn main() anyerror!void {
+    var general_pa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = general_pa.deinit();
 
     const ally = &general_pa.allocator;
+
+    const args = try std.process.argsAlloc(ally);
+    defer ally.free(args);
+    if (args.len < 2)
+        fatal("the first argument needs to be the zig file to run zigdoc on");
+    var opts: Args = .{ .fname = args[1] };
+    if (args.len >= 3) {
+        var i: usize = 2;
+        while (i < args.len) : (i += 1) {
+            const arg = args[i];
+            if (std.mem.eql(u8, arg, "-json"))
+                opts.type = .json
+            else if (std.mem.eql(u8, arg, "-html"))
+                opts.type = .html
+            else if (std.mem.eql(u8, arg, "-url")) {
+                if (i == args.len) fatal("need an argument after -url");
+                opts.docs_url = args[i + 1];
+                i += 1;
+            }
+        }
+    }
 
     const zig_code = std.fs.cwd().readFileAlloc(ally, std.mem.spanZ(std.os.argv[1]), 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
     defer ally.free(zig_code);
@@ -93,7 +139,15 @@ pub fn main() anyerror!void {
     }
 
     const stdout = std.io.getStdOut().writer();
-    try std.json.stringify(anal_list, .{}, stdout);
+    if (opts.type == .json)
+        try std.json.stringify(anal_list, .{}, stdout)
+    else {
+        try stdout.writeAll("<div class=\"more-decls\">");
+        for (anal_list) |decl| {
+            try decl.htmlStringify(stdout);
+        }
+        try stdout.writeAll("</div>");
+    }
 }
 
 fn recAnalListOfDecls(

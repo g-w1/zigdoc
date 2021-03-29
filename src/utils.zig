@@ -828,3 +828,26 @@ pub fn getDeclNameToken(tree: ast.Tree, node: ast.Node.Index) ?ast.TokenIndex {
         else => null,
     };
 }
+
+// stolen from zig-doctest :^P
+
+pub fn escapeHtml(allocator: *mem.Allocator, input: []const u8) ![]u8 {
+    var buf = std.ArrayList(u8).init(allocator);
+    defer buf.deinit();
+
+    const out = buf.writer();
+    try writeEscaped(out, input);
+    return buf.toOwnedSlice();
+}
+
+pub fn writeEscaped(out: anytype, input: []const u8) !void {
+    for (input) |c| {
+        try switch (c) {
+            '&' => out.writeAll("&amp;"),
+            '<' => out.writeAll("&lt;"),
+            '>' => out.writeAll("&gt;"),
+            '"' => out.writeAll("&quot;"),
+            else => out.writeByte(c),
+        };
+    }
+}
