@@ -852,10 +852,13 @@ pub fn writeEscaped(out: anytype, input: []const u8) !void {
         };
     }
 }
-pub fn highlightZigCode(raw_src: []const u8, out: anytype) !void {
+pub fn highlightZigCode(raw_src: []const u8, out: anytype, pre: bool) !void {
     // TODO: who should be doing this cleanup?
     const src = mem.trim(u8, raw_src, " \n");
-    try out.writeAll("<pre><code class=\"zig\">");
+    if (pre)
+        try out.writeAll("<pre><code class=\"zig\">")
+    else
+        try out.writeAll("<code class=\"zig\">");
     var tokenizer = std.zig.Tokenizer.init(src);
     var index: usize = 0;
     var next_tok_is_fn = false;
@@ -1062,8 +1065,12 @@ pub fn highlightZigCode(raw_src: []const u8, out: anytype) !void {
         }
         index = token.loc.end;
     }
-    try out.writeAll("</code></pre>");
+    if (pre)
+        try out.writeAll("</code></pre>")
+    else
+        try out.writeAll("</code>");
 }
+
 const builtin_types = [_][]const u8{
     "f16",         "f32",      "f64",    "f128",     "c_longdouble", "c_short",
     "c_ushort",    "c_int",    "c_uint", "c_long",   "c_ulong",      "c_longlong",

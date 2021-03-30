@@ -29,6 +29,17 @@ const code_css =
     \\  color: black;
     \\}
     \\
+    \\details {
+    \\  margin-bottom: 0.5em;
+    \\  -webkit-touch-callout: none; /* iOS Safari */
+    \\    -webkit-user-select: none; /* Safari */
+    \\     -khtml-user-select: none; /* Konqueror HTML */
+    \\       -moz-user-select: none; /* Old versions of Firefox */
+    \\        -ms-user-select: none; /* Internet Explorer/Edge */
+    \\            user-select: none; /* Non-prefixed version, currently
+    \\                                  supported by Chrome, Edge, Opera and Firefox */
+    \\}
+    \\
     \\.tok {
     \\  color: #333;
     \\  font-style: normal;
@@ -141,21 +152,25 @@ const AnalysedDecl = struct {
         try writer.writeAll("<div class=\"anal-decl\">");
         // doc comment
         if (self.dc) |d| {
-            try writer.writeAll("<i>");
+            try writer.writeAll("<b>");
             try util.writeEscaped(writer, d);
             try writer.writeByte('\n');
-            try writer.writeAll("</i>");
+            try writer.writeAll("</b></br>");
         }
         // payload
-        try util.highlightZigCode(self.pl, writer);
 
         // TODO src loc
         if (self.md) |m| {
+            try util.highlightZigCode(self.pl, writer, true);
+            try writer.writeAll("<details><summary>Fields, Types & Functions:");
+            try writer.writeAll("</summary>");
             try writer.writeAll("<div class=\"more-decls\">");
             for (m) |decl| {
                 try decl.htmlStringify(writer);
             }
-            try writer.writeAll("</div>");
+            try writer.writeAll("</details>");
+        } else {
+            try util.highlightZigCode(self.pl, writer, true);
         }
         try writer.writeAll("</div>");
     }
@@ -169,7 +184,7 @@ fn fatal(s: []const u8) noreturn {
 const Args = struct {
     dirname: [:0]const u8,
     docs_url: ?[:0]const u8 = null,
-    type: enum { json, html } = .json,
+    type: enum { json, html } = .html,
     output_dir: []const u8 = "docs",
 };
 
@@ -225,7 +240,6 @@ pub fn main() anyerror!void {
     while (try walker.next()) |entry| {
         if (std.mem.endsWith(u8, entry.path, ".zig")) {
             const strings = compareStrings(entry.path, opts.dirname);
-            // std.log.info("file: {s}", .{strings});
             const str = try ally.dupe(u8, strings);
             if (!(file_to_anal_map.contains(strings))) {
                 const list = try getAnalFromFile(ally, entry.path);
@@ -281,19 +295,6 @@ pub fn main() anyerror!void {
             try w.writeAll("]");
         }
     }
-
-    // const stdout = std.io.getStdOut().writer();
-    // if (opts.type == .json)
-    //     try std.json.stringify(anal_list, .{}, stdout)
-    // else {
-    //     try stdout.print(our_css, .{ .our_background = background_color });
-    //     try stdout.writeAll(code_css);
-    //     try stdout.writeAll("<div class=\"more-decls\">");
-    //     for (anal_list) |decl| {
-    //         try decl.htmlStringify(stdout);
-    //     }
-    //     try stdout.writeAll("</div>");
-    // }
 }
 
 fn getAnalFromFile(
