@@ -88,6 +88,30 @@ const code_css =
     \\</style>
 ;
 
+const Md = struct {
+    fields: std.ArrayList(AnalysedDecl),
+    types: std.ArrayList(AnalysedDecl),
+    funcs: std.ArrayList(AnalysedDecl),
+    values: std.ArrayList(AnalysedDecl),
+
+    pub fn init(ally: *std.mem.Allocator) !@This() {
+        return @This(){
+            .fields = std.ArrayList(AnalysedDecl).init(ally),
+            .types = std.ArrayList(AnalysedDecl).init(ally),
+            .funcs = std.ArrayList(AnalysedDecl).init(ally),
+            .values = std.ArrayList(AnalysedDecl).init(ally),
+        };
+    }
+    pub fn deinit(self: *const @This(), ally: *std.mem.Allocator) void {
+        inline for (comptime std.meta.fieldNames(@This())) |n| {
+            for (@field(self, n).items) |*anal| {
+                anal.deinit(ally);
+            }
+            @field(self, n).deinit();
+        }
+    }
+};
+
 const AnalysedDecl = struct {
     /// The doc comment of the decl
     /// Owned by this decl
@@ -98,26 +122,14 @@ const AnalysedDecl = struct {
 
     sub_cont_ty: ?[]const u8 = null,
 
-    md: ?[]AnalysedDecl = null,
+    md: ?Md,
 
-    src: struct {
-        line: usize,
-        column: usize,
-    },
+    // TODO: make a range
+    src: usize,
 
     fn deinit(self: *const @This(), ally: *std.mem.Allocator) void {
-        if (self.md) |more| {
-            for (more) |*item| {
-                item.deinit(ally);
-            }
-            ally.free(more);
-        }
-        if (self.dc) |dc| {
-            ally.free(dc);
-        }
-        if (self.sub_cont_ty) |sc| {
-            ally.free(sc);
-        }
+        if (self.md) |m|
+            m.deinit(ally);
         ally.free(self.pl);
     }
 
@@ -139,12 +151,14 @@ const AnalysedDecl = struct {
         try writer.writeAll("\"src\":");
         try std.json.stringify(self.src, options, writer);
         try writer.writeAll(",");
+        try writer.writeAll("\"more_decls\":");
         if (self.md) |m| {
-            try writer.writeAll("\"more_decls\":");
-            try std.json.stringify(m, options, writer);
-        } else {
-            try writer.writeAll("\"more_decls\":[]");
-        }
+            inline for (comptime std.meta.fieldNames(Md)) |n| {
+                for (@field(self.md.?, n).items) |decl| {
+                    try decl.jsonStringify(.{}, writer);
+                }
+            }
+        } else try writer.writeAll("null");
         try writer.writeAll("}");
     }
 
@@ -155,22 +169,52 @@ const AnalysedDecl = struct {
             try writer.writeAll("<b>");
             try util.writeEscaped(writer, d);
             try writer.writeByte('\n');
-            try writer.writeAll("</b></br>");
+            try writer.writeAll("</b>");
         }
         // payload
 
-        // TODO src loc
-        if (self.md) |m| {
-            try util.highlightZigCode(self.pl, writer, true);
-            try writer.writeAll("<details><summary>Fields, Types & Functions:");
-            try writer.writeAll("</summary>");
-            try writer.writeAll("<div class=\"more-decls\">");
-            for (m) |decl| {
-                try decl.htmlStringify(writer);
+        if (opts.docs_url) |url| {
+            // TODO src loc
+            try writer.print("<a href=\"{s}{s}\">src</a>", .{ opts.docs_url, cur_file });
+        }
+        try util.highlightZigCode(self.pl, writer, true);
+        if (self.md != null) {
+            if (self.md.?.fields.items.len > 0) {
+                try writer.writeAll("<details><summary>fields:</summary>");
+                try writer.writeAll("<div class=\"md-fields\">");
+                for (self.md.?.fields.items) |decl| {
+                    try decl.htmlStringify(writer);
+                }
+                try writer.writeAll("</div>");
+                try writer.writeAll("</details>");
             }
-            try writer.writeAll("</details>");
-        } else {
-            try util.highlightZigCode(self.pl, writer, true);
+            if (self.md.?.types.items.len > 0) {
+                try writer.writeAll("<details><summary>types:</summary>");
+                try writer.writeAll("<div class=\"md-types\">");
+                for (self.md.?.types.items) |decl| {
+                    try decl.htmlStringify(writer);
+                }
+                try writer.writeAll("</div>");
+                try writer.writeAll("</details>");
+            }
+            if (self.md.?.funcs.items.len > 0) {
+                try writer.writeAll("<details><summary>funcs</summary>");
+                try writer.writeAll("<div class=\"md-funcs\">");
+                for (self.md.?.funcs.items) |decl| {
+                    try decl.htmlStringify(writer);
+                }
+                try writer.writeAll("</div>");
+                try writer.writeAll("</details>");
+            }
+            if (self.md.?.values.items.len > 0) {
+                try writer.writeAll("<details><summary>values:</summary>");
+                try writer.writeAll("<div class=\"md-vals\">");
+                for (self.md.?.values.items) |decl| {
+                    try decl.htmlStringify(writer);
+                }
+                try writer.writeAll("</div>");
+                try writer.writeAll("</details>");
+            }
         }
         try writer.writeAll("</div>");
     }
@@ -189,6 +233,7 @@ const Args = struct {
 };
 
 var opts: Args = undefined;
+var cur_file: []const u8 = undefined;
 
 pub fn main() anyerror!void {
     var general_pa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -224,15 +269,13 @@ pub fn main() anyerror!void {
     var walker = try std.fs.walkPath(ally, opts.dirname);
     defer walker.deinit();
 
-    var file_to_anal_map = std.StringHashMap([]const AnalysedDecl).init(ally);
+    var file_to_anal_map = std.StringHashMap(Md).init(ally);
     defer {
         var iter = file_to_anal_map.iterator();
         while (iter.next()) |entry| {
-            for (entry.value) |*anal| {
-                anal.deinit(ally);
-            }
+            entry.value.deinit(ally);
             ally.free(entry.key);
-            ally.free(entry.value);
+            entry.value.deinit(ally);
         }
         file_to_anal_map.deinit();
     }
@@ -241,6 +284,7 @@ pub fn main() anyerror!void {
         if (std.mem.endsWith(u8, entry.path, ".zig")) {
             const strings = compareStrings(entry.path, opts.dirname);
             const str = try ally.dupe(u8, strings);
+            cur_file = str;
             if (!(file_to_anal_map.contains(strings))) {
                 const list = try getAnalFromFile(ally, entry.path);
                 const pogr = try file_to_anal_map.put(str, list);
@@ -270,8 +314,11 @@ pub fn main() anyerror!void {
             try w.print(our_css, .{ .our_background = background_color });
             try w.writeAll(code_css);
             try w.writeAll("<div class=\"more-decls\">");
-            for (anal_list) |decl| {
-                try decl.htmlStringify(w);
+            inline for (comptime std.meta.fieldNames(Md)) |n| {
+                try w.print("{s}:", .{n});
+                for (@field(anal_list, n).items) |decl| {
+                    try decl.htmlStringify(w);
+                }
             }
             try w.writeAll("</div>");
         }
@@ -289,8 +336,10 @@ pub fn main() anyerror!void {
             const anal_list = entry.value;
 
             try w.writeAll("[");
-            for (anal_list) |decl| {
-                try decl.jsonStringify(.{}, w);
+            inline for (comptime std.meta.fieldNames(Md)) |n| {
+                for (@field(anal_list, n).items) |decl| {
+                    try decl.jsonStringify(.{}, w);
+                }
             }
             try w.writeAll("]");
         }
@@ -300,7 +349,7 @@ pub fn main() anyerror!void {
 fn getAnalFromFile(
     ally: *std.mem.Allocator,
     fname: []const u8,
-) error{OutOfMemory}![]AnalysedDecl {
+) error{OutOfMemory}!Md {
     const zig_code = std.fs.cwd().readFileAlloc(ally, fname, 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
     defer ally.free(zig_code);
 
@@ -316,13 +365,13 @@ fn getAnalFromFile(
 fn recAnalListOfDecls(
     ally: *std.mem.Allocator,
     list_d: []const ast.Node.Index,
-) error{OutOfMemory}![]AnalysedDecl {
+) error{OutOfMemory}!Md {
     const node_tags = tree.nodes.items(.tag);
     const node_datas = tree.nodes.items(.data);
     const main_tokens = tree.nodes.items(.main_token);
     const token_starts = tree.tokens.items(.start);
 
-    var list = std.ArrayList(AnalysedDecl).init(ally);
+    var list = try Md.init(ally);
 
     for (list_d) |member| if (util.isNodePublic(tree, member)) {
         const tag = node_tags[member];
@@ -338,20 +387,17 @@ fn recAnalListOfDecls(
             const ltoken = tree.lastToken(member);
             const start = token_starts[ftoken];
             const end = token_starts[ltoken + 1];
-            try list.append(.{
+            try list.fields.append(.{
                 .pl = try ally.dupe(u8, tree.source[start..end]),
                 .dc = doc,
                 .md = null,
-                .src = blk: {
-                    const src = std.zig.findLineColumn(tree.source, start);
-                    break :blk .{ .line = src.line, .column = src.column };
-                },
+                .src = std.zig.findLineColumn(tree.source, start).line,
             });
             continue;
         } else if (tag == .fn_decl) {
             var d = try doFunction(ally, decl_addr);
             d.dc = doc;
-            try list.append(d);
+            try list.funcs.append(d);
             continue;
         } else if (tag == .global_var_decl or
             tag == .local_var_decl or
@@ -380,16 +426,13 @@ fn recAnalListOfDecls(
                 else
                     @as(u32, 1);
                 const more = try recAnalListOfDecls(ally, container_decl.ast.members);
-                try list.append(.{
+                try list.types.append(.{
                     .pl = try ally.dupe(u8, tree.source[token_starts[tree.firstToken(member)]..token_starts[
                         main_tokens[init] + offset
                     ]]),
                     .dc = doc,
                     .md = more,
-                    .src = blk: {
-                        const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
-                        break :blk .{ .line = src.line, .column = src.column };
-                    },
+                    .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
                 });
                 continue;
             } else {
@@ -398,12 +441,9 @@ fn recAnalListOfDecls(
                     .pl = try ally.dupe(u8, sig),
                     .dc = doc,
                     .md = null,
-                    .src = blk: {
-                        const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
-                        break :blk .{ .line = src.line, .column = src.column };
-                    },
+                    .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
                 };
-                try list.append(ad);
+                try list.values.append(ad);
                 continue;
             }
         } else if (tag == .fn_proto or
@@ -432,19 +472,16 @@ fn recAnalListOfDecls(
                 .pl = sig,
                 .dc = doc,
                 .md = null,
-                .src = blk: {
-                    const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
-                    break :blk .{ .line = src.line, .column = src.column };
-                },
+                .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
             };
-            try list.append(ad);
+            try list.types.append(ad);
             continue;
         } else {
             continue;
         }
         unreachable;
     };
-    return list.toOwnedSlice();
+    return list;
 }
 
 fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl {
@@ -498,10 +535,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             .dc = undefined,
             .md = md,
             .sub_cont_ty = if (sub_cont_ty) |sct| try ally.dupe(u8, sct) else null,
-            .src = blk: {
-                const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
-                break :blk .{ .line = src.line, .column = src.column };
-            },
+            .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
         };
     } else {
         return AnalysedDecl{
@@ -509,10 +543,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
             // filled in later
             .dc = undefined,
             .md = null,
-            .src = blk: {
-                const src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]);
-                break :blk .{ .line = src.line, .column = src.column };
-            },
+            .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
         };
     }
 }
