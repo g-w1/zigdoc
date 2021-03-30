@@ -170,7 +170,10 @@ const Args = struct {
     dirname: [:0]const u8,
     docs_url: ?[:0]const u8 = null,
     type: enum { json, html } = .json,
+    output_dir: []const u8 = "docs",
 };
+
+var opts: Args = undefined;
 
 pub fn main() anyerror!void {
     var general_pa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -182,7 +185,7 @@ pub fn main() anyerror!void {
     defer ally.free(args);
     if (args.len < 2)
         fatal("the first argument needs to be the directory to run zigdoc on");
-    var opts: Args = .{ .dirname = args[1] };
+    opts = .{ .dirname = args[1] };
     if (args.len >= 3) {
         var i: usize = 2;
         while (i < args.len) : (i += 1) {
@@ -191,7 +194,11 @@ pub fn main() anyerror!void {
                 opts.type = .json
             else if (std.mem.eql(u8, arg, "-html"))
                 opts.type = .html
-            else if (std.mem.eql(u8, arg, "-url")) {
+            else if (std.mem.eql(u8, arg, "-o")) {
+                if (i == args.len) fatal("need an argument after -o");
+                opts.output_dir = args[i + 1];
+                i += 1;
+            } else if (std.mem.eql(u8, arg, "-url")) {
                 if (i == args.len) fatal("need an argument after -url");
                 opts.docs_url = args[i + 1];
                 i += 1;
@@ -203,19 +210,6 @@ pub fn main() anyerror!void {
     defer walker.deinit();
 
     var file_to_anal_map = std.StringHashMap([]const AnalysedDecl).init(ally);
-
-    while (try walker.next()) |entry| {
-        if (std.mem.endsWith(u8, entry.path, ".zig")) {
-            const strings = compareStrings(entry.path, opts.dirname);
-            std.log.info("strings: {s}", .{strings});
-            const str = try ally.dupe(u8, strings);
-            if (!(file_to_anal_map.contains(strings))) {
-                const list = try getAnalFromFile(ally, entry.path);
-                const pogr = try file_to_anal_map.put(str, list);
-            }
-        }
-    }
-
     defer {
         var iter = file_to_anal_map.iterator();
         while (iter.next()) |entry| {
@@ -226,6 +220,66 @@ pub fn main() anyerror!void {
             ally.free(entry.value);
         }
         file_to_anal_map.deinit();
+    }
+
+    while (try walker.next()) |entry| {
+        if (std.mem.endsWith(u8, entry.path, ".zig")) {
+            const strings = compareStrings(entry.path, opts.dirname);
+            // std.log.info("file: {s}", .{strings});
+            const str = try ally.dupe(u8, strings);
+            if (!(file_to_anal_map.contains(strings))) {
+                const list = try getAnalFromFile(ally, entry.path);
+                const pogr = try file_to_anal_map.put(str, list);
+            }
+        }
+    }
+
+    var output_dir = std.fs.cwd().makeOpenPath(opts.output_dir, .{}) catch |e| switch (e) {
+        error.PathAlreadyExists => try std.fs.cwd().openDir(opts.output_dir, .{}),
+        else => |er| return er,
+    };
+    defer output_dir.close();
+    var iter = file_to_anal_map.iterator();
+    if (opts.type == .html) {
+        while (iter.next()) |entry| {
+            const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
+            var output_path = if (!std.mem.eql(u8, dname, "")) try output_dir.makeOpenPath(dname, .{}) else try output_dir.openDir(".", .{});
+            defer output_path.close();
+            const name_to_open = std.fs.path.basename(entry.key);
+            const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".html" });
+            defer ally.free(catted);
+            const output_file = try output_path.createFile(catted, .{});
+            defer output_file.close();
+            const w = output_file.writer();
+            const anal_list = entry.value;
+
+            try w.print(our_css, .{ .our_background = background_color });
+            try w.writeAll(code_css);
+            try w.writeAll("<div class=\"more-decls\">");
+            for (anal_list) |decl| {
+                try decl.htmlStringify(w);
+            }
+            try w.writeAll("</div>");
+        }
+    } else {
+        while (iter.next()) |entry| {
+            const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
+            var output_path = if (!std.mem.eql(u8, dname, "")) try output_dir.makeOpenPath(dname, .{}) else try output_dir.openDir(".", .{});
+            defer output_path.close();
+            const name_to_open = std.fs.path.basename(entry.key);
+            const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".json" });
+            defer ally.free(catted);
+            const output_file = try output_path.createFile(catted, .{});
+            defer output_file.close();
+            const w = output_file.writer();
+            const anal_list = entry.value;
+
+            try w.writeAll("[");
+            for (anal_list) |decl| {
+                try decl.jsonStringify(.{}, w);
+            }
+            try w.writeAll("]");
+        }
     }
 
     // const stdout = std.io.getStdOut().writer();
