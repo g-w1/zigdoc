@@ -156,14 +156,20 @@ fn fatal(s: []const u8) noreturn {
 }
 
 const Args = struct {
-    dirname: [:0]const u8,
-    docs_url: ?[:0]const u8 = null,
+    dirname: []const u8,
+    docs_url: ?[]const u8 = null,
     type: enum { json, html } = .html,
     output_dir: []const u8 = "docs",
 };
 
 var opts: Args = undefined;
 var cur_file: []const u8 = undefined;
+
+fn removeTrailingSlash(n: [:0]u8) []u8 {
+    if (std.mem.endsWith(u8, n, "/"))
+        return n[0 .. n.len - 1];
+    return n;
+}
 
 pub fn main() anyerror!void {
     var general_pa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -175,7 +181,7 @@ pub fn main() anyerror!void {
     defer ally.free(args);
     if (args.len < 2)
         fatal("the first argument needs to be the directory to run zigdoc on");
-    opts = .{ .dirname = args[1] };
+    opts = .{ .dirname = removeTrailingSlash(args[1]) };
     if (args.len >= 3) {
         var i: usize = 2;
         while (i < args.len) : (i += 1) {
@@ -190,7 +196,8 @@ pub fn main() anyerror!void {
                 i += 1;
             } else if (std.mem.eql(u8, arg, "-url")) {
                 if (i == args.len) fatal("need an argument after -url");
-                opts.docs_url = args[i + 1];
+                var durl: [:0]u8 = args[i + 1];
+                opts.docs_url = removeTrailingSlash(durl);
                 i += 1;
             }
         }
@@ -256,15 +263,18 @@ pub fn main() anyerror!void {
 
             try w.print(our_css, .{ .our_background = background_color });
             try w.writeAll(code_css);
-            try w.writeAll("<div class=\"more-decls\">");
+            try w.writeAll("<html>");
+            try w.print("<a href=\"{s}/{s}\"><h1>{s}</h1></a>", .{ opts.docs_url, cur_file, cur_file });
             inline for (comptime std.meta.fieldNames(Md)) |n| {
                 if (@field(anal_list, n).items.len != 0)
-                    try w.print("{s}:", .{n});
+                    try w.print("<h2 style=\"color: orange;\">{s}:</h2>", .{n});
+                try w.writeAll("<div class=\"more-decls\">");
                 for (@field(anal_list, n).items) |decl| {
                     try decl.htmlStringify(w);
                 }
+                try w.writeAll("</div>");
             }
-            try w.writeAll("</div>");
+            try w.writeAll("</html>");
         }
     } else {
         while (iter.next()) |entry| {
