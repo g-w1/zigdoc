@@ -1,4 +1,4 @@
-//! STOLEN FROM ZLS:
+// STOLEN FROM ZLS:
 
 const std = @import("std");
 const ast = std.zig.ast;

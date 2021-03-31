@@ -6,88 +6,6 @@ const util = @import("utils.zig");
 
 var tree: ast.Tree = undefined;
 
-const background_color = "#F7A41D77";
-const our_css =
-    \\<style type="text/css" >
-    \\.more-decls {{
-    \\    padding-left: 50px;
-    \\}}
-    \\.anal-decl {{
-    \\ background-color: {[our_background]s};
-    \\}}
-    \\code {{
-    \\ background-color: {[our_background]s};
-    \\}}
-    \\</style>
-;
-const code_css =
-    \\<style type="text/css" >
-    \\pre > code {
-    \\  display: block;
-    \\  overflow: auto;
-    \\  padding: 0.5em;
-    \\  color: black;
-    \\}
-    \\
-    \\details {
-    \\  margin-bottom: 0.5em;
-    \\  -webkit-touch-callout: none; /* iOS Safari */
-    \\    -webkit-user-select: none; /* Safari */
-    \\     -khtml-user-select: none; /* Konqueror HTML */
-    \\       -moz-user-select: none; /* Old versions of Firefox */
-    \\        -ms-user-select: none; /* Internet Explorer/Edge */
-    \\            user-select: none; /* Non-prefixed version, currently
-    \\                                  supported by Chrome, Edge, Opera and Firefox */
-    \\}
-    \\
-    \\.tok {
-    \\  color: #333;
-    \\  font-style: normal;
-    \\}
-    \\
-    \\.code {
-    \\  font-family: monospace;
-    \\  font-size: 0.8em;
-    \\}
-    \\
-    \\.tok-kw {
-    \\  color: #333;
-    \\  font-weight: bold;
-    \\}
-    \\
-    \\.tok-str {
-    \\  color: #d14;
-    \\}
-    \\
-    \\.tok-builtin {
-    \\  color: #0086b3;
-    \\}
-    \\
-    \\code.zig {
-    \\  color: #777;
-    \\  font-style: italic;
-    \\}
-    \\
-    \\.tok-fn {
-    \\  color: #900;
-    \\  font-weight: bold;
-    \\}
-    \\
-    \\.tok-null {
-    \\  color: #008080;
-    \\}
-    \\
-    \\.tok-number {
-    \\  color: #008080;
-    \\}
-    \\
-    \\.tok-type {
-    \\  color: #458;
-    \\  font-weight: bold;
-    \\}
-    \\</style>
-;
-
 const Md = struct {
     fields: std.ArrayList(AnalysedDecl),
     types: std.ArrayList(AnalysedDecl),
@@ -110,6 +28,20 @@ const Md = struct {
             @field(self, n).deinit();
         }
     }
+    pub fn jsonStringify(self: @This(), options: anytype, writer: anytype) !void {
+        for (self.fields.items) |anal| {
+            try anal.jsonStringify(options, writer);
+        }
+        for (self.types.items) |anal| {
+            try anal.jsonStringify(options, writer);
+        }
+        for (self.funcs.items) |anal| {
+            try anal.jsonStringify(options, writer);
+        }
+        for (self.values.items) |anal| {
+            try anal.jsonStringify(options, writer);
+        }
+    }
 };
 
 const AnalysedDecl = struct {
@@ -128,9 +60,13 @@ const AnalysedDecl = struct {
     src: usize,
 
     fn deinit(self: *const @This(), ally: *std.mem.Allocator) void {
-        if (self.md) |m|
+        if (self.md) |*m|
             m.deinit(ally);
         ally.free(self.pl);
+        if (self.dc) |d|
+            ally.free(d);
+        if (self.sub_cont_ty) |s|
+            ally.free(s);
     }
 
     pub fn jsonStringify(self: AnalysedDecl, options: anytype, writer: anytype) !void {
@@ -152,13 +88,7 @@ const AnalysedDecl = struct {
         try std.json.stringify(self.src, options, writer);
         try writer.writeAll(",");
         try writer.writeAll("\"more_decls\":");
-        if (self.md) |m| {
-            inline for (comptime std.meta.fieldNames(Md)) |n| {
-                for (@field(self.md.?, n).items) |decl| {
-                    try decl.jsonStringify(.{}, writer);
-                }
-            }
-        } else try writer.writeAll("null");
+        try std.json.stringify(self.md, options, writer);
         try writer.writeAll("}");
     }
 
@@ -175,13 +105,13 @@ const AnalysedDecl = struct {
 
         if (opts.docs_url) |url| {
             // TODO src loc
-            try writer.print("<a href=\"{s}{s}\">src</a>", .{ opts.docs_url, cur_file });
+            try writer.print("<a href=\"{s}{s}#L{d}\">src</a>", .{ opts.docs_url, cur_file, self.src + 1 });
         }
         try util.highlightZigCode(self.pl, writer, true);
         if (self.md != null) {
             if (self.md.?.fields.items.len > 0) {
                 try writer.writeAll("<details><summary>fields:</summary>");
-                try writer.writeAll("<div class=\"md-fields\">");
+                try writer.writeAll("<div class=\"md-fields more-decls\">");
                 for (self.md.?.fields.items) |decl| {
                     try decl.htmlStringify(writer);
                 }
@@ -190,7 +120,7 @@ const AnalysedDecl = struct {
             }
             if (self.md.?.types.items.len > 0) {
                 try writer.writeAll("<details><summary>types:</summary>");
-                try writer.writeAll("<div class=\"md-types\">");
+                try writer.writeAll("<div class=\"md-types more-decls\">");
                 for (self.md.?.types.items) |decl| {
                     try decl.htmlStringify(writer);
                 }
@@ -199,7 +129,7 @@ const AnalysedDecl = struct {
             }
             if (self.md.?.funcs.items.len > 0) {
                 try writer.writeAll("<details><summary>funcs</summary>");
-                try writer.writeAll("<div class=\"md-funcs\">");
+                try writer.writeAll("<div class=\"md-funcs more-decls\">");
                 for (self.md.?.funcs.items) |decl| {
                     try decl.htmlStringify(writer);
                 }
@@ -208,7 +138,7 @@ const AnalysedDecl = struct {
             }
             if (self.md.?.values.items.len > 0) {
                 try writer.writeAll("<details><summary>values:</summary>");
-                try writer.writeAll("<div class=\"md-vals\">");
+                try writer.writeAll("<div class=\"md-vals more-decls\">");
                 for (self.md.?.values.items) |decl| {
                     try decl.htmlStringify(writer);
                 }
@@ -275,22 +205,34 @@ pub fn main() anyerror!void {
         while (iter.next()) |entry| {
             entry.value.deinit(ally);
             ally.free(entry.key);
-            entry.value.deinit(ally);
         }
         file_to_anal_map.deinit();
     }
 
+    var progress: std.Progress = .{};
+    var main_progress_node = try progress.start("", 0);
+    main_progress_node.activate();
+    defer main_progress_node.end();
+    var analyse_node = main_progress_node.start("Analysis", 0);
+    analyse_node.activate();
+    var i: usize = 0;
     while (try walker.next()) |entry| {
         if (std.mem.endsWith(u8, entry.path, ".zig")) {
             const strings = compareStrings(entry.path, opts.dirname);
             const str = try ally.dupe(u8, strings);
-            cur_file = str;
             if (!(file_to_anal_map.contains(strings))) {
+                i += 1;
+                var node = analyse_node.start(strings, i + 1);
+                node.activate();
+                // screw thread safety!
+                node.unprotected_completed_items = i;
+                defer node.end();
                 const list = try getAnalFromFile(ally, entry.path);
                 const pogr = try file_to_anal_map.put(str, list);
             }
         }
     }
+    analyse_node.end();
 
     var output_dir = std.fs.cwd().makeOpenPath(opts.output_dir, .{}) catch |e| switch (e) {
         error.PathAlreadyExists => try std.fs.cwd().openDir(opts.output_dir, .{}),
@@ -300,6 +242,7 @@ pub fn main() anyerror!void {
     var iter = file_to_anal_map.iterator();
     if (opts.type == .html) {
         while (iter.next()) |entry| {
+            cur_file = entry.key;
             const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
             var output_path = if (!std.mem.eql(u8, dname, "")) try output_dir.makeOpenPath(dname, .{}) else try output_dir.openDir(".", .{});
             defer output_path.close();
@@ -315,7 +258,8 @@ pub fn main() anyerror!void {
             try w.writeAll(code_css);
             try w.writeAll("<div class=\"more-decls\">");
             inline for (comptime std.meta.fieldNames(Md)) |n| {
-                try w.print("{s}:", .{n});
+                if (@field(anal_list, n).items.len != 0)
+                    try w.print("{s}:", .{n});
                 for (@field(anal_list, n).items) |decl| {
                     try decl.htmlStringify(w);
                 }
@@ -336,11 +280,7 @@ pub fn main() anyerror!void {
             const anal_list = entry.value;
 
             try w.writeAll("[");
-            inline for (comptime std.meta.fieldNames(Md)) |n| {
-                for (@field(anal_list, n).items) |decl| {
-                    try decl.jsonStringify(.{}, w);
-                }
-            }
+            try std.json.stringify(anal_list, .{}, w);
             try w.writeAll("]");
         }
     }
@@ -640,3 +580,84 @@ fn compareStrings(a: []const u8, b: []const u8) []const u8 {
     const diff = a.len - b.len;
     return a[b.len..];
 }
+const background_color = "#F7A41D77";
+const our_css =
+    \\<style type="text/css" >
+    \\.more-decls {{
+    \\    padding-left: 50px;
+    \\}}
+    \\.anal-decl {{
+    \\ background-color: {[our_background]s};
+    \\}}
+    \\code {{
+    \\ background-color: {[our_background]s};
+    \\}}
+    \\</style>
+;
+const code_css =
+    \\<style type="text/css" >
+    \\pre > code {
+    \\  display: block;
+    \\  overflow: auto;
+    \\  padding: 0.5em;
+    \\  color: black;
+    \\}
+    \\
+    \\details {
+    \\  margin-bottom: 0.5em;
+    \\  -webkit-touch-callout: none; /* iOS Safari */
+    \\    -webkit-user-select: none; /* Safari */
+    \\     -khtml-user-select: none; /* Konqueror HTML */
+    \\       -moz-user-select: none; /* Old versions of Firefox */
+    \\        -ms-user-select: none; /* Internet Explorer/Edge */
+    \\            user-select: none; /* Non-prefixed version, currently
+    \\                                  supported by Chrome, Edge, Opera and Firefox */
+    \\}
+    \\
+    \\.tok {
+    \\  color: #333;
+    \\  font-style: normal;
+    \\}
+    \\
+    \\.code {
+    \\  font-family: monospace;
+    \\  font-size: 0.8em;
+    \\}
+    \\
+    \\.tok-kw {
+    \\  color: #333;
+    \\  font-weight: bold;
+    \\}
+    \\
+    \\.tok-str {
+    \\  color: #d14;
+    \\}
+    \\
+    \\.tok-builtin {
+    \\  color: #0086b3;
+    \\}
+    \\
+    \\code.zig {
+    \\  color: #777;
+    \\  font-style: italic;
+    \\}
+    \\
+    \\.tok-fn {
+    \\  color: #900;
+    \\  font-weight: bold;
+    \\}
+    \\
+    \\.tok-null {
+    \\  color: #008080;
+    \\}
+    \\
+    \\.tok-number {
+    \\  color: #008080;
+    \\}
+    \\
+    \\.tok-type {
+    \\  color: #458;
+    \\  font-weight: bold;
+    \\}
+    \\</style>
+;
