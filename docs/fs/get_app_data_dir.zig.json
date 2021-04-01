@@ -1,0 +1,1 @@
+[{"doc_comment":"Caller owns returned memory.\nTODO determine if we can remove the allocator requirement","pl":"fn getAppDataDir(allocator: *mem.Allocator, appname: []const u8) GetAppDataDirError![]u8","src":19,"more_decls":null}{"pl":"const GetAppDataDirError = error{\n    OutOfMemory,\n    AppDataDirUnavailable,\n}","src":12,"more_decls":null}]

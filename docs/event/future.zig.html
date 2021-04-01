@@ -1,0 +1,95 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//event/future.zig"><h1>/event/future.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>This is a value that starts out unavailable, until resolve() is called
+While it is unavailable, functions suspend when they try to get() it,
+and then are resumed when resolve() is called.
+At this point the value remains forever available, and another resolve() is not allowed.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L16">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">Future</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L18">src</a><pre><code class="zig"><span class="tok">lock</span><span class="tok tok-symbol">:</span> <span class="tok">Lock</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L19">src</a><pre><code class="zig"><span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L20">src</a><pre><code class="zig"><span class="tok">available</span><span class="tok tok-symbol">:</span> <span class="tok">Available</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L31">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span></code></pre></div><div class="anal-decl"><b>Obtain the value. If it's not available, wait until it becomes
+available.
+Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L42">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">get</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">Async</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">*</span><span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Gets the data without waiting for it. If it's available, a pointer is
+returned. Otherwise, null is returned.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L54">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">getOrNull</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">T</span></code></pre></div><div class="anal-decl"><b>If someone else has started working on the data, wait for them to complete
+and return a pointer to the data. Otherwise, return null, and the caller
+should start working on the data.
+It's not required to call start() before resolve() but it can be useful since
+this method is thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L67">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">start</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">Async</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Make the data become available. May be called only once.
+Before calling this, modify the `data` property.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/future.zig#L82">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">resolve</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">prev</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@atomicRmw</span><span class="tok tok-symbol">(</span><span class="tok">Available</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">available</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Xchg</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Finished</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">SeqCst</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">assert</span><span class="tok tok-symbol">(</span><span class="tok">prev</span> <span class="tok tok-symbol">!=</span> <span class="tok tok-symbol">.</span><span class="tok">Finished</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span> // resolve() called twice
+    <span class="tok">Lock</span><span class="tok tok-symbol">.</span><span class="tok">Held</span><span class="tok tok-symbol">.</span><span class="tok">release</span><span class="tok tok-symbol">(</span><span class="tok">Lock</span><span class="tok tok-symbol">.</span><span class="tok">Held</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">lock</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">lock</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div></html>

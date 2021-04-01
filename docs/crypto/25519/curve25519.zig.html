@@ -1,0 +1,120 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//crypto/25519/curve25519.zig"><h1>/crypto/25519/curve25519.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><b>Group operations over Curve25519.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L10">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Curve25519</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L16">src</a><pre><code class="zig"><span class="tok">x</span><span class="tok tok-symbol">:</span> <span class="tok">Fe</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Decode a Curve25519 point from its compressed (X) coordinates.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L19">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">fromBytes</span><span class="tok tok-symbol">(</span><span class="tok">s</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">Inline</span><span class="tok tok-symbol">)</span> <span class="tok">Curve25519</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">x</span> <span class="tok tok-symbol">=</span> <span class="tok">Fe</span><span class="tok tok-symbol">.</span><span class="tok">fromBytes</span><span class="tok tok-symbol">(</span><span class="tok">s</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Encode a Curve25519 point.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L24">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">toBytes</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">Inline</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">x</span><span class="tok tok-symbol">.</span><span class="tok">toBytes</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Check that the encoding of a Curve25519 point is canonical.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L32">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">rejectNonCanonical</span><span class="tok tok-symbol">(</span><span class="tok">s</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">Fe</span><span class="tok tok-symbol">.</span><span class="tok">rejectNonCanonical</span><span class="tok tok-symbol">(</span><span class="tok">s</span><span class="tok tok-symbol">,</span> <span class="tok tok-null">false</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Reject the neutral element.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L37">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">rejectIdentity</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">x</span><span class="tok tok-symbol">.</span><span class="tok">isZero</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-kw">return</span> <span class="tok tok-kw">error</span><span class="tok tok-symbol">.</span><span class="tok">IdentityElement</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Multiply a point by the cofactor
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L44">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">clearCofactor</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">Edwards25519</span><span class="tok tok-symbol">)</span> <span class="tok">Edwards25519</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">dbl</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">dbl</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">dbl</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Multiply a Curve25519 point by a scalar after &quot;clamping&quot; it.
+Clamping forces the scalar to be a multiple of the cofactor in
+order to prevent small subgroups attacks. This is the standard
+way to use Curve25519 for a DH operation.
+Return error.IdentityElement if the resulting point is
+the identity element.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L89">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">clampedMul</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">,</span> <span class="tok">s</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok">Curve25519</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">t</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">=</span> <span class="tok">s</span><span class="tok tok-symbol">;</span>
+    <span class="tok">scalar</span><span class="tok tok-symbol">.</span><span class="tok">clamp</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok">t</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-kw">try</span> <span class="tok">ladder</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">,</span> <span class="tok">t</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">255</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Multiply a Curve25519 point by a scalar without clamping it.
+Return error.IdentityElement if the resulting point is
+the identity element or error.WeakPublicKey if the public
+key is a low-order point.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L99">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">mul</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">,</span> <span class="tok">s</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok">Curve25519</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">cofactor</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span><span class="tok tok-number">8</span><span class="tok tok-symbol">}</span> <span class="tok tok-symbol">++</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span><span class="tok tok-number">0</span><span class="tok tok-symbol">}</span> <span class="tok tok-symbol">**</span> <span class="tok tok-number">31</span><span class="tok tok-symbol">;</span>
+    <span class="tok">_</span> <span class="tok tok-symbol">=</span> <span class="tok">ladder</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">,</span> <span class="tok">cofactor</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">4</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">catch</span> <span class="tok tok-symbol">|</span><span class="tok">_</span><span class="tok tok-symbol">|</span> <span class="tok tok-kw">return</span> <span class="tok tok-kw">error</span><span class="tok tok-symbol">.</span><span class="tok">WeakPublicKey</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-kw">try</span> <span class="tok">ladder</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">,</span> <span class="tok">s</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">256</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Compute the Curve25519 equivalent to an Edwards25519 point.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L106">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">fromEdwards25519</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">:</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">crypto</span><span class="tok tok-symbol">.</span><span class="tok">ecc</span><span class="tok tok-symbol">.</span><span class="tok">Edwards25519</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok">Curve25519</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">try</span> <span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">clearCofactor</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">rejectIdentity</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">const</span> <span class="tok">one</span> <span class="tok tok-symbol">=</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">crypto</span><span class="tok tok-symbol">.</span><span class="tok">ecc</span><span class="tok tok-symbol">.</span><span class="tok">Edwards25519</span><span class="tok tok-symbol">.</span><span class="tok">Fe</span><span class="tok tok-symbol">.</span><span class="tok">one</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">const</span> <span class="tok">x</span> <span class="tok tok-symbol">=</span> <span class="tok">one</span><span class="tok tok-symbol">.</span><span class="tok">add</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">y</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">mul</span><span class="tok tok-symbol">(</span><span class="tok">one</span><span class="tok tok-symbol">.</span><span class="tok">sub</span><span class="tok tok-symbol">(</span><span class="tok">p</span><span class="tok tok-symbol">.</span><span class="tok">y</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">invert</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span> // xMont=(1+yEd)/(1-yEd)
+    <span class="tok tok-kw">return</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">x</span> <span class="tok tok-symbol">=</span> <span class="tok">x</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><b>The underlying prime field.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L12">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Fe</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;field.zig&quot;</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">Fe</span></code></pre></div><div class="anal-decl"><b>Field arithmetic mod the order of the main subgroup.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L14">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">scalar</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;scalar.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>The Curve25519 base point.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/25519/curve25519.zig#L29">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">basePoint</span> <span class="tok tok-symbol">=</span> <span class="tok">Curve25519</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">x</span> <span class="tok tok-symbol">=</span> <span class="tok">Fe</span><span class="tok tok-symbol">.</span><span class="tok">curve25519BasePoint</span> <span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

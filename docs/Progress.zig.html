@@ -1,0 +1,134 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//Progress.zig"><h1>/Progress.zig</h1></a><h2 style="color: orange;">fields:</h2><div class="more-decls"><div class="anal-decl"><b>`null` if the current node (and its children) should
+not print on update()
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L23">src</a><pre><code class="zig"><span class="tok">terminal</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">fs</span><span class="tok tok-symbol">.</span><span class="tok">File</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><b>Whether the terminal supports ANSI escape codes.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L26">src</a><pre><code class="zig"><span class="tok">supports_ansi_escape_codes</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div><div class="anal-decl"><b>If the terminal is &quot;dumb&quot;, don't print output.
+This can be useful if you don't want to print all
+the stages of code generation if there are a lot.
+You should not use it if the user should see output
+for example showing the user what tests run.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L33">src</a><pre><code class="zig"><span class="tok">dont_print_on_dumb</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L35">src</a><pre><code class="zig"><span class="tok">root</span><span class="tok tok-symbol">:</span> <span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><b>Keeps track of how much time has passed since the beginning.
+Used to compare with `initial_delay_ms` and `refresh_rate_ms`.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L39">src</a><pre><code class="zig"><span class="tok">timer</span><span class="tok tok-symbol">:</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">time</span><span class="tok tok-symbol">.</span><span class="tok">Timer</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><b>When the previous refresh was written to the terminal.
+Used to compare with `refresh_rate_ms`.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L43">src</a><pre><code class="zig"><span class="tok">prev_refresh_timestamp</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><b>This buffer represents the maximum number of bytes written to the terminal
+with each refresh.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L47">src</a><pre><code class="zig"><span class="tok">output_buffer</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">100</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><b>How many nanoseconds between writing updates to the terminal.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L50">src</a><pre><code class="zig"><span class="tok">refresh_rate_ns</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">50</span> <span class="tok tok-symbol">*</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">time</span><span class="tok tok-symbol">.</span><span class="tok">ns_per_ms</span></code></pre></div><div class="anal-decl"><b>How many nanoseconds to keep the output hidden
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L53">src</a><pre><code class="zig"><span class="tok">initial_delay_ns</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">500</span> <span class="tok tok-symbol">*</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">time</span><span class="tok tok-symbol">.</span><span class="tok">ns_per_ms</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L55">src</a><pre><code class="zig"><span class="tok">done</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">true</span></code></pre></div><div class="anal-decl"><b>Protects the `refresh` function, as well as `node.recently_updated_child`.
+Without this, callsites would call `Node.end` and then free `Node` memory
+while it was still being accessed by the `refresh` function.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L60">src</a><pre><code class="zig"><span class="tok">update_lock</span><span class="tok tok-symbol">:</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">Thread</span><span class="tok tok-symbol">.</span><span class="tok">Mutex</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span></code></pre></div></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><b>Represents one unit of progress. Each node can have children nodes, or
+one can use integers with `update`.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L64">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L65">src</a><pre><code class="zig"><span class="tok">context</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Progress</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L66">src</a><pre><code class="zig"><span class="tok">parent</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L67">src</a><pre><code class="zig"><span class="tok">name</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span></code></pre></div><div class="anal-decl"><b>Must be handled atomically to be thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L69">src</a><pre><code class="zig"><span class="tok">recently_updated_child</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><b>Must be handled atomically to be thread-safe. 0 means null.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L71">src</a><pre><code class="zig"><span class="tok">unprotected_estimated_total_items</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><b>Must be handled atomically to be thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L73">src</a><pre><code class="zig"><span class="tok">unprotected_completed_items</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Create a new child progress node. Thread-safe.
+Call `Node.end` when done.
+TODO solve https://github.com/ziglang/zig/issues/2765 and then change this
+API to set `self.parent.recently_updated_child` with the return value.
+Until that is fixed you probably want to call `activate` on the return value.
+Passing 0 for `estimated_total_items` means unknown.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L81">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">start</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">name</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">estimated_total_items</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok">Node</span></code></pre></div><div class="anal-decl"><b>This is the same as calling `start` and then `end` on the returned `Node`. Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L92">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">completeOne</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">activate</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">_</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@atomicRmw</span><span class="tok tok-symbol">(</span><span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">unprotected_completed_items</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Add</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">1</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Monotonic</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">context</span><span class="tok tok-symbol">.</span><span class="tok">maybeRefresh</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Finish a started `Node`. Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L99">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">end</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Tell the parent node that this node is actively being worked on. Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L117">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">activate</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">parent</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span><span class="tok">parent</span><span class="tok tok-symbol">|</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-builtin">@atomicStore</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">&amp;</span><span class="tok">parent</span><span class="tok tok-symbol">.</span><span class="tok">recently_updated_child</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Release</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Thread-safe. 0 means unknown.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L124">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">setEstimatedTotalItems</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">count</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-builtin">@atomicStore</span><span class="tok tok-symbol">(</span><span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">unprotected_estimated_total_items</span><span class="tok tok-symbol">,</span> <span class="tok">count</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Monotonic</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L129">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">setCompletedItems</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">completed_items</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-builtin">@atomicStore</span><span class="tok tok-symbol">(</span><span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">unprotected_completed_items</span><span class="tok tok-symbol">,</span> <span class="tok">completed_items</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">Monotonic</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Create a new progress node.
+Call `Node.end` when done.
+TODO solve https://github.com/ziglang/zig/issues/2765 and then change this
+API to return Progress rather than accept it as a parameter.
+`estimated_total_items` value of 0 means unknown.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L139">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">start</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Progress</span><span class="tok tok-symbol">,</span> <span class="tok">name</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">estimated_total_items</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-symbol">*</span><span class="tok">Node</span></code></pre></div><div class="anal-decl"><b>Updates the terminal if enough time has passed since last update. Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L165">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">maybeRefresh</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Progress</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Updates the terminal and resets `self.next_refresh_timestamp`. Thread-safe.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L178">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">refresh</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Progress</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">held</span> <span class="tok tok-symbol">=</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">update_lock</span><span class="tok tok-symbol">.</span><span class="tok">tryAcquire</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">defer</span> <span class="tok">held</span><span class="tok tok-symbol">.</span><span class="tok">release</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">refreshWithHeldLock</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/Progress.zig#L303">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">log</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Progress</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div><div class="more-decls"></div></html>

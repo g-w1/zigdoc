@@ -1,0 +1,122 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//rand.zig"><h1>/rand.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L37">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Random</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L38">src</a><pre><code class="zig"><span class="tok">fillFn</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">fn</span> <span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok">buf</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Read random bytes into the specified buffer until full.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L41">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">bytes</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok">buf</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">r</span><span class="tok tok-symbol">.</span><span class="tok">fillFn</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">,</span> <span class="tok">buf</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L45">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">boolean</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">r</span><span class="tok tok-symbol">.</span><span class="tok">int</span><span class="tok tok-symbol">(</span><span class="tok tok-type">u1</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!=</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Returns a random int `i` such that `0 &lt;= i &lt;= maxInt(T)`.
+`i` is evenly distributed.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L51">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">int</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Constant-time implementation off `uintLessThan`.
+The results of this function may be biased.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L69">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">uintLessThanBiased</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">less_than</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Returns an evenly distributed random unsigned integer `0 &lt;= i &lt; less_than`.
+This function assumes that the underlying `fillFn` produces evenly distributed values.
+Within this assumption, the runtime of this function is exponentially distributed.
+If `fillFn` were backed by a true random generator,
+the runtime of this function would technically be unbounded.
+However, if `fillFn` is backed by any evenly distributed pseudo random number generator,
+this function is guaranteed to return.
+If you need deterministic runtime bounds, use `uintLessThanBiased`.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L89">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">uintLessThan</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">less_than</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Constant-time implementation off `uintAtMost`.
+The results of this function may be biased.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L129">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">uintAtMostBiased</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_most</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Returns an evenly distributed random unsigned integer `0 &lt;= i &lt;= at_most`.
+See `uintLessThan`, which this function uses in most cases,
+for commentary on the runtime of this function.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L141">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">uintAtMost</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_most</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Constant-time implementation off `intRangeLessThan`.
+The results of this function may be biased.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L152">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">intRangeLessThanBiased</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_least</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">less_than</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Returns an evenly distributed random integer `at_least &lt;= i &lt; less_than`.
+See `uintLessThan`, which this function uses in most cases,
+for commentary on the runtime of this function.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L171">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">intRangeLessThan</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_least</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">less_than</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Constant-time implementation off `intRangeAtMostBiased`.
+The results of this function may be biased.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L189">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">intRangeAtMostBiased</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_least</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">at_most</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Returns an evenly distributed random integer `at_least &lt;= i &lt;= at_most`.
+See `uintLessThan`, which this function uses in most cases,
+for commentary on the runtime of this function.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L208">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">intRangeAtMost</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">at_least</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">at_most</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Return a floating point value evenly distributed in the range [0, 1).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L229">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">float</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Return a floating point value normally distributed with mean = 0, stddev = 1.
+
+To use different parameters, use: floatNorm(...) * desiredStddev + desiredMean.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L250">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">floatNorm</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Return an exponentially distributed float with a rate parameter of 1.
+
+To use a different rate parameter, use: floatExp(...) / desiredRate.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L262">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">floatExp</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Shuffle a slice into a random order.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L272">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">shuffle</span><span class="tok tok-symbol">(</span><span class="tok">r</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Random</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">buf</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L224">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">scalar</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@compileError</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;deprecated; use boolean() or int() instead&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L226">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">range</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@compileError</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;deprecated; use intRangeLessThan()&quot;</span><span class="tok tok-symbol">)</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L492">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">SplitMix64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L493">src</a><pre><code class="zig"><span class="tok">s</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L495">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">seed</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok">SplitMix64</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">SplitMix64</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">s</span> <span class="tok tok-symbol">=</span> <span class="tok">seed</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L499">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">next</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">SplitMix64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">u64</span></code></pre></div></div></details></div></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Convert a random integer 0 &lt;= random_int &lt;= maxValue(T),
+into an integer 0 &lt;= result &lt; less_than.
+This function introduces a minor bias.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L288">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">limitRangeBiased</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span> <span class="tok">random_int</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">less_than</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><b>Fast unbiased random numbers.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L26">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">DefaultPrng</span> <span class="tok tok-symbol">=</span> <span class="tok">Xoroshiro128</span></code></pre></div><div class="anal-decl"><b>Cryptographically secure random numbers.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L29">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">DefaultCsprng</span> <span class="tok tok-symbol">=</span> <span class="tok">Gimli</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L31">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Isaac64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;rand/Isaac64.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L32">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Gimli</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;rand/Gimli.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L33">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Pcg</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;rand/Pcg.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L34">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Xoroshiro128</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;rand/Xoroshiro128.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/rand.zig#L35">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Sfc64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@import</span><span class="tok tok-symbol">(</span><span class="tok tok-str">&quot;rand/Sfc64.zig&quot;</span><span class="tok tok-symbol">)</span></code></pre></div></div></html>

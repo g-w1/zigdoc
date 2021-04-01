@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic arc-cosine of x.\n\nSpecial cases:\n- acosh(x)   = snan if x < 1\n- acosh(nan) = nan","pl":"fn acosh(x: anytype) @TypeOf(x)","src":21,"more_decls":null}]

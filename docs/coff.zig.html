@@ -1,0 +1,104 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//coff.zig"><h1>/coff.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L21">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">MachineType</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">enum</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L22">src</a><pre><code class="zig"><span class="tok">Unknown</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0</span></code></pre></div><div class="anal-decl"><b>Matsushita AM33
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L24">src</a><pre><code class="zig"><span class="tok">AM33</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1d3</span></code></pre></div><div class="anal-decl"><b>x64
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L26">src</a><pre><code class="zig"><span class="tok">X64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x8664</span></code></pre></div><div class="anal-decl"><b>ARM little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L28">src</a><pre><code class="zig"><span class="tok">ARM</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1c0</span></code></pre></div><div class="anal-decl"><b>ARM64 little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L30">src</a><pre><code class="zig"><span class="tok">ARM64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xaa64</span></code></pre></div><div class="anal-decl"><b>ARM Thumb-2 little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L32">src</a><pre><code class="zig"><span class="tok">ARMNT</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1c4</span></code></pre></div><div class="anal-decl"><b>EFI byte code
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L34">src</a><pre><code class="zig"><span class="tok">EBC</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xebc</span></code></pre></div><div class="anal-decl"><b>Intel 386 or later processors and compatible processors
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L36">src</a><pre><code class="zig"><span class="tok">I386</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x14c</span></code></pre></div><div class="anal-decl"><b>Intel Itanium processor family
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L38">src</a><pre><code class="zig"><span class="tok">IA64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x200</span></code></pre></div><div class="anal-decl"><b>Mitsubishi M32R little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L40">src</a><pre><code class="zig"><span class="tok">M32R</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9041</span></code></pre></div><div class="anal-decl"><b>MIPS16
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L42">src</a><pre><code class="zig"><span class="tok">MIPS16</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x266</span></code></pre></div><div class="anal-decl"><b>MIPS with FPU
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L44">src</a><pre><code class="zig"><span class="tok">MIPSFPU</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x366</span></code></pre></div><div class="anal-decl"><b>MIPS16 with FPU
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L46">src</a><pre><code class="zig"><span class="tok">MIPSFPU16</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x466</span></code></pre></div><div class="anal-decl"><b>Power PC little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L48">src</a><pre><code class="zig"><span class="tok">POWERPC</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1f0</span></code></pre></div><div class="anal-decl"><b>Power PC with floating point support
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L50">src</a><pre><code class="zig"><span class="tok">POWERPCFP</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1f1</span></code></pre></div><div class="anal-decl"><b>MIPS little endian
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L52">src</a><pre><code class="zig"><span class="tok">R4000</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x166</span></code></pre></div><div class="anal-decl"><b>RISC-V 32-bit address space
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L54">src</a><pre><code class="zig"><span class="tok">RISCV32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x5032</span></code></pre></div><div class="anal-decl"><b>RISC-V 64-bit address space
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L56">src</a><pre><code class="zig"><span class="tok">RISCV64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x5064</span></code></pre></div><div class="anal-decl"><b>RISC-V 128-bit address space
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L58">src</a><pre><code class="zig"><span class="tok">RISCV128</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x5128</span></code></pre></div><div class="anal-decl"><b>Hitachi SH3
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L60">src</a><pre><code class="zig"><span class="tok">SH3</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1a2</span></code></pre></div><div class="anal-decl"><b>Hitachi SH3 DSP
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L62">src</a><pre><code class="zig"><span class="tok">SH3DSP</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1a3</span></code></pre></div><div class="anal-decl"><b>Hitachi SH4
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L64">src</a><pre><code class="zig"><span class="tok">SH4</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1a6</span></code></pre></div><div class="anal-decl"><b>Hitachi SH5
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L66">src</a><pre><code class="zig"><span class="tok">SH5</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1a8</span></code></pre></div><div class="anal-decl"><b>Thumb
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L68">src</a><pre><code class="zig"><span class="tok">Thumb</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1c2</span></code></pre></div><div class="anal-decl"><b>MIPS little-endian WCE v2
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L70">src</a><pre><code class="zig"><span class="tok">WCEMIPSV2</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x169</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L104">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Coff</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L105">src</a><pre><code class="zig"><span class="tok">in_file</span><span class="tok tok-symbol">:</span> <span class="tok">File</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L106">src</a><pre><code class="zig"><span class="tok">allocator</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">mem</span><span class="tok tok-symbol">.</span><span class="tok">Allocator</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L108">src</a><pre><code class="zig"><span class="tok">coff_header</span><span class="tok tok-symbol">:</span> <span class="tok">CoffHeader</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L109">src</a><pre><code class="zig"><span class="tok">pe_header</span><span class="tok tok-symbol">:</span> <span class="tok">OptionalHeader</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L110">src</a><pre><code class="zig"><span class="tok">sections</span><span class="tok tok-symbol">:</span> <span class="tok">ArrayList</span><span class="tok tok-symbol">(</span><span class="tok">Section</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L112">src</a><pre><code class="zig"><span class="tok">guid</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">16</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L113">src</a><pre><code class="zig"><span class="tok">age</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L115">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">allocator</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">mem</span><span class="tok tok-symbol">.</span><span class="tok">Allocator</span><span class="tok tok-symbol">,</span> <span class="tok">in_file</span><span class="tok tok-symbol">:</span> <span class="tok">File</span><span class="tok tok-symbol">)</span> <span class="tok">Coff</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L127">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">loadHeader</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Coff</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L192">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">getPdbPath</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Coff</span><span class="tok tok-symbol">,</span> <span class="tok">buffer</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L253">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">loadSections</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Coff</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L283">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">getSection</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Coff</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">name</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Section</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L324">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Section</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L325">src</a><pre><code class="zig"><span class="tok">header</span><span class="tok tok-symbol">:</span> <span class="tok">SectionHeader</span></code></pre></div></div></details></div></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L79">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_FILE_RELOCS_STRIPPED</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L80">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_FILE_DEBUG_STRIPPED</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x200</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L81">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_FILE_EXECUTABLE_IMAGE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L82">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_FILE_32BIT_MACHINE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x100</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L83">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_FILE_LARGE_ADDRESS_AWARE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x20</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L86">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_SCN_CNT_INITIALIZED_DATA</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x40</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L87">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_SCN_MEM_READ</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x40000000</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L88">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_SCN_CNT_CODE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x20</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L89">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_SCN_MEM_EXECUTE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x20000000</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L90">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">IMAGE_SCN_MEM_WRITE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x80000000</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/coff.zig#L96">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">CoffError</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">error</span><span class="tok tok-symbol">{</span>
+    <span class="tok">InvalidPEMagic</span><span class="tok tok-symbol">,</span>
+    <span class="tok">InvalidPEHeader</span><span class="tok tok-symbol">,</span>
+    <span class="tok">InvalidMachine</span><span class="tok tok-symbol">,</span>
+    <span class="tok">MissingCoffSection</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></html>

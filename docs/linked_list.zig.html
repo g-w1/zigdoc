@@ -1,0 +1,180 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//linked_list.zig"><h1>/linked_list.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>A singly-linked list is headed by a single forward pointer. The elements
+are singly linked for minimum space and pointer manipulation overhead at
+the expense of O(n) removal for arbitrary elements. New elements can be
+added to the list after an existing element or at the head of the list.
+A singly-linked list may only be traversed in the forward direction.
+Singly-linked lists are ideal for applications with large datasets and
+few or no removals or for implementing a LIFO queue.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L20">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">SinglyLinkedList</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L73">src</a><pre><code class="zig"><span class="tok">first</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><b>Node inside the linked list wrapping the actual data.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L25">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L26">src</a><pre><code class="zig"><span class="tok">next</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L27">src</a><pre><code class="zig"><span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok">T</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Insert a new node after the current one.
+
+Arguments:
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L35">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">insertAfter</span><span class="tok tok-symbol">(</span><span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">new_node</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-symbol">=</span> <span class="tok">node</span><span class="tok tok-symbol">.</span><span class="tok">next</span><span class="tok tok-symbol">;</span>
+    <span class="tok">node</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-symbol">=</span> <span class="tok">new_node</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove a node from the list.
+
+Arguments:
+node: Pointer to the node to be removed.
+Returns:
+node removed
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L46">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeNext</span><span class="tok tok-symbol">(</span><span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">next_node</span> <span class="tok tok-symbol">=</span> <span class="tok">node</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok">node</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-symbol">=</span> <span class="tok">next_node</span><span class="tok tok-symbol">.</span><span class="tok">next</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">next_node</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Iterate over the singly-linked list from this node, until the final node is found.
+This operation is O(N).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L54">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">findLast</span><span class="tok tok-symbol">(</span><span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">it</span> <span class="tok tok-symbol">=</span> <span class="tok">node</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">while</span> <span class="tok tok-symbol">(</span><span class="tok tok-null">true</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">it</span> <span class="tok tok-symbol">=</span> <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok">it</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Iterate over each next node, returning the count of all nodes except the starting one.
+This operation is O(N).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L63">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">countChildren</span><span class="tok tok-symbol">(</span><span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">usize</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L29">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Data</span> <span class="tok tok-symbol">=</span> <span class="tok">T</span></code></pre></div></div></details></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Insert a new node at the head.
+
+Arguments:
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L79">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">prepend</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">new_node</span><span class="tok tok-symbol">.</span><span class="tok">next</span> <span class="tok tok-symbol">=</span> <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">first</span><span class="tok tok-symbol">;</span>
+    <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">first</span> <span class="tok tok-symbol">=</span> <span class="tok">new_node</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove a node from the list.
+
+Arguments:
+node: Pointer to the node to be removed.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L88">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">remove</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Remove and return the first node in the list.
+
+Returns:
+A pointer to the first node in the list.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L104">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">popFirst</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">first</span> <span class="tok tok-symbol">=</span> <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">first</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">first</span> <span class="tok tok-symbol">=</span> <span class="tok">first</span><span class="tok tok-symbol">.</span><span class="tok">next</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">first</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Iterate over all nodes, returning the count.
+This operation is O(N).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L112">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">len</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">usize</span></code></pre></div></div></details></div><div class="anal-decl"><b>A tail queue is headed by a pair of pointers, one to the head of the
+list and the other to the tail of the list. The elements are doubly
+linked so that an arbitrary element can be removed without a need to
+traverse the list. New elements can be added to the list before or
+after an existing element, at the head of the list, or at the end of
+the list. A tail queue may be traversed in either direction.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L167">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">TailQueue</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L178">src</a><pre><code class="zig"><span class="tok">first</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L179">src</a><pre><code class="zig"><span class="tok">last</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L180">src</a><pre><code class="zig"><span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><b>Node inside the linked list wrapping the actual data.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L172">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L173">src</a><pre><code class="zig"><span class="tok">prev</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L174">src</a><pre><code class="zig"><span class="tok">next</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L175">src</a><pre><code class="zig"><span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok">T</span></code></pre></div></div></details></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Insert a new node after an existing one.
+
+Arguments:
+node: Pointer to a node in the list.
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L187">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">insertAfter</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Insert a new node before an existing one.
+
+Arguments:
+node: Pointer to a node in the list.
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L208">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">insertBefore</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Concatenate list2 onto the end of list1, removing all entries from the former.
+
+Arguments:
+list1: the list to concatenate onto
+list2: the list to be concatenated
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L229">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">concatByMoving</span><span class="tok tok-symbol">(</span><span class="tok">list1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">list2</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Insert a new node at the end of the list.
+
+Arguments:
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L250">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">append</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Insert a new node at the beginning of the list.
+
+Arguments:
+new_node: Pointer to the new node to insert.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L264">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">prepend</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">new_node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Remove a node from the list.
+
+Arguments:
+node: Pointer to the node to be removed.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L283">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">remove</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">node</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Node</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Remove and return the last node in the list.
+
+Returns:
+A pointer to the last node in the list.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L308">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">pop</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">last</span> <span class="tok tok-symbol">=</span> <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">last</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">remove</span><span class="tok tok-symbol">(</span><span class="tok">last</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">last</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove and return the first node in the list.
+
+Returns:
+A pointer to the first node in the list.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/linked_list.zig#L318">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">popFirst</span><span class="tok tok-symbol">(</span><span class="tok">list</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">Node</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">first</span> <span class="tok tok-symbol">=</span> <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">first</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok">list</span><span class="tok tok-symbol">.</span><span class="tok">remove</span><span class="tok tok-symbol">(</span><span class="tok">first</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">first</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div></html>

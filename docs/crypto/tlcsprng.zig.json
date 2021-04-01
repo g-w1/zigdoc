@@ -1,0 +1,1 @@
+[{"doc_comment":"We use this as a layer of indirection because global const pointers cannot\npoint to thread-local variables.","pl":"var interface = std.rand.Random{ .fillFn = tlsCsprngFill }","src":17,"more_decls":null}]

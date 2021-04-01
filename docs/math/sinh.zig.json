@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic sine of x.\n\nSpecial Cases:\n- sinh(+-0)   = +-0\n- sinh(+-inf) = +-inf\n- sinh(nan)   = nan","pl":"fn sinh(x: anytype) @TypeOf(x)","src":24,"more_decls":null}]

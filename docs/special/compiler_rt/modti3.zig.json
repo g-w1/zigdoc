@@ -1,0 +1,1 @@
+[{"pl":"fn __modti3(a: i128, b: i128) callconv(.C) i128","src":13,"more_decls":null}{"pl":"pub fn __modti3_windows_x86_64(a: v128, b: v128) callconv(.C) v128 {\n    return @bitCast(v128, @call(.{ .modifier = .always_inline }, __modti3, .{\n        @bitCast(i128, a),\n        @bitCast(i128, b),\n    }));\n}","src":28,"more_decls":null}]

@@ -1,0 +1,80 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//special/compiler_rt/divti3.zig"><h1>/special/compiler_rt/divti3.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/special/compiler_rt/divti3.zig#L9">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">__divti3</span><span class="tok tok-symbol">(</span><span class="tok">a</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">i128</span><span class="tok tok-symbol">,</span> <span class="tok">b</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">i128</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">C</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">i128</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/special/compiler_rt/divti3.zig#L24">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">__divti3_windows_x86_64</span><span class="tok tok-symbol">(</span><span class="tok">a</span><span class="tok tok-symbol">:</span> <span class="tok">v128</span><span class="tok tok-symbol">,</span> <span class="tok">b</span><span class="tok tok-symbol">:</span> <span class="tok">v128</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">C</span><span class="tok tok-symbol">)</span> <span class="tok">v128</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-builtin">@bitCast</span><span class="tok tok-symbol">(</span><span class="tok">v128</span><span class="tok tok-symbol">,</span> <span class="tok tok-builtin">@call</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">modifier</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok">always_inline</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span> <span class="tok">__divti3</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-builtin">@bitCast</span><span class="tok tok-symbol">(</span><span class="tok tok-type">i128</span><span class="tok tok-symbol">,</span> <span class="tok">a</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-builtin">@bitCast</span><span class="tok tok-symbol">(</span><span class="tok tok-type">i128</span><span class="tok tok-symbol">,</span> <span class="tok">b</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div><div class="more-decls"></div></html>

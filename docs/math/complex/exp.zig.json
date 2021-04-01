@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns e raised to the power of z (e^z).","pl":"fn exp(z: anytype) @TypeOf(z)","src":21,"more_decls":null}]

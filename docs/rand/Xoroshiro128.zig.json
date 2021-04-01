@@ -1,0 +1,1 @@
+[{"pl":"random: Random","src":15,"more_decls":null}{"pl":"s: [2]u64","src":17,"more_decls":null}{"pl":"fn init(init_s: u64) Xoroshiro128","src":19,"more_decls":null}{"pl":"fn seed(self: *Xoroshiro128, init_s: u64) void","src":66,"more_decls":null}]

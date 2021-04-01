@@ -1,0 +1,1 @@
+[{"pl":"pub fn panic(msg: []const u8, error_return_trace: ?*builtin.StackTrace) noreturn {\n    @setCold(true);\n    if (@hasDecl(std.os, \"abort\"))\n        std.os.abort();\n    while (true) {}\n}","src":28,"more_decls":null}]

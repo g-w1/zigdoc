@@ -1,0 +1,119 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//target/msp430.zig"><h1>/target/msp430.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L10">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Feature</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">enum</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L11">src</a><pre><code class="zig"><span class="tok">ext</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L12">src</a><pre><code class="zig"><span class="tok">hwmult16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L13">src</a><pre><code class="zig"><span class="tok">hwmult32</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L14">src</a><pre><code class="zig"><span class="tok">hwmultf5</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L51">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">cpu</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L52">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">generic</span> <span class="tok tok-symbol">=</span> <span class="tok">CpuModel</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;generic&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;generic&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">features</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L57">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">msp430</span> <span class="tok tok-symbol">=</span> <span class="tok">CpuModel</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;msp430&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;msp430&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">features</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L62">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">msp430x</span> <span class="tok tok-symbol">=</span> <span class="tok">CpuModel</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;msp430x&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;msp430x&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">features</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span>
+            <span class="tok tok-symbol">.</span><span class="tok">ext</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/target/msp430.zig#L19">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">all_features</span> <span class="tok tok-symbol">=</span> <span class="tok">blk</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">const</span> <span class="tok">len</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@typeInfo</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">Enum</span><span class="tok tok-symbol">.</span><span class="tok">fields</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">;</span>
+    <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">debug</span><span class="tok tok-symbol">.</span><span class="tok">assert</span><span class="tok tok-symbol">(</span><span class="tok">len</span> <span class="tok tok-symbol">&lt;=</span> <span class="tok">CpuFeature</span><span class="tok tok-symbol">.</span><span class="tok">Set</span><span class="tok tok-symbol">.</span><span class="tok">needed_bit_count</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">var</span> <span class="tok">result</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok">CpuFeature</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span><span class="tok tok-symbol">;</span>
+    <span class="tok">result</span><span class="tok tok-symbol">[</span><span class="tok tok-builtin">@enumToInt</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">.</span><span class="tok">ext</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">]</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;ext&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">description</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;Enable MSP430-X extensions&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">dependencies</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+    <span class="tok">result</span><span class="tok tok-symbol">[</span><span class="tok tok-builtin">@enumToInt</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">.</span><span class="tok">hwmult16</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">]</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;hwmult16&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">description</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;Enable 16-bit hardware multiplier&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">dependencies</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+    <span class="tok">result</span><span class="tok tok-symbol">[</span><span class="tok tok-builtin">@enumToInt</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">.</span><span class="tok">hwmult32</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">]</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;hwmult32&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">description</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;Enable 32-bit hardware multiplier&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">dependencies</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+    <span class="tok">result</span><span class="tok tok-symbol">[</span><span class="tok tok-builtin">@enumToInt</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">.</span><span class="tok">hwmultf5</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">]</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">llvm_name</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;hwmultf5&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">description</span> <span class="tok tok-symbol">=</span> <span class="tok tok-str">&quot;Enable F5 series hardware multiplier&quot;</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">dependencies</span> <span class="tok tok-symbol">=</span> <span class="tok">featureSet</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok">Feature</span><span class="tok tok-symbol">{</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">const</span> <span class="tok">ti</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@typeInfo</span><span class="tok tok-symbol">(</span><span class="tok">Feature</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">for</span> <span class="tok tok-symbol">(</span><span class="tok">result</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span><span class="tok tok-symbol">*</span><span class="tok">elem</span><span class="tok tok-symbol">,</span> <span class="tok">i</span><span class="tok tok-symbol">|</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">elem</span><span class="tok tok-symbol">.</span><span class="tok">index</span> <span class="tok tok-symbol">=</span> <span class="tok">i</span><span class="tok tok-symbol">;</span>
+        <span class="tok">elem</span><span class="tok tok-symbol">.</span><span class="tok">name</span> <span class="tok tok-symbol">=</span> <span class="tok">ti</span><span class="tok tok-symbol">.</span><span class="tok">Enum</span><span class="tok tok-symbol">.</span><span class="tok">fields</span><span class="tok tok-symbol">[</span><span class="tok">i</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">.</span><span class="tok">name</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span>
+    <span class="tok tok-kw">break</span> <span class="tok tok-symbol">:</span><span class="tok">blk</span> <span class="tok">result</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></html>

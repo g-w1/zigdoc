@@ -1,0 +1,1 @@
+[{"pl":"const Fnv1a_32 = Fnv1a(u32, 0x01000193, 0x811c9dc5)","src":14,"more_decls":null}{"pl":"const Fnv1a_64 = Fnv1a(u64, 0x100000001b3, 0xcbf29ce484222325)","src":15,"more_decls":null}{"pl":"const Fnv1a_128 = Fnv1a(u128, 0x1000000000000000000013b, 0x6c62272e07bb014262b821756295c58d)","src":16,"more_decls":null}]

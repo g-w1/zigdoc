@@ -1,0 +1,1 @@
+[{"pl":"fn fixuint(comptime fp_t: type, comptime fixuint_t: type, a: fp_t) fixuint_t","src":8,"more_decls":null}]

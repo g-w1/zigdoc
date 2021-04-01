@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns e raised to the power of x (e^x).\n\nSpecial Cases:\n- exp(+inf) = +inf\n- exp(nan)  = nan","pl":"fn exp(x: anytype) @TypeOf(x)","src":20,"more_decls":null}]

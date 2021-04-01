@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the cosine of the radian value x.\n\nSpecial Cases:\n- cos(+-inf) = nan\n- cos(nan)   = nan","pl":"fn cos(x: anytype) @TypeOf(x)","src":20,"more_decls":null}]

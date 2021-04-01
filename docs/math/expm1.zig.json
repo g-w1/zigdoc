@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns e raised to the power of x, minus 1 (e^x - 1). This is more accurate than exp(e, x) - 1\nwhen x is near 0.\n\nSpecial Cases:\n- expm1(+inf) = +inf\n- expm1(-inf) = -1\n- expm1(nan)  = nan","pl":"fn expm1(x: anytype) @TypeOf(x)","src":25,"more_decls":null}]

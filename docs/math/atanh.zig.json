@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic arc-tangent of x.\n\nSpecial Cases:\n- atanh(+-1) = +-inf with signal\n- atanh(x)   = nan if |x| > 1 with signal\n- atanh(nan) = nan","pl":"fn atanh(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

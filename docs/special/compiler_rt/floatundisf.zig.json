@@ -1,0 +1,1 @@
+[{"pl":"fn __floatundisf(arg: u64) callconv(.C) f32","src":11,"more_decls":null}{"pl":"pub fn __aeabi_ul2f(arg: u64) callconv(.AAPCS) f32 {\n    @setRuntimeSafety(false);\n    return @call(.{ .modifier = .always_inline }, __floatundisf, .{arg});\n}","src":63,"more_decls":null}]

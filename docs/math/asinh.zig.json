@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic arc-sin of x.\n\nSpecial Cases:\n- asinh(+-0)   = +-0\n- asinh(+-inf) = +-inf\n- asinh(nan)   = nan","pl":"fn asinh(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

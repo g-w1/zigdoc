@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic sine of z.","pl":"fn sinh(z: anytype) @TypeOf(z)","src":21,"more_decls":null}]

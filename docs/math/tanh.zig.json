@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic tangent of x.\n\nSpecial Cases:\n- sinh(+-0)   = +-0\n- sinh(+-inf) = +-1\n- sinh(nan)   = nan","pl":"fn tanh(x: anytype) @TypeOf(x)","src":24,"more_decls":null}]

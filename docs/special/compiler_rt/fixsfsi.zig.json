@@ -1,0 +1,1 @@
+[{"pl":"pub fn __fixsfsi(a: f32) callconv(.C) i32 {\n    @setRuntimeSafety(builtin.is_test);\n    return fixint(f32, i32, a);\n}","src":8,"more_decls":null}{"pl":"pub fn __aeabi_f2iz(a: f32) callconv(.AAPCS) i32 {\n    @setRuntimeSafety(false);\n    return @call(.{ .modifier = .always_inline }, __fixsfsi, .{a});\n}","src":13,"more_decls":null}]

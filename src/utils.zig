@@ -41,7 +41,7 @@ pub fn collectDocComments(
         }
     }
 
-    return try std.mem.join(allocator, "\n", lines.items);
+    return std.mem.join(allocator, "\n", lines.items);
 }
 
 pub fn getDocCommentTokenIndex(tree: ast.Tree, node: ast.Node.Index) ?ast.TokenIndex {

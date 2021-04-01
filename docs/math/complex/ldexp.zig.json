@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns exp(z) scaled to avoid overflow.","pl":"fn ldexp_cexp(z: anytype, expt: i32) @TypeOf(z)","src":18,"more_decls":null}]

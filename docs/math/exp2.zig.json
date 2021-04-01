@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns 2 raised to the power of x (2^x).\n\nSpecial Cases:\n- exp2(+inf) = +inf\n- exp2(nan)  = nan","pl":"fn exp2(x: anytype) @TypeOf(x)","src":20,"more_decls":null}]

@@ -1,0 +1,86 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//crypto/ghash.zig"><h1>/crypto/ghash.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><b>GHASH is a universal hash function that features multiplication
+by a fixed parameter within a Galois field.
+
+It is not a general purpose hash function - The key must be secret, unpredictable and never reused.
+
+GHASH is typically used to compute the authentication tag in the AES-GCM construction.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L21">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Ghash</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L26">src</a><pre><code class="zig"><span class="tok">y0</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L27">src</a><pre><code class="zig"><span class="tok">y1</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L28">src</a><pre><code class="zig"><span class="tok">h0</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L29">src</a><pre><code class="zig"><span class="tok">h1</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L30">src</a><pre><code class="zig"><span class="tok">h2</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L31">src</a><pre><code class="zig"><span class="tok">h0r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L32">src</a><pre><code class="zig"><span class="tok">h1r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L33">src</a><pre><code class="zig"><span class="tok">h2r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L35">src</a><pre><code class="zig"><span class="tok">hh0</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L36">src</a><pre><code class="zig"><span class="tok">hh1</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L37">src</a><pre><code class="zig"><span class="tok">hh2</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L38">src</a><pre><code class="zig"><span class="tok">hh0r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L39">src</a><pre><code class="zig"><span class="tok">hh1r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L40">src</a><pre><code class="zig"><span class="tok">hh2r</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L42">src</a><pre><code class="zig"><span class="tok">leftover</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L43">src</a><pre><code class="zig"><span class="tok">buf</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">block_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L45">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">key</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok tok-symbol">[</span><span class="tok">key_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Ghash</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L261">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">update</span><span class="tok tok-symbol">(</span><span class="tok">st</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Ghash</span><span class="tok tok-symbol">,</span> <span class="tok">m</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Zero-pad to align the next input to the first byte of a block
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L292">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">pad</span><span class="tok tok-symbol">(</span><span class="tok">st</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Ghash</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L304">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">final</span><span class="tok tok-symbol">(</span><span class="tok">st</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Ghash</span><span class="tok tok-symbol">,</span> <span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok">mac_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L312">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">create</span><span class="tok tok-symbol">(</span><span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok">mac_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">msg</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">key</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok tok-symbol">[</span><span class="tok">key_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">st</span> <span class="tok tok-symbol">=</span> <span class="tok">Ghash</span><span class="tok tok-symbol">.</span><span class="tok">init</span><span class="tok tok-symbol">(</span><span class="tok">key</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">st</span><span class="tok tok-symbol">.</span><span class="tok">update</span><span class="tok tok-symbol">(</span><span class="tok">msg</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">st</span><span class="tok tok-symbol">.</span><span class="tok">final</span><span class="tok tok-symbol">(</span><span class="tok">out</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L22">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">block_length</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L23">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">mac_length</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/ghash.zig#L24">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">key_length</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">16</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

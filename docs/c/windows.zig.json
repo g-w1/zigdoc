@@ -1,0 +1,1 @@
+[{"pl":"extern \"c\" fn _errno() *c_int","src":5,"more_decls":null}{"pl":"extern \"c\" fn _msize(memblock: ?*c_void) usize","src":7,"more_decls":null}]

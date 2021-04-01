@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns whether x is negative or negative 0.","pl":"fn signbit(x: anytype) bool","src":10,"more_decls":null}]

@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns z raised to the complex power of c.","pl":"pub fn pow(comptime T: type, z: T, c: T) T {\n    const p = cmath.log(z);\n    const q = c.mul(p);\n    return cmath.exp(q);\n}","src":12,"more_decls":null}]

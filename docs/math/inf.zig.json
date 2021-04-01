@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns value inf for the type T.","pl":"fn inf(comptime T: type) T","src":9,"more_decls":null}]

@@ -1,0 +1,1 @@
+[{"pl":"fn __mulodi4(a: i64, b: i64, overflow: *c_int) callconv(.C) i64","src":10,"more_decls":null}]

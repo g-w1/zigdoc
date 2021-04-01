@@ -1,0 +1,85 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//crypto/blake3.zig"><h1>/crypto/blake3.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><b>An incremental hasher that can accept any number of writes.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L362">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Blake3</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L366">src</a><pre><code class="zig"><span class="tok">chunk_state</span><span class="tok tok-symbol">:</span> <span class="tok">ChunkState</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L367">src</a><pre><code class="zig"><span class="tok">key</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">8</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L368">src</a><pre><code class="zig"><span class="tok">cv_stack</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">54</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">[</span><span class="tok tok-number">8</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">undefined</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L369">src</a><pre><code class="zig"><span class="tok">cv_stack_len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u8</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L370">src</a><pre><code class="zig"><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u8</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L363">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Options</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L363">src</a><pre><code class="zig"><span class="tok">key</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">[</span><span class="tok">digest_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">null</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L364">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">KdfOptions</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Construct a new `Blake3` for the hash function, with an optional key
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L385">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok">Options</span><span class="tok tok-symbol">)</span> <span class="tok">Blake3</span></code></pre></div><div class="anal-decl"><b>Construct a new `Blake3` for the key derivation function. The context
+string should be hardcoded, globally unique, and application-specific.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L396">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">initKdf</span><span class="tok tok-symbol">(</span><span class="tok">context</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok">KdfOptions</span><span class="tok tok-symbol">)</span> <span class="tok">Blake3</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L405">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">hash</span><span class="tok tok-symbol">(</span><span class="tok">in</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok">Options</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">hasher</span> <span class="tok tok-symbol">=</span> <span class="tok">Blake3</span><span class="tok tok-symbol">.</span><span class="tok">init</span><span class="tok tok-symbol">(</span><span class="tok">options</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">hasher</span><span class="tok tok-symbol">.</span><span class="tok">update</span><span class="tok tok-symbol">(</span><span class="tok">in</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">hasher</span><span class="tok tok-symbol">.</span><span class="tok">final</span><span class="tok tok-symbol">(</span><span class="tok">out</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Add input to the hash state. This can be called any number of times.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L440">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">update</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Blake3</span><span class="tok tok-symbol">,</span> <span class="tok">input_slice</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Finalize the hash and write any number of output bytes.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L461">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">final</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok">Blake3</span><span class="tok tok-symbol">,</span> <span class="tok">out_slice</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L372">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">block_length</span> <span class="tok tok-symbol">=</span> <span class="tok">BLOCK_LEN</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L373">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">digest_length</span> <span class="tok tok-symbol">=</span> <span class="tok">OUT_LEN</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/blake3.zig#L374">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">key_length</span> <span class="tok tok-symbol">=</span> <span class="tok">KEY_LEN</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

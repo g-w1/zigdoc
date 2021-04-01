@@ -1,0 +1,116 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//os/uefi/status.zig"><h1>/os/uefi/status.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L8">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Status</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">enum</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><b>The operation completed successfully.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L10">src</a><pre><code class="zig"><span class="tok">Success</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><b>The image failed to load.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L13">src</a><pre><code class="zig"><span class="tok">LoadError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">1</span></code></pre></div><div class="anal-decl"><b>A parameter was incorrect.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L16">src</a><pre><code class="zig"><span class="tok">InvalidParameter</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">2</span></code></pre></div><div class="anal-decl"><b>The operation is not supported.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L19">src</a><pre><code class="zig"><span class="tok">Unsupported</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">3</span></code></pre></div><div class="anal-decl"><b>The buffer was not the proper size for the request.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L22">src</a><pre><code class="zig"><span class="tok">BadBufferSize</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">4</span></code></pre></div><div class="anal-decl"><b>The buffer is not large enough to hold the requested data. The required buffer size is returned in the appropriate parameter when this error occurs.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L25">src</a><pre><code class="zig"><span class="tok">BufferTooSmall</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">5</span></code></pre></div><div class="anal-decl"><b>There is no data pending upon return.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L28">src</a><pre><code class="zig"><span class="tok">NotReady</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">6</span></code></pre></div><div class="anal-decl"><b>The physical device reported an error while attempting the operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L31">src</a><pre><code class="zig"><span class="tok">DeviceError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">7</span></code></pre></div><div class="anal-decl"><b>The device cannot be written to.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L34">src</a><pre><code class="zig"><span class="tok">WriteProtected</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">8</span></code></pre></div><div class="anal-decl"><b>A resource has run out.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L37">src</a><pre><code class="zig"><span class="tok">OutOfResources</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">9</span></code></pre></div><div class="anal-decl"><b>An inconstancy was detected on the file system causing the operating to fail.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L40">src</a><pre><code class="zig"><span class="tok">VolumeCorrupted</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">10</span></code></pre></div><div class="anal-decl"><b>There is no more space on the file system.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L43">src</a><pre><code class="zig"><span class="tok">VolumeFull</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">11</span></code></pre></div><div class="anal-decl"><b>The device does not contain any medium to perform the operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L46">src</a><pre><code class="zig"><span class="tok">NoMedia</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">12</span></code></pre></div><div class="anal-decl"><b>The medium in the device has changed since the last access.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L49">src</a><pre><code class="zig"><span class="tok">MediaChanged</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">13</span></code></pre></div><div class="anal-decl"><b>The item was not found.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L52">src</a><pre><code class="zig"><span class="tok">NotFound</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">14</span></code></pre></div><div class="anal-decl"><b>Access was denied.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L55">src</a><pre><code class="zig"><span class="tok">AccessDenied</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">15</span></code></pre></div><div class="anal-decl"><b>The server was not found or did not respond to the request.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L58">src</a><pre><code class="zig"><span class="tok">NoResponse</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><b>A mapping to a device does not exist.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L61">src</a><pre><code class="zig"><span class="tok">NoMapping</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">17</span></code></pre></div><div class="anal-decl"><b>The timeout time expired.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L64">src</a><pre><code class="zig"><span class="tok">Timeout</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">18</span></code></pre></div><div class="anal-decl"><b>The protocol has not been started.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L67">src</a><pre><code class="zig"><span class="tok">NotStarted</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">19</span></code></pre></div><div class="anal-decl"><b>The protocol has already been started.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L70">src</a><pre><code class="zig"><span class="tok">AlreadyStarted</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">20</span></code></pre></div><div class="anal-decl"><b>The operation was aborted.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L73">src</a><pre><code class="zig"><span class="tok">Aborted</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">21</span></code></pre></div><div class="anal-decl"><b>An ICMP error occurred during the network operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L76">src</a><pre><code class="zig"><span class="tok">IcmpError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">22</span></code></pre></div><div class="anal-decl"><b>A TFTP error occurred during the network operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L79">src</a><pre><code class="zig"><span class="tok">TftpError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">23</span></code></pre></div><div class="anal-decl"><b>A protocol error occurred during the network operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L82">src</a><pre><code class="zig"><span class="tok">ProtocolError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">24</span></code></pre></div><div class="anal-decl"><b>The function encountered an internal version that was incompatible with a version requested by the caller.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L85">src</a><pre><code class="zig"><span class="tok">IncompatibleVersion</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">25</span></code></pre></div><div class="anal-decl"><b>The function was not performed due to a security violation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L88">src</a><pre><code class="zig"><span class="tok">SecurityViolation</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">26</span></code></pre></div><div class="anal-decl"><b>A CRC error was detected.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L91">src</a><pre><code class="zig"><span class="tok">CrcError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">27</span></code></pre></div><div class="anal-decl"><b>Beginning or end of media was reached
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L94">src</a><pre><code class="zig"><span class="tok">EndOfMedia</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">28</span></code></pre></div><div class="anal-decl"><b>The end of the file was reached.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L97">src</a><pre><code class="zig"><span class="tok">EndOfFile</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">31</span></code></pre></div><div class="anal-decl"><b>The language specified was invalid.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L100">src</a><pre><code class="zig"><span class="tok">InvalidLanguage</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">32</span></code></pre></div><div class="anal-decl"><b>The security status of the data is unknown or compromised and the data must be updated or replaced to restore a valid security status.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L103">src</a><pre><code class="zig"><span class="tok">CompromisedData</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">33</span></code></pre></div><div class="anal-decl"><b>There is an address conflict address allocation
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L106">src</a><pre><code class="zig"><span class="tok">IpAddressConflict</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">34</span></code></pre></div><div class="anal-decl"><b>A HTTP error occurred during the network operation.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L109">src</a><pre><code class="zig"><span class="tok">HttpError</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">35</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L111">src</a><pre><code class="zig"><span class="tok">NetworkUnreachable</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">100</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L113">src</a><pre><code class="zig"><span class="tok">HostUnreachable</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">101</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L115">src</a><pre><code class="zig"><span class="tok">ProtocolUnreachable</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">102</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L117">src</a><pre><code class="zig"><span class="tok">PortUnreachable</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">103</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L119">src</a><pre><code class="zig"><span class="tok">ConnectionFin</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">104</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L121">src</a><pre><code class="zig"><span class="tok">ConnectionReset</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">105</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L123">src</a><pre><code class="zig"><span class="tok">ConnectionRefused</span> <span class="tok tok-symbol">=</span> <span class="tok">high_bit</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">106</span></code></pre></div><div class="anal-decl"><b>The string contained one or more characters that the device could not render and were skipped.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L126">src</a><pre><code class="zig"><span class="tok">WarnUnknownGlyph</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">1</span></code></pre></div><div class="anal-decl"><b>The handle was closed, but the file was not deleted.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L129">src</a><pre><code class="zig"><span class="tok">WarnDeleteFailure</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">2</span></code></pre></div><div class="anal-decl"><b>The handle was closed, but the data to the file was not flushed properly.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L132">src</a><pre><code class="zig"><span class="tok">WarnWriteFailure</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">3</span></code></pre></div><div class="anal-decl"><b>The resulting buffer was too small, and the data was truncated to the buffer size.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L135">src</a><pre><code class="zig"><span class="tok">WarnBufferTooSmall</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">4</span></code></pre></div><div class="anal-decl"><b>The data has not been updated within the timeframe set by localpolicy for this type of data.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L138">src</a><pre><code class="zig"><span class="tok">WarnStaleData</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">5</span></code></pre></div><div class="anal-decl"><b>The resulting buffer contains UEFI-compliant file system.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L141">src</a><pre><code class="zig"><span class="tok">WarnFileSystem</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">6</span></code></pre></div><div class="anal-decl"><b>The operation will be processed across a system reset.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L144">src</a><pre><code class="zig"><span class="tok">WarnResetRequired</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">7</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/status.zig#L146">src</a><pre><code class="zig"><span class="tok">_</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

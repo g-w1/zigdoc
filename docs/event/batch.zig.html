@@ -1,0 +1,115 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//event/batch.zig"><h1>/event/batch.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Performs multiple async functions in parallel, without heap allocation.
+Async function frames are managed externally to this abstraction, and
+passed in via the `add` function. Once all the jobs are added, call `wait`.
+This API is *not* thread-safe. The object must be accessed from one thread at
+a time, however, it need not be the same thread.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L14">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">Batch</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-comment">/// The return value for each job.</span>
+    <span class="tok tok-comment">/// If a job slot was re-used due to maxed out concurrency, then its result</span>
+    <span class="tok tok-comment">/// value will be overwritten. The values can be accessed with the `results` field.</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">Result</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-comment">/// How many jobs to run in parallel.</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">max_jobs</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">comptime_int</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-comment">/// Controls whether the `add` and `wait` functions will be async functions.</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">async_behavior</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">enum</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-comment">/// Observe the value of `std.io.is_async` to decide whether `add`</span>
+        <span class="tok tok-comment">/// and `wait` will be async functions. Asserts that the jobs do not suspend when</span>
+        <span class="tok tok-comment">/// `std.io.mode == .blocking`. This is a generally safe assumption, and the</span>
+        <span class="tok tok-comment">/// usual recommended option for this parameter.</span>
+        <span class="tok">auto_async</span><span class="tok tok-symbol">,</span>
+
+        <span class="tok tok-comment">/// Always uses the `nosuspend` keyword when using `await` on the jobs,</span>
+        <span class="tok tok-comment">/// making `add` and `wait` non-async functions. Asserts that the jobs do not suspend.</span>
+        <span class="tok">never_async</span><span class="tok tok-symbol">,</span>
+
+        <span class="tok tok-comment">/// `add` and `wait` use regular `await` keyword, making them async functions.</span>
+        <span class="tok">always_async</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L38">src</a><pre><code class="zig"><span class="tok">jobs</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">max_jobs</span><span class="tok tok-symbol">]</span><span class="tok">Job</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L39">src</a><pre><code class="zig"><span class="tok">next_job_index</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L40">src</a><pre><code class="zig"><span class="tok">collected_result</span><span class="tok tok-symbol">:</span> <span class="tok">CollectedResult</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L60">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span></code></pre></div><div class="anal-decl"><b>Add a frame to the Batch. If all jobs are in-flight, then this function
+waits until one completes.
+This function is *not* thread-safe. It must be called from one thread at
+a time, however, it need not be the same thread.
+TODO: &quot;select&quot; language feature to use the next available slot, rather than
+awaiting the next index.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L79">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">add</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">frame</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anyframe</span><span class="tok tok-symbol">-&gt;</span><span class="tok">Result</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Wait for all the jobs to complete.
+Safe to call any number of times.
+If `Result` is an error union, this function returns the last error that occurred, if any.
+Unlike the `results` field, the return value of `wait` will report any error that occurred;
+hitting max parallelism will not compromise the result.
+This function is *not* thread-safe. It must be called from one thread at
+a time, however, it need not be the same thread.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/event/batch.zig#L100">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">wait</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok">CollectedResult</span></code></pre></div></div></details></div></div><div class="more-decls"></div></html>

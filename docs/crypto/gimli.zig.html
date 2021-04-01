@@ -1,0 +1,116 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//crypto/gimli.zig"><h1>/crypto/gimli.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L25">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">State</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L29">src</a><pre><code class="zig"><span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">BLOCKBYTES</span> <span class="tok tok-symbol">/</span> <span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u32</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">16</span><span class="tok tok-symbol">)</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L33">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">initial_state</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">State</span><span class="tok tok-symbol">.</span><span class="tok">BLOCKBYTES</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span></code></pre></div><div class="anal-decl"><b>TODO follow the span() convention instead of having this and `toSliceConst`
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L43">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">toSlice</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok">BLOCKBYTES</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">mem</span><span class="tok tok-symbol">.</span><span class="tok">asBytes</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">data</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>TODO follow the span() convention instead of having this and `toSlice`
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L48">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">toSliceConst</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok tok-symbol">[</span><span class="tok">BLOCKBYTES</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">mem</span><span class="tok tok-symbol">.</span><span class="tok">asBytes</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">&amp;</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">data</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L168">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">squeeze</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L26">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">BLOCKBYTES</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">48</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L27">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">RATE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L160">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">permute</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">Target</span><span class="tok tok-symbol">.</span><span class="tok">current</span><span class="tok tok-symbol">.</span><span class="tok">cpu</span><span class="tok tok-symbol">.</span><span class="tok">arch</span> <span class="tok tok-symbol">==</span> <span class="tok tok-symbol">.</span><span class="tok">x86_64</span><span class="tok tok-symbol">)</span> <span class="tok">impl</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-kw">break</span> <span class="tok tok-symbol">:</span><span class="tok">impl</span> <span class="tok">permute_vectorized</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span> <span class="tok tok-kw">else</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">builtin</span><span class="tok tok-symbol">.</span><span class="tok">mode</span> <span class="tok tok-symbol">==</span> <span class="tok tok-symbol">.</span><span class="tok">ReleaseSmall</span><span class="tok tok-symbol">)</span> <span class="tok">impl</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-kw">break</span> <span class="tok tok-symbol">:</span><span class="tok">impl</span> <span class="tok">permute_small</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span> <span class="tok tok-kw">else</span> <span class="tok">impl</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">{</span>
+        <span class="tok tok-kw">break</span> <span class="tok tok-symbol">:</span><span class="tok">impl</span> <span class="tok">permute_unrolled</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L211">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Hash</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L212">src</a><pre><code class="zig"><span class="tok">state</span><span class="tok tok-symbol">:</span> <span class="tok">State</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L213">src</a><pre><code class="zig"><span class="tok">buf_off</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L217">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Options</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L221">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok">Options</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">Self</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">state</span> <span class="tok tok-symbol">=</span> <span class="tok">State</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">data</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u32</span><span class="tok tok-symbol">{</span><span class="tok tok-number">0</span><span class="tok tok-symbol">}</span> <span class="tok tok-symbol">**</span> <span class="tok tok-symbol">(</span><span class="tok">State</span><span class="tok tok-symbol">.</span><span class="tok">BLOCKBYTES</span> <span class="tok tok-symbol">/</span> <span class="tok tok-number">4</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">buf_off</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Also known as 'absorb'
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L229">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">update</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Finish the current hashing operation, writing the hash to `out`
+
+From 4.9 &quot;Application to hashing&quot;
+By default, Gimli-Hash provides a fixed-length output of 32 bytes
+(the concatenation of two 16-byte blocks).  However, Gimli-Hash can
+be used as an “extendable one-way function” (XOF).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L253">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">final</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L215">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">block_length</span> <span class="tok tok-symbol">=</span> <span class="tok">State</span><span class="tok tok-symbol">.</span><span class="tok">RATE</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L216">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">digest_length</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">32</span></code></pre></div></div></details></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L296">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Aead</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>c: ciphertext: output buffer should be of size m.len
+tag: authentication tag: output MAC
+m: message
+ad: Associated Data
+npub: public nonce
+k: private key
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L350">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">encrypt</span><span class="tok tok-symbol">(</span><span class="tok">c</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">tag</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok">tag_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">m</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">ad</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">npub</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">nonce_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">k</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">key_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>m: message: output buffer should be of size c.len
+c: ciphertext
+tag: authentication tag
+ad: Associated Data
+npub: public nonce
+k: private key
+NOTE: the check of the authentication tag is currently not done in constant time
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L396">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">decrypt</span><span class="tok tok-symbol">(</span><span class="tok">m</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">c</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">tag</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">tag_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">ad</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">npub</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">nonce_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">k</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok">key_length</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Error</span><span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L297">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">tag_length</span> <span class="tok tok-symbol">=</span> <span class="tok">State</span><span class="tok tok-symbol">.</span><span class="tok">RATE</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L298">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">nonce_length</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L299">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">key_length</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">32</span></code></pre></div></div></details></div></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/gimli.zig#L265">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">hash</span><span class="tok tok-symbol">(</span><span class="tok">out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">in</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok">Hash</span><span class="tok tok-symbol">.</span><span class="tok">Options</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">st</span> <span class="tok tok-symbol">=</span> <span class="tok">Hash</span><span class="tok tok-symbol">.</span><span class="tok">init</span><span class="tok tok-symbol">(</span><span class="tok">options</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">st</span><span class="tok tok-symbol">.</span><span class="tok">update</span><span class="tok tok-symbol">(</span><span class="tok">in</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">st</span><span class="tok tok-symbol">.</span><span class="tok">final</span><span class="tok tok-symbol">(</span><span class="tok">out</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div><div class="more-decls"></div></html>

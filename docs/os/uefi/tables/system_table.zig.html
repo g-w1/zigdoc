@@ -1,0 +1,84 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//os/uefi/tables/system_table.zig"><h1>/os/uefi/tables/system_table.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><b>The EFI System Table contains pointers to the runtime and boot services tables.
+
+As the system_table may grow with new UEFI versions, it is important to check hdr.header_size.
+
+After successfully calling boot_services.exitBootServices, console_in_handle,
+con_in, console_out_handle, con_out, standard_error_handle, std_err, and
+boot_services should be set to null. After setting these attributes to null,
+hdr.crc32 must be recomputed.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L23">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">SystemTable</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L24">src</a><pre><code class="zig"><span class="tok">hdr</span><span class="tok tok-symbol">:</span> <span class="tok">TableHeader</span></code></pre></div><div class="anal-decl"><b>A null-terminated string that identifies the vendor that produces the system firmware of the platform.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L27">src</a><pre><code class="zig"><span class="tok">firmware_vendor</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">:</span><span class="tok tok-number">0</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u16</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L28">src</a><pre><code class="zig"><span class="tok">firmware_revision</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L29">src</a><pre><code class="zig"><span class="tok">console_in_handle</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok">Handle</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L30">src</a><pre><code class="zig"><span class="tok">con_in</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">SimpleTextInputProtocol</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L31">src</a><pre><code class="zig"><span class="tok">console_out_handle</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok">Handle</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L32">src</a><pre><code class="zig"><span class="tok">con_out</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">SimpleTextOutputProtocol</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L33">src</a><pre><code class="zig"><span class="tok">standard_error_handle</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok">Handle</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L34">src</a><pre><code class="zig"><span class="tok">std_err</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">SimpleTextOutputProtocol</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L35">src</a><pre><code class="zig"><span class="tok">runtime_services</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">RuntimeServices</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L36">src</a><pre><code class="zig"><span class="tok">boot_services</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-symbol">*</span><span class="tok">BootServices</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L37">src</a><pre><code class="zig"><span class="tok">number_of_table_entries</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L38">src</a><pre><code class="zig"><span class="tok">configuration_table</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">]</span><span class="tok">ConfigurationTable</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L40">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">signature</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x5453595320494249</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L41">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_1_02</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">2</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L42">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_1_10</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">10</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L43">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_00</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L44">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_10</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">10</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L45">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_20</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">20</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L46">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_30</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">30</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L47">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_31</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">31</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L48">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_40</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">40</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L49">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_50</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">50</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L50">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_60</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">60</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L51">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_70</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">70</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/system_table.zig#L52">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">revision_2_80</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">2</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">16</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-number">80</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

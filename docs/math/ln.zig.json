@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the natural logarithm of x.\n\nSpecial Cases:\n- ln(+inf)  = +inf\n- ln(0)     = -inf\n- ln(x)     = nan if x < 0\n- ln(nan)   = nan","pl":"fn ln(x: anytype) @TypeOf(x)","src":22,"more_decls":null}{"pl":"fn ln_32(x_: f32) f32","src":45,"more_decls":null}{"pl":"fn ln_64(x_: f64) f64","src":97,"more_decls":null}]

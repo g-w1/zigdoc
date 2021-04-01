@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the integer value of x.\n\nSpecial Cases:\n- trunc(+-0)   = +-0\n- trunc(+-inf) = +-inf\n- trunc(nan)   = nan","pl":"fn trunc(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

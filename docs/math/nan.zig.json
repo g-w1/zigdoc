@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the nan representation for type T.","pl":"fn nan(comptime T: type) T","src":8,"more_decls":null}{"doc_comment":"Returns the signalling nan representation for type T.","pl":"fn snan(comptime T: type) T","src":19,"more_decls":null}]

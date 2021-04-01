@@ -1,0 +1,1 @@
+[{"doc_comment":"public entrypoint for generated code using EmulatedTLS","pl":"pub fn __emutls_get_address(control: *emutls_control) callconv(.C) *c_void {\n    return control.getPointer();\n}","src":27,"more_decls":null}]

@@ -1,0 +1,110 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//crypto/chacha20.zig"><h1>/crypto/chacha20.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><b>IETF-variant of the ChaCha20 stream cipher, as designed for TLS.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L19">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha20IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">20</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>IETF-variant of the ChaCha20 stream cipher, reduced to 12 rounds.
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L24">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha12IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">12</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>IETF-variant of the ChaCha20 stream cipher, reduced to 8 rounds.
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L29">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha8IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>Original ChaCha20 stream cipher.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L32">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha20With64BitNonce</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaWith64BitNonce</span><span class="tok tok-symbol">(</span><span class="tok tok-number">20</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>Original ChaCha20 stream cipher, reduced to 12 rounds.
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L37">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha12With64BitNonce</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaWith64BitNonce</span><span class="tok tok-symbol">(</span><span class="tok tok-number">12</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>Original ChaCha20 stream cipher, reduced to 8 rounds.
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L42">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha8With64BitNonce</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaWith64BitNonce</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20 (nonce-extended version of the IETF ChaCha20 variant) stream cipher
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L45">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha20IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">20</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20 (nonce-extended version of the IETF ChaCha20 variant) stream cipher, reduced to 12 rounds
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L50">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha12IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">12</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20 (nonce-extended version of the IETF ChaCha20 variant) stream cipher, reduced to 8 rounds
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L55">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha8IETF</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaIETF</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>ChaCha20-Poly1305 authenticated cipher, as designed for TLS
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L58">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha20Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">20</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>ChaCha20-Poly1305 authenticated cipher, reduced to 12 rounds
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L63">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha12Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">12</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>ChaCha20-Poly1305 authenticated cipher, reduced to 8 rounds
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L68">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">ChaCha8Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">ChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20-Poly1305 authenticated cipher
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L71">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha20Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">20</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20-Poly1305 authenticated cipher
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L76">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha12Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">12</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>XChaCha20-Poly1305 authenticated cipher
+Reduced-rounds versions are faster than the full-round version, but have a lower security margin.
+However, ChaCha is still believed to have a comfortable security even with only with 8 rounds.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/crypto/chacha20.zig#L81">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XChaCha8Poly1305</span> <span class="tok tok-symbol">=</span> <span class="tok">XChaChaPoly1305</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span></code></pre></div></div></html>

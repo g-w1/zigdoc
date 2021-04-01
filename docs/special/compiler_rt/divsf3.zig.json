@@ -1,0 +1,1 @@
+[{"pl":"fn __divsf3(a: f32, b: f32) callconv(.C) f32","src":12,"more_decls":null}{"pl":"pub fn __aeabi_fdiv(a: f32, b: f32) callconv(.AAPCS) f32 {\n    @setRuntimeSafety(false);\n    return @call(.{ .modifier = .always_inline }, __divsf3, .{ a, b });\n}","src":202,"more_decls":null}]

@@ -110,7 +110,7 @@ const AnalysedDecl = struct {
         try util.highlightZigCode(self.pl, writer, true);
         if (self.md != null) {
             if (self.md.?.fields.items.len > 0) {
-                try writer.writeAll("<details><summary>fields:</summary>");
+                try writer.writeAll("<details open><summary>fields:</summary>");
                 try writer.writeAll("<div class=\"md-fields more-decls\">");
                 for (self.md.?.fields.items) |decl| {
                     try decl.htmlStringify(writer);
@@ -155,6 +155,11 @@ fn fatal(s: []const u8) noreturn {
     std.process.exit(1);
 }
 
+fn fatalArgs(comptime s: []const u8, args: anytype) noreturn {
+    std.log.emerg(s, args);
+    std.process.exit(1);
+}
+
 const Args = struct {
     dirname: []const u8,
     docs_url: ?[]const u8 = null,
@@ -171,8 +176,8 @@ fn removeTrailingSlash(n: [:0]u8) []u8 {
     return n;
 }
 
-pub fn main() anyerror!void {
-    var general_pa = std.heap.GeneralPurposeAllocator(.{}){};
+pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } || std.os.UnexpectedError || std.os.WriteError)!void {
+    var general_pa = std.heap.GeneralPurposeAllocator(.{ .stack_trace_frames = 8 }){};
     defer _ = general_pa.deinit();
 
     const ally = &general_pa.allocator;
@@ -203,7 +208,7 @@ pub fn main() anyerror!void {
         }
     }
 
-    var walker = try std.fs.walkPath(ally, opts.dirname);
+    var walker = std.fs.walkPath(ally, opts.dirname) catch |e| fatalArgs("could not read dir: {s}: {}", .{ opts.dirname, e });
     defer walker.deinit();
 
     var file_to_anal_map = std.StringHashMap(Md).init(ally);
@@ -223,7 +228,7 @@ pub fn main() anyerror!void {
     var analyse_node = main_progress_node.start("Analysis", 0);
     analyse_node.activate();
     var i: usize = 0;
-    while (try walker.next()) |entry| {
+    while (walker.next() catch |e| fatalArgs("could not read next directory walker item: {}", .{e})) |entry| {
         if (std.mem.endsWith(u8, entry.path, ".zig")) {
             const strings = compareStrings(entry.path, opts.dirname);
             const str = try ally.dupe(u8, strings);
@@ -242,8 +247,8 @@ pub fn main() anyerror!void {
     analyse_node.end();
 
     var output_dir = std.fs.cwd().makeOpenPath(opts.output_dir, .{}) catch |e| switch (e) {
-        error.PathAlreadyExists => try std.fs.cwd().openDir(opts.output_dir, .{}),
-        else => |er| return er,
+        error.PathAlreadyExists => std.fs.cwd().openDir(opts.output_dir, .{}) catch |er| fatalArgs("could not open docs folder: {}", .{er}),
+        else => |er| fatalArgs("could not make a \"docs\" output dir: {}", .{er}),
     };
     defer output_dir.close();
     var iter = file_to_anal_map.iterator();
@@ -251,12 +256,15 @@ pub fn main() anyerror!void {
         while (iter.next()) |entry| {
             cur_file = entry.key;
             const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
-            var output_path = if (!std.mem.eql(u8, dname, "")) try output_dir.makeOpenPath(dname, .{}) else try output_dir.openDir(".", .{});
+            var output_path = if (!std.mem.eql(u8, dname, ""))
+                (output_dir.makeOpenPath(dname, .{}) catch |e| fatalArgs("could not make dir {s}: {}", .{ dname, e }))
+            else
+                (output_dir.openDir(".", .{}) catch |e| fatalArgs("could not open dir '.': {}", .{e}));
             defer output_path.close();
             const name_to_open = std.fs.path.basename(entry.key);
             const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".html" });
             defer ally.free(catted);
-            const output_file = try output_path.createFile(catted, .{});
+            const output_file = output_path.createFile(catted, .{}) catch |e| fatalArgs("could not create file {s}: {}", .{ catted, e });
             defer output_file.close();
             const w = output_file.writer();
             const anal_list = entry.value;
@@ -279,12 +287,15 @@ pub fn main() anyerror!void {
     } else {
         while (iter.next()) |entry| {
             const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
-            var output_path = if (!std.mem.eql(u8, dname, "")) try output_dir.makeOpenPath(dname, .{}) else try output_dir.openDir(".", .{});
+            var output_path = if (!std.mem.eql(u8, dname, ""))
+                (output_dir.makeOpenPath(dname, .{}) catch |e| fatalArgs("could not make dir {s}: {}", .{ dname, e }))
+            else
+                (output_dir.openDir(".", .{}) catch |e| fatalArgs("could not open dir '.': {}", .{e}));
             defer output_path.close();
             const name_to_open = std.fs.path.basename(entry.key);
             const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".json" });
             defer ally.free(catted);
-            const output_file = try output_path.createFile(catted, .{});
+            const output_file = output_path.createFile(catted, .{}) catch |e| fatalArgs("could not create file {s}: {}", .{ catted, e });
             defer output_file.close();
             const w = output_file.writer();
             const anal_list = entry.value;
@@ -303,7 +314,10 @@ fn getAnalFromFile(
     const zig_code = std.fs.cwd().readFileAlloc(ally, fname, 2 * 1024 * 1024 * 1024) catch fatal("could not read file provided");
     defer ally.free(zig_code);
 
-    tree = try std.zig.parse(ally, zig_code);
+    tree = std.zig.parse(ally, zig_code) catch |e| {
+        std.log.emerg("could not parse zig file {s}: {}", .{ fname, e });
+        fatal("parsing failed");
+    };
     defer tree.deinit(ally);
     const decls = tree.rootDecls();
 
@@ -482,7 +496,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
         return AnalysedDecl{
             .pl = try removeNewLinesFromRest(ally, sig),
             // to be filled in later
-            .dc = undefined,
+            .dc = null,
             .md = md,
             .sub_cont_ty = if (sub_cont_ty) |sct| try ally.dupe(u8, sct) else null,
             .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
@@ -491,7 +505,7 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
         return AnalysedDecl{
             .pl = try removeNewLinesFromRest(ally, full_source),
             // filled in later
-            .dc = undefined,
+            .dc = null,
             .md = null,
             .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
         };

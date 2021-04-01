@@ -1,0 +1,173 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//log.zig"><h1>/log.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L81">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Level</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">enum</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><b>Emergency: a condition that cannot be handled, usually followed by a
+panic.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L84">src</a><pre><code class="zig"><span class="tok">emerg</span></code></pre></div><div class="anal-decl"><b>Alert: a condition that should be corrected immediately (e.g. database
+corruption).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L87">src</a><pre><code class="zig"><span class="tok">alert</span></code></pre></div><div class="anal-decl"><b>Critical: A bug has been detected or something has gone wrong and it
+will have an effect on the operation of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L90">src</a><pre><code class="zig"><span class="tok">crit</span></code></pre></div><div class="anal-decl"><b>Error: A bug has been detected or something has gone wrong but it is
+recoverable.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L93">src</a><pre><code class="zig"><span class="tok">err</span></code></pre></div><div class="anal-decl"><b>Warning: it is uncertain if something has gone wrong or not, but the
+circumstances would be worth investigating.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L96">src</a><pre><code class="zig"><span class="tok">warn</span></code></pre></div><div class="anal-decl"><b>Notice: non-error but significant conditions.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L98">src</a><pre><code class="zig"><span class="tok">notice</span></code></pre></div><div class="anal-decl"><b>Informational: general messages about the state of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L100">src</a><pre><code class="zig"><span class="tok">info</span></code></pre></div><div class="anal-decl"><b>Debug: messages only useful for debugging.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L102">src</a><pre><code class="zig"><span class="tok">debug</span></code></pre></div></div></details></div></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Returns a scoped logging namespace that logs all messages using the scope
+provided here.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L155">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">scoped</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">scope</span><span class="tok tok-symbol">:</span> <span class="tok tok-builtin">@Type</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">EnumLiteral</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Log an emergency message. This log level is intended to be used
+for conditions that cannot be handled and is usually followed by a panic.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L159">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">emerg</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Log an alert message. This log level is intended to be used for
+conditions that should be corrected immediately (e.g. database corruption).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L169">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">alert</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Log a critical message. This log level is intended to be used
+when a bug has been detected or something has gone wrong and it will have
+an effect on the operation of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L180">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">crit</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Log an error message. This log level is intended to be used when
+a bug has been detected or something has gone wrong but it is recoverable.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L190">src</a><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">err</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Log a warning message. This log level is intended to be used if
+it is uncertain whether something has gone wrong or not, but the
+circumstances would be worth investigating.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L201">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">warn</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">log</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">warn</span><span class="tok tok-symbol">,</span> <span class="tok">scope</span><span class="tok tok-symbol">,</span> <span class="tok">format</span><span class="tok tok-symbol">,</span> <span class="tok">args</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Log a notice message. This log level is intended to be used for
+non-error but significant conditions.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L210">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">notice</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">log</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">notice</span><span class="tok tok-symbol">,</span> <span class="tok">scope</span><span class="tok tok-symbol">,</span> <span class="tok">format</span><span class="tok tok-symbol">,</span> <span class="tok">args</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Log an info message. This log level is intended to be used for
+general messages about the state of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L219">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">info</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">log</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">info</span><span class="tok tok-symbol">,</span> <span class="tok">scope</span><span class="tok tok-symbol">,</span> <span class="tok">format</span><span class="tok tok-symbol">,</span> <span class="tok">args</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Log a debug message. This log level is intended to be used for
+messages which are only useful for debugging.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L228">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">debug</span><span class="tok tok-symbol">(</span>
+    <span class="tok tok-kw">comptime</span> <span class="tok">format</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span>
+    <span class="tok">args</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">log</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">debug</span><span class="tok tok-symbol">,</span> <span class="tok">scope</span><span class="tok tok-symbol">,</span> <span class="tok">format</span><span class="tok tok-symbol">,</span> <span class="tok">args</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><b>The default log level is based on build mode.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L106">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">default_level</span><span class="tok tok-symbol">:</span> <span class="tok">Level</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">switch</span> <span class="tok tok-symbol">(</span><span class="tok">builtin</span><span class="tok tok-symbol">.</span><span class="tok">mode</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-symbol">.</span><span class="tok">Debug</span> <span class="tok tok-symbol">=&gt;</span> <span class="tok tok-symbol">.</span><span class="tok">debug</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">.</span><span class="tok">ReleaseSafe</span> <span class="tok tok-symbol">=&gt;</span> <span class="tok tok-symbol">.</span><span class="tok">notice</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">.</span><span class="tok">ReleaseFast</span> <span class="tok tok-symbol">=&gt;</span> <span class="tok tok-symbol">.</span><span class="tok">err</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">.</span><span class="tok">ReleaseSmall</span> <span class="tok tok-symbol">=&gt;</span> <span class="tok tok-symbol">.</span><span class="tok">err</span><span class="tok tok-symbol">,</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>The current log level. This is set to root.log_level if present, otherwise
+log.default_level.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L115">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">level</span><span class="tok tok-symbol">:</span> <span class="tok">Level</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok tok-builtin">@hasDecl</span><span class="tok tok-symbol">(</span><span class="tok">root</span><span class="tok tok-symbol">,</span> <span class="tok tok-str">&quot;log_level&quot;</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span>
+    <span class="tok">root</span><span class="tok tok-symbol">.</span><span class="tok">log_level</span>
+<span class="tok tok-kw">else</span>
+    <span class="tok">default_level</span></code></pre></div><div class="anal-decl"><b>The default scoped logging namespace.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L238">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">default</span> <span class="tok tok-symbol">=</span> <span class="tok">scoped</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">default</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><b>Log an emergency message using the default scope. This log level is
+intended to be used for conditions that cannot be handled and is usually
+followed by a panic.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L243">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">emerg</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">emerg</span></code></pre></div><div class="anal-decl"><b>Log an alert message using the default scope. This log level is intended to
+be used for conditions that should be corrected immediately (e.g. database
+corruption).
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L248">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">alert</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">alert</span></code></pre></div><div class="anal-decl"><b>Log a critical message using the default scope. This log level is intended
+to be used when a bug has been detected or something has gone wrong and it
+will have an effect on the operation of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L253">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">crit</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">crit</span></code></pre></div><div class="anal-decl"><b>Log an error message using the default scope. This log level is intended to
+be used when a bug has been detected or something has gone wrong but it is
+recoverable.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L258">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">err</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">err</span></code></pre></div><div class="anal-decl"><b>Log a warning message using the default scope. This log level is intended
+to be used if it is uncertain whether something has gone wrong or not, but
+the circumstances would be worth investigating.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L263">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">warn</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">warn</span></code></pre></div><div class="anal-decl"><b>Log a notice message using the default scope. This log level is intended to
+be used for non-error but significant conditions.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L267">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">notice</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">notice</span></code></pre></div><div class="anal-decl"><b>Log an info message using the default scope. This log level is intended to
+be used for general messages about the state of the program.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L271">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">info</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">info</span></code></pre></div><div class="anal-decl"><b>Log a debug message using the default scope. This log level is intended to
+be used for messages which are only useful for debugging.
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/log.zig#L275">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">debug</span> <span class="tok tok-symbol">=</span> <span class="tok">default</span><span class="tok tok-symbol">.</span><span class="tok">debug</span></code></pre></div></div></html>

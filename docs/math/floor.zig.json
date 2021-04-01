@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the greatest integer value less than or equal to x.\n\nSpecial Cases:\n- floor(+-0)   = +-0\n- floor(+-inf) = +-inf\n- floor(nan)   = nan","pl":"fn floor(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

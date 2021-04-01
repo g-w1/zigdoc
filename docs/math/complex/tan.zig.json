@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the tanget of z.","pl":"pub fn tan(z: anytype) Complex(@TypeOf(z.re)) {\n    const T = @TypeOf(z.re);\n    const q = Complex(T).new(-z.im, z.re);\n    const r = cmath.tanh(q);\n    return Complex(T).new(r.im, -r.re);\n}","src":12,"more_decls":null}]

@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns whether x is a finite value.","pl":"fn isFinite(x: anytype) bool","src":11,"more_decls":null}]

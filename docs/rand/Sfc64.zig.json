@@ -1,0 +1,1 @@
+[{"pl":"random: Random","src":15,"more_decls":null}{"pl":"a: u64 = undefined","src":17,"more_decls":null}{"pl":"b: u64 = undefined","src":18,"more_decls":null}{"pl":"c: u64 = undefined","src":19,"more_decls":null}{"pl":"counter: u64 = undefined","src":20,"more_decls":null}{"pl":"fn init(init_s: u64) Sfc64","src":26,"more_decls":null}]

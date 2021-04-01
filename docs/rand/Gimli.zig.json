@@ -1,0 +1,1 @@
+[{"pl":"random: Random","src":13,"more_decls":null}{"pl":"state: std.crypto.core.Gimli","src":14,"more_decls":null}{"doc_comment":"The seed must be uniform, secret and `secret_seed_length` bytes long.","pl":"fn init(secret_seed: [secret_seed_length]u8) Gimli","src":19,"more_decls":null}{"pl":"const secret_seed_length = 32","src":16,"more_decls":null}]

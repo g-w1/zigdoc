@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the highest known WindowsVersion deduced from reported runtime information.\nDiscards information about in-between versions we don't differentiate.","pl":"fn detectRuntimeVersion() WindowsVersion","src":11,"more_decls":null}{"pl":"const WindowsVersion = std.Target.Os.WindowsVersion","src":7,"more_decls":null}]

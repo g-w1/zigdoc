@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the hyperbolic arc-cosine of z.","pl":"pub fn acosh(z: anytype) Complex(@TypeOf(z.re)) {\n    const T = @TypeOf(z.re);\n    const q = cmath.acos(z);\n    return Complex(T).new(-q.im, q.re);\n}","src":12,"more_decls":null}]

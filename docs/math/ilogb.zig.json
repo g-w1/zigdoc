@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the binary exponent of x as an integer.\n\nSpecial Cases:\n- ilogb(+-inf) = maxInt(i32)\n- ilogb(0)     = maxInt(i32)\n- ilogb(nan)   = maxInt(i32)","pl":"fn ilogb(x: anytype) i32","src":23,"more_decls":null}]

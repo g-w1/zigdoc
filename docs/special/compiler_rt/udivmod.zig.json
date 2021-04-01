@@ -1,0 +1,1 @@
+[{"pl":"fn udivmod(comptime DoubleInt: type, a: DoubleInt, b: DoubleInt, maybe_rem: ?*DoubleInt) DoubleInt","src":14,"more_decls":null}]

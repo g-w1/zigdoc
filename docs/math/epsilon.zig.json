@@ -1,0 +1,1 @@
+[{"doc_comment":"Returns the machine epsilon for type T.\nThis is the smallest value of type T that satisfies the inequality 1.0 +\nepsilon != 1.0.","pl":"fn epsilon(comptime T: type) T","src":10,"more_decls":null}]

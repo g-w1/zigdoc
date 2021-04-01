@@ -1,0 +1,138 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="https://github.com/ziglang/zig/blob/master/lib/std//os/uefi/tables/configuration_table.zig"><h1>/os/uefi/tables/configuration_table.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L9">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">ConfigurationTable</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L10">src</a><pre><code class="zig"><span class="tok">vendor_guid</span><span class="tok tok-symbol">:</span> <span class="tok">Guid</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L11">src</a><pre><code class="zig"><span class="tok">vendor_table</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-type">c_void</span></code></pre></div></div></details><details><summary>values:</summary><div class="md-vals more-decls"><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L13">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">acpi_20_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x8868e871</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xe4f1</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x11d3</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xbc</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x22</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x00</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x80</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xc7</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x3c</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x88</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x81</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L21">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">acpi_10_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xeb9d2d30</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2d88</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x11d3</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9a</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x16</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x00</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x90</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x27</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x3f</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xc1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x4d</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L29">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">sal_system_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xeb9d2d32</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2d88</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x113d</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9a</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x16</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x00</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x90</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x27</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x3f</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xc1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x4d</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L37">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">smbios_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xeb9d2d31</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2d88</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x11d3</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9a</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x16</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x00</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x90</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x27</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x3f</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xc1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x4d</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L45">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">smbios3_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xf2fd1544</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9794</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x4a2c</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x99</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2e</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0xe5</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xbb</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xcf</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x20</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xe3</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x94</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L53">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">mps_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xeb9d2d2f</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x2d88</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x11d3</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x9a</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x16</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x00</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x90</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x27</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x3f</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xc1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x4d</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L61">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">json_config_data_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x87367f87</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x1119</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x41ce</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xaa</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xec</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x8b</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xe0</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x11</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x1f</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x55</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x8a</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L69">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">json_capsule_data_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x35e7a725</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x8dd2</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x4cac</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x80</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x11</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x33</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xcd</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xa8</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x10</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x90</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x56</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><a href="https://github.com/ziglang/zig/blob/master/lib/std/os/uefi/tables/configuration_table.zig#L77">src</a><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">json_capsule_result_table_guid</span> <span class="tok tok-kw">align</span><span class="tok tok-symbol">(</span><span class="tok tok-number">8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">=</span> <span class="tok">Guid</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xdbc461c3</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_mid</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xb3de</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">time_high_and_version</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x422a</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_high_and_reserved</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xb9</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">clock_seq_low</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0xb4</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">node</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok">_</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">{</span> <span class="tok tok-number">0x98</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x86</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xfd</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0x49</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xa1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">0xe5</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div><div class="more-decls"></div></html>

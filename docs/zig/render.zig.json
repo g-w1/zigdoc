@@ -1,0 +1,1 @@
+[{"pl":"fn renderTree(buffer: *std.ArrayList(u8), tree: ast.Tree) Error!void","src":20,"more_decls":null}{"pl":"const Error = ast.Tree.RenderError","src":16,"more_decls":null}]
