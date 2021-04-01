@@ -1,1 +1,0 @@
-[{"pl":"fn main() anyerror!void","src":16,"more_decls":null}{"pl":"fn log(\n    comptime message_level: std.log.Level,\n    comptime scope: @Type(.EnumLiteral),\n    comptime format: []const u8,\n    args: anytype,\n) void","src":103,"more_decls":null}{"pl":"const io_mode: io.Mode = builtin.test_io_mode","src":9,"more_decls":null}]

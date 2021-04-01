@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the base-10 logarithm of x.\n\nSpecial Cases:\n- log10(+inf)  = +inf\n- log10(0)     = -inf\n- log10(x)     = nan if x < 0\n- log10(nan)   = nan","pl":"fn log10(x: anytype) @TypeOf(x)","src":23,"more_decls":null}{"pl":"fn log10_32(x_: f32) f32","src":46,"more_decls":null}{"pl":"fn log10_64(x_: f64) f64","src":106,"more_decls":null}]

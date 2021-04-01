@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the logarithm of x for the provided base.","pl":"fn log(comptime T: type, base: T, x: T) T","src":16,"more_decls":null}]

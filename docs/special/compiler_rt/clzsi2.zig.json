@@ -1,1 +1,0 @@
-[{"pl":"const __clzsi2 = switch (std.Target.current.cpu.arch) {\n    .arm, .armeb => if (std.Target.arm.featureSetHas(std.Target.current.cpu.features, .noarm))\n        __clzsi2_thumb1\n    else\n        __clzsi2_arm32,\n    .thumb, .thumbeb => __clzsi2_thumb1,\n    else => __clzsi2_generic,\n}","src":106,"more_decls":null}]

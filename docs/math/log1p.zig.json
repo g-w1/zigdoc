@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the natural logarithm of 1 + x with greater accuracy when x is near zero.\n\nSpecial Cases:\n- log1p(+inf)  = +inf\n- log1p(+-0)   = +-0\n- log1p(-1)    = -inf\n- log1p(x)     = nan if x < -1\n- log1p(nan)   = nan","pl":"fn log1p(x: anytype) @TypeOf(x)","src":24,"more_decls":null}]

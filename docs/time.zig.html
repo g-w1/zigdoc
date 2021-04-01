@@ -80,7 +80,7 @@ monotonic clocks without forcing them to check for error on each read.
 .resolution is in nanoseconds on all platforms but .start_time's meaning
 depends on the OS. On Windows and Darwin it is a hardware counter
 value that requires calculation to convert to a meaninful unit.
-</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/time.zig#L143">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Timer</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details open><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><b>if we used resolution's value when performing the
+</b><a href="https://github.com/ziglang/zig/blob/master/lib/std/time.zig#L143">src</a><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Timer</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><b>if we used resolution's value when performing the
 performance counter calc on windows/darwin, it would
 be less precise
 </b><a href="https://github.com/ziglang/zig/blob/master/lib/std/time.zig#L147">src</a><pre><code class="zig"><span class="tok">frequency</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">switch</span> <span class="tok tok-symbol">(</span><span class="tok">builtin</span><span class="tok tok-symbol">.</span><span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">tag</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">{</span>

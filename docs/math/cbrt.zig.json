@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the cube root of x.\n\nSpecial Cases:\n- cbrt(+-0)   = +-0\n- cbrt(+-inf) = +-inf\n- cbrt(nan)   = nan","pl":"fn cbrt(x: anytype) @TypeOf(x)","src":21,"more_decls":null}]

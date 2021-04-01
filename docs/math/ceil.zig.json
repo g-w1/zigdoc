@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the least integer value greater than of equal to x.\n\nSpecial Cases:\n- ceil(+-0)   = +-0\n- ceil(+-inf) = +-inf\n- ceil(nan)   = nan","pl":"fn ceil(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

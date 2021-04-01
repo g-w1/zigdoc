@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns x * y + z with a single rounding error.","pl":"fn fma(comptime T: type, x: T, y: T, z: T) T","src":16,"more_decls":null}]

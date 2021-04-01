@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns x * 2^n.","pl":"fn scalbn(x: anytype, n: i32) @TypeOf(x)","src":16,"more_decls":null}]

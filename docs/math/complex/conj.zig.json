@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the complex conjugate of z.","pl":"pub fn conj(z: anytype) Complex(@TypeOf(z.re)) {\n    const T = @TypeOf(z.re);\n    return Complex(T).new(z.re, -z.im);\n}","src":12,"more_decls":null}]

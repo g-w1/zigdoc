@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns x rounded to the nearest integer, rounding half away from zero.\n\nSpecial Cases:\n- round(+-0)   = +-0\n- round(+-inf) = +-inf\n- round(nan)   = nan","pl":"fn round(x: anytype) @TypeOf(x)","src":22,"more_decls":null}]

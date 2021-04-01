@@ -1,1 +1,0 @@
-[{"pl":"pub fn cWriter(c_file: *std.c.FILE) CWriter {\n    return .{ .context = c_file };\n}","src":12,"more_decls":null}{"pl":"const CWriter = io.Writer(*std.c.FILE, std.fs.File.WriteError, cWriterWrite)","src":10,"more_decls":null}]

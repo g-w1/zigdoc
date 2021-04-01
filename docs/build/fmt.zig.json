@@ -1,1 +1,0 @@
-[{"pl":"pub const FmtStep = struct ","src":12,"more_decls":{"pl":"step: Step","src":13,"more_decls":null}{"pl":"builder: *Builder","src":14,"more_decls":null}{"pl":"argv: [][]const u8","src":15,"more_decls":null}{"pl":"fn create(builder: *Builder, paths: []const []const u8) *FmtStep","src":17,"more_decls":null}}]

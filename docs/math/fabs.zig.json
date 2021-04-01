@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the absolute value of x.\n\nSpecial Cases:\n- fabs(+-inf) = +inf\n- fabs(nan)   = nan","pl":"fn fabs(x: anytype) @TypeOf(x)","src":21,"more_decls":null}]

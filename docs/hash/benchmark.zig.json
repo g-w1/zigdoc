@@ -1,1 +1,0 @@
-[{"pl":"fn benchmarkHash(comptime H: anytype, bytes: usize) !Result","src":83,"more_decls":null}{"pl":"fn benchmarkHashSmallKeys(comptime H: anytype, key_size: usize, bytes: usize) !Result","src":114,"more_decls":null}{"pl":"fn main() !void","src":166,"more_decls":null}]

@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the base-2 logarithm of x.\n\nSpecial Cases:\n- log2(+inf)  = +inf\n- log2(0)     = -inf\n- log2(x)     = nan if x < 0\n- log2(nan)   = nan","pl":"fn log2(x: anytype) @TypeOf(x)","src":23,"more_decls":null}{"pl":"fn log2_32(x_: f32) f32","src":52,"more_decls":null}{"pl":"fn log2_64(x_: f64) f64","src":108,"more_decls":null}]

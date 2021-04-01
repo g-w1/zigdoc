@@ -110,7 +110,7 @@ const AnalysedDecl = struct {
         try util.highlightZigCode(self.pl, writer, true);
         if (self.md != null) {
             if (self.md.?.fields.items.len > 0) {
-                try writer.writeAll("<details open><summary>fields:</summary>");
+                try writer.writeAll("<details><summary>fields:</summary>");
                 try writer.writeAll("<div class=\"md-fields more-decls\">");
                 for (self.md.?.fields.items) |decl| {
                     try decl.htmlStringify(writer);

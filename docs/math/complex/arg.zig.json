@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the angular component (in radians) of z.","pl":"pub fn arg(z: anytype) @TypeOf(z.re) {\n    const T = @TypeOf(z.re);\n    return math.atan2(T, z.im, z.re);\n}","src":12,"more_decls":null}]

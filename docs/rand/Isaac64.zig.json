@@ -1,1 +1,0 @@
-[{"pl":"random: Random","src":16,"more_decls":null}{"pl":"r: [256]u64","src":18,"more_decls":null}{"pl":"m: [256]u64","src":19,"more_decls":null}{"pl":"a: u64","src":20,"more_decls":null}{"pl":"b: u64","src":21,"more_decls":null}{"pl":"c: u64","src":22,"more_decls":null}{"pl":"i: usize","src":23,"more_decls":null}{"pl":"fn init(init_s: u64) Isaac64","src":25,"more_decls":null}]

@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the projection of z onto the riemann sphere.","pl":"fn proj(z: anytype) Complex(@TypeOf(z.re))","src":12,"more_decls":null}]

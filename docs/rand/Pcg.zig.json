@@ -1,1 +1,0 @@
-[{"pl":"random: Random","src":16,"more_decls":null}{"pl":"s: u64","src":18,"more_decls":null}{"pl":"i: u64","src":19,"more_decls":null}{"pl":"fn init(init_s: u64) Pcg","src":21,"more_decls":null}]

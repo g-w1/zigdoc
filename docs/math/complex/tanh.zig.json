@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the hyperbolic tangent of z.","pl":"fn tanh(z: anytype) @TypeOf(z)","src":19,"more_decls":null}]

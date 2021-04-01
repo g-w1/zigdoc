@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the arc-sin of x.\n\nSpecial Cases:\n- asin(+-0) = +-0\n- asin(x)   = nan if x < -1 or x > 1","pl":"fn asin(x: anytype) @TypeOf(x)","src":20,"more_decls":null}]

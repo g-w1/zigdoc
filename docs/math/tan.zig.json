@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the tangent of the radian value x.\n\nSpecial Cases:\n- tan(+-0)   = +-0\n- tan(+-inf) = nan\n- tan(nan)   = nan","pl":"fn tan(x: anytype) @TypeOf(x)","src":21,"more_decls":null}]

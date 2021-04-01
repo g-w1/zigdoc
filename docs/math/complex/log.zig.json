@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the natural logarithm of z.","pl":"fn log(z: anytype) Complex(@TypeOf(z.re))","src":12,"more_decls":null}]

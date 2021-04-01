@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the sine of the radian value x.\n\nSpecial Cases:\n- sin(+-0)   = +-0\n- sin(+-inf) = nan\n- sin(nan)   = nan","pl":"fn sin(x: anytype) @TypeOf(x)","src":21,"more_decls":null}]

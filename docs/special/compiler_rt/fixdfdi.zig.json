@@ -1,1 +1,0 @@
-[{"pl":"pub fn __fixdfdi(a: f64) callconv(.C) i64 {\n    @setRuntimeSafety(builtin.is_test);\n    return fixint(f64, i64, a);\n}","src":8,"more_decls":null}{"pl":"pub fn __aeabi_d2lz(arg: f64) callconv(.AAPCS) i64 {\n    @setRuntimeSafety(false);\n    return @call(.{ .modifier = .always_inline }, __fixdfdi, .{arg});\n}","src":13,"more_decls":null}]

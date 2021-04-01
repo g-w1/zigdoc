@@ -1,1 +1,0 @@
-[{"pl":"extern \"shell32\" fn SHGetKnownFolderPath(rfid: *const KNOWNFOLDERID, dwFlags: DWORD, hToken: ?HANDLE, ppszPath: *[*:0]WCHAR) callconv(WINAPI) HRESULT","src":7,"more_decls":null}]

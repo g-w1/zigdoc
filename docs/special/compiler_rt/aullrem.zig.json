@@ -1,1 +1,0 @@
-[{"pl":"fn _allrem(a: i64, b: i64) callconv(.Stdcall) i64","src":7,"more_decls":null}{"pl":"fn _aullrem() callconv(.Naked) void","src":20,"more_decls":null}]

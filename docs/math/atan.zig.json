@@ -1,1 +1,0 @@
-[{"doc_comment":"Returns the arc-tangent of x.\n\nSpecial Cases:\n- atan(+-0)   = +-0\n- atan(+-inf) = +-pi/2","pl":"fn atan(x: anytype) @TypeOf(x)","src":20,"more_decls":null}]
