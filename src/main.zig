@@ -29,18 +29,23 @@ const Md = struct {
         }
     }
     pub fn jsonStringify(self: @This(), options: anytype, writer: anytype) !void {
-        for (self.fields.items) |anal| {
-            try anal.jsonStringify(options, writer);
-        }
-        for (self.types.items) |anal| {
-            try anal.jsonStringify(options, writer);
-        }
-        for (self.funcs.items) |anal| {
-            try anal.jsonStringify(options, writer);
-        }
-        for (self.values.items) |anal| {
-            try anal.jsonStringify(options, writer);
-        }
+        try writer.writeByte('{');
+        try writer.writeAll("\"fields\":");
+        try std.json.stringify(self.fields.items, .{}, writer);
+        try writer.writeByte(',');
+
+        try writer.writeAll("\"types\":");
+        try std.json.stringify(self.types.items, .{}, writer);
+        try writer.writeByte(',');
+
+        try writer.writeAll("\"funcs\":");
+        try std.json.stringify(self.funcs.items, .{}, writer);
+        try writer.writeByte(',');
+
+        try writer.writeAll("\"values\":");
+        try std.json.stringify(self.values.items, .{}, writer);
+
+        try writer.writeByte('}');
     }
 };
 
