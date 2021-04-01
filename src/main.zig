@@ -204,6 +204,17 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
                 var durl: [:0]u8 = args[i + 1];
                 opts.docs_url = removeTrailingSlash(durl);
                 i += 1;
+            } else if (std.mem.eql(u8, arg, "-h") or std.mem.eql(u8, arg, "--help")) {
+                fatal(
+                    \\zigdoc help:
+                    \\Example: `docgen ~/dev/zig/lib/std/ -url https://github.com/ziglang/zig/blob/master/lib/std`
+                    \\Outputs do `docs` folder by default.
+                    \\docgen FOLDER_LOCATION [ -json -o -url -h ]
+                    \\-json for json output
+                    \\-o for output folder
+                    \\-url for source url
+                    \\-h for this help menu
+                );
             }
         }
     }
