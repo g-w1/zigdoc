@@ -214,7 +214,7 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
                     \\zigdoc help:
                     \\Example: `docgen ~/dev/zig/lib/std/ -url https://github.com/ziglang/zig/blob/master/lib/std`
                     \\Outputs do `docs` folder by default.
-                    \\docgen FOLDER_LOCATION [ -json -o -url -h ]
+                    \\docgen FOLDER_LOCATION [ -json -o [output folder] -url [source url] -h ]
                     \\-json for json output
                     \\-o for output folder
                     \\-url for source url
