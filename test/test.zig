@@ -1,4 +1,5 @@
 /// Here is our a
+pub const imported = @import("./imported.zig");
 a: usize,
 
 pub extern fn thing() c_int;

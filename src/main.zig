@@ -28,27 +28,20 @@ const Md = struct {
             @field(self, n).deinit();
         }
     }
-    pub fn jsonStringify(self: @This(), options: anytype, writer: anytype) !void {
-        try writer.writeByte('{');
-        try writer.writeAll("\"fields\":");
-        try std.json.stringify(self.fields.items, .{}, writer);
-        try writer.writeByte(',');
-
-        try writer.writeAll("\"types\":");
-        try std.json.stringify(self.types.items, .{}, writer);
-        try writer.writeByte(',');
-
-        try writer.writeAll("\"funcs\":");
-        try std.json.stringify(self.funcs.items, .{}, writer);
-        try writer.writeByte(',');
-
-        try writer.writeAll("\"values\":");
-        try std.json.stringify(self.values.items, .{}, writer);
-
-        try writer.writeByte('}');
-    }
 };
 
+/// Json format used by zigdoc
+/// Start and end can be assumed to be offsets into "decls"
+/// AD: { "dc": "doc comment", "pl": "pay_load", "sub_cont_type": "sub_container_type or undefined", "md": MD }
+/// MD: { "fields": [start, end], "types": [start, end], "funcs": [start, end], "values": [start, end]}
+/// {
+///     "fields": [start, end],
+///     "types": [start, end],
+///     "funcs": [start, end],
+///     "values": [start, end],
+///     "decls": [AD],
+/// }
+///
 const AnalysedDecl = struct {
     /// The doc comment of the decl
     /// Owned by this decl
@@ -57,11 +50,12 @@ const AnalysedDecl = struct {
     /// Should be owned by this decl
     pl: []const u8,
 
+    /// a sub container type
+    /// used when functions return types
     sub_cont_ty: ?[]const u8 = null,
 
     md: ?Md,
 
-    // TODO: make a range
     src: usize,
 
     fn deinit(self: *const @This(), ally: *std.mem.Allocator) void {
@@ -72,86 +66,6 @@ const AnalysedDecl = struct {
             ally.free(d);
         if (self.sub_cont_ty) |s|
             ally.free(s);
-    }
-
-    pub fn jsonStringify(self: AnalysedDecl, options: anytype, writer: anytype) !void {
-        try writer.writeAll("{");
-        if (self.dc) |d| {
-            try writer.writeAll("\"doc_comment\":");
-            try std.json.stringify(d, options, writer);
-            try writer.writeAll(",");
-        }
-        try writer.writeAll("\"pl\":");
-        try std.json.stringify(self.pl, options, writer);
-        try writer.writeAll(",");
-        if (self.sub_cont_ty) |s| {
-            try writer.writeAll("\"sub_container_type\":");
-            try std.json.stringify(s, options, writer);
-            try writer.writeAll(",");
-        }
-        try writer.writeAll("\"src\":");
-        try std.json.stringify(self.src, options, writer);
-        try writer.writeAll(",");
-        try writer.writeAll("\"more_decls\":");
-        try std.json.stringify(self.md, options, writer);
-        try writer.writeAll("}");
-    }
-
-    pub fn htmlStringify(self: AnalysedDecl, writer: anytype) std.fs.File.WriteError!void {
-        try writer.writeAll("<div class=\"anal-decl\">");
-        // doc comment
-        if (self.dc) |d| {
-            try writer.writeAll("<b>");
-            try util.writeEscaped(writer, d);
-            try writer.writeByte('\n');
-            try writer.writeAll("</b>");
-        }
-        // payload
-
-        if (opts.docs_url) |url| {
-            // TODO src loc
-            try writer.print("<a href=\"{s}{s}#L{d}\">src</a>", .{ opts.docs_url, cur_file, self.src + 1 });
-        }
-        try util.highlightZigCode(self.pl, writer, true);
-        if (self.md != null) {
-            if (self.md.?.fields.items.len > 0) {
-                try writer.writeAll("<details><summary>fields:</summary>");
-                try writer.writeAll("<div class=\"md-fields more-decls\">");
-                for (self.md.?.fields.items) |decl| {
-                    try decl.htmlStringify(writer);
-                }
-                try writer.writeAll("</div>");
-                try writer.writeAll("</details>");
-            }
-            if (self.md.?.types.items.len > 0) {
-                try writer.writeAll("<details><summary>types:</summary>");
-                try writer.writeAll("<div class=\"md-types more-decls\">");
-                for (self.md.?.types.items) |decl| {
-                    try decl.htmlStringify(writer);
-                }
-                try writer.writeAll("</div>");
-                try writer.writeAll("</details>");
-            }
-            if (self.md.?.funcs.items.len > 0) {
-                try writer.writeAll("<details><summary>funcs</summary>");
-                try writer.writeAll("<div class=\"md-funcs more-decls\">");
-                for (self.md.?.funcs.items) |decl| {
-                    try decl.htmlStringify(writer);
-                }
-                try writer.writeAll("</div>");
-                try writer.writeAll("</details>");
-            }
-            if (self.md.?.values.items.len > 0) {
-                try writer.writeAll("<details><summary>values:</summary>");
-                try writer.writeAll("<div class=\"md-vals more-decls\">");
-                for (self.md.?.values.items) |decl| {
-                    try decl.htmlStringify(writer);
-                }
-                try writer.writeAll("</div>");
-                try writer.writeAll("</details>");
-            }
-        }
-        try writer.writeAll("</div>");
     }
 };
 
@@ -168,7 +82,6 @@ fn fatalArgs(comptime s: []const u8, args: anytype) noreturn {
 const Args = struct {
     dirname: []const u8,
     docs_url: ?[]const u8 = null,
-    type: enum { json, html } = .html,
     output_dir: []const u8 = "docs",
 };
 
@@ -196,11 +109,7 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
         var i: usize = 2;
         while (i < args.len) : (i += 1) {
             const arg = args[i];
-            if (std.mem.eql(u8, arg, "-json"))
-                opts.type = .json
-            else if (std.mem.eql(u8, arg, "-html"))
-                opts.type = .html
-            else if (std.mem.eql(u8, arg, "-o")) {
+            if (std.mem.eql(u8, arg, "-o")) {
                 if (i == args.len) fatal("need an argument after -o");
                 opts.output_dir = args[i + 1];
                 i += 1;
@@ -215,7 +124,6 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
                     \\Example: `docgen ~/dev/zig/lib/std/ -url https://github.com/ziglang/zig/blob/master/lib/std`
                     \\Outputs do `docs` folder by default.
                     \\docgen FOLDER_LOCATION [ -json -o [output folder] -url [source url] -h ]
-                    \\-json for json output
                     \\-o for output folder
                     \\-url for source url
                     \\-h for this help menu
@@ -269,37 +177,7 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
     defer output_dir.close();
     var iter = file_to_anal_map.iterator();
     if (opts.type == .html) {
-        while (iter.next()) |entry| {
-            cur_file = entry.key;
-            const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
-            var output_path = if (!std.mem.eql(u8, dname, ""))
-                (output_dir.makeOpenPath(dname, .{}) catch |e| fatalArgs("could not make dir {s}: {}", .{ dname, e }))
-            else
-                (output_dir.openDir(".", .{}) catch |e| fatalArgs("could not open dir '.': {}", .{e}));
-            defer output_path.close();
-            const name_to_open = std.fs.path.basename(entry.key);
-            const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".html" });
-            defer ally.free(catted);
-            const output_file = output_path.createFile(catted, .{}) catch |e| fatalArgs("could not create file {s}: {}", .{ catted, e });
-            defer output_file.close();
-            const w = output_file.writer();
-            const anal_list = entry.value;
-
-            try w.print(our_css, .{ .our_background = background_color });
-            try w.writeAll(code_css);
-            try w.writeAll("<html>");
-            try w.print("<a href=\"{s}/{s}\"><h1>{s}</h1></a>", .{ opts.docs_url, cur_file, cur_file });
-            inline for (comptime std.meta.fieldNames(Md)) |n| {
-                if (@field(anal_list, n).items.len != 0)
-                    try w.print("<h2 style=\"color: orange;\">{s}:</h2>", .{n});
-                try w.writeAll("<div class=\"more-decls\">");
-                for (@field(anal_list, n).items) |decl| {
-                    try decl.htmlStringify(w);
-                }
-                try w.writeAll("</div>");
-            }
-            try w.writeAll("</html>");
-        }
+        unreachable;
     } else {
         while (iter.next()) |entry| {
             const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
@@ -396,7 +274,7 @@ fn recAnalListOfDecls(
             // we find if the var is a container, we dont wanna display the full thing if it is
             // then we recurse over it
             var buf: [2]ast.Node.Index = undefined;
-            var cd = getContainer(node_datas[decl_addr].rhs, &buf);
+            var cd = getContainer(init, &buf);
             if (cd) |container_decl| {
                 const offset = if (container_decl.ast.enum_token != null)
                     if (rhst == .tagged_union_enum_tag or rhst == .tagged_union_enum_tag_trailing)
@@ -416,6 +294,7 @@ fn recAnalListOfDecls(
                 });
                 continue;
             } else {
+                std.log.info("rhst: {}", .{rhst});
                 const sig = util.getVariableSignature(tree, vardecl);
                 var ad: AnalysedDecl = .{
                     .pl = try ally.dupe(u8, sig),
@@ -470,62 +349,49 @@ fn doFunction(ally: *std.mem.Allocator, decl_addr: ast.Node.Index) !AnalysedDecl
     const main_tokens = tree.nodes.items(.main_token);
     const token_starts = tree.tokens.items(.start);
 
-    const full_source = tree.source[token_starts[tree.firstToken(decl_addr)] .. token_starts[tree.lastToken(decl_addr)] + 1];
+    // handle if it is a function and the number of lines is greater than max
+    const proto = node_datas[decl_addr].lhs;
+    const block = node_datas[decl_addr].rhs;
+    var params: [1]ast.Node.Index = undefined;
 
-    // TODO configure max
-    if (nlGtMax(full_source, 5)) {
-        // handle if it is a function and the number of lines is greater than max
-        const proto = node_datas[decl_addr].lhs;
-        const block = node_datas[decl_addr].rhs;
-        var params: [1]ast.Node.Index = undefined;
+    const fn_proto = util.fnProto(
+        tree,
+        proto,
+        &params,
+    ).?;
 
-        const fn_proto = util.fnProto(
-            tree,
-            proto,
-            &params,
-        ).?;
+    const sig = util.getFunctionSignature(tree, fn_proto);
 
-        const sig = util.getFunctionSignature(tree, fn_proto);
+    var sub_cont_ty: ?[]const u8 = null;
+    const md = if (util.isTypeFunction(tree, fn_proto)) blk: {
+        const ret = util.findReturnStatement(tree, fn_proto, block) orelse break :blk null;
+        if (node_datas[ret].lhs == 0) break :blk null;
+        var buf: [2]ast.Node.Index = undefined;
+        const container = getContainer(node_datas[ret].lhs, &buf) orelse break :blk null;
 
-        var sub_cont_ty: ?[]const u8 = null;
-        const md = if (util.isTypeFunction(tree, fn_proto)) blk: {
-            const ret = util.findReturnStatement(tree, fn_proto, block) orelse break :blk null;
-            if (node_datas[ret].lhs == 0) break :blk null;
-            var buf: [2]ast.Node.Index = undefined;
-            const container = getContainer(node_datas[ret].lhs, &buf) orelse break :blk null;
-
-            const offset = if (container.ast.enum_token != null)
-                if (node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag or
-                    node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag_trailing)
-                    @as(u32, 7)
-                else
-                    @as(u32, 4)
+        const offset = if (container.ast.enum_token != null)
+            if (node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag or
+                node_tags[node_datas[ret].lhs] == .tagged_union_enum_tag_trailing)
+                @as(u32, 7)
             else
-                @as(u32, 1);
+                @as(u32, 4)
+        else
+            @as(u32, 1);
 
-            sub_cont_ty = tree.source[token_starts[tree.firstToken(node_datas[ret].lhs)]..token_starts[
-                main_tokens[node_datas[ret].lhs] + offset
-            ]];
+        sub_cont_ty = tree.source[token_starts[tree.firstToken(node_datas[ret].lhs)]..token_starts[
+            main_tokens[node_datas[ret].lhs] + offset
+        ]];
 
-            break :blk try recAnalListOfDecls(ally, container.ast.members);
-        } else null;
-        return AnalysedDecl{
-            .pl = try removeNewLinesFromRest(ally, sig),
-            // to be filled in later
-            .dc = null,
-            .md = md,
-            .sub_cont_ty = if (sub_cont_ty) |sct| try ally.dupe(u8, sct) else null,
-            .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
-        };
-    } else {
-        return AnalysedDecl{
-            .pl = try removeNewLinesFromRest(ally, full_source),
-            // filled in later
-            .dc = null,
-            .md = null,
-            .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
-        };
-    }
+        break :blk try recAnalListOfDecls(ally, container.ast.members);
+    } else null;
+    return AnalysedDecl{
+        .pl = try removeNewLinesFromRest(ally, sig),
+        // to be filled in later
+        .dc = null,
+        .md = md,
+        .sub_cont_ty = if (sub_cont_ty) |sct| try ally.dupe(u8, sct) else null,
+        .src = std.zig.findLineColumn(tree.source, token_starts[tree.firstToken(decl_addr)]).line,
+    };
 }
 
 fn getContainer(decl_addr: ast.Node.Index, buf: *[2]ast.Node.Index) ?ast.full.ContainerDecl {
@@ -620,84 +486,3 @@ fn compareStrings(a: []const u8, b: []const u8) []const u8 {
     const diff = a.len - b.len;
     return a[b.len..];
 }
-const background_color = "#F7A41D77";
-const our_css =
-    \\<style type="text/css" >
-    \\.more-decls {{
-    \\    padding-left: 50px;
-    \\}}
-    \\.anal-decl {{
-    \\ background-color: {[our_background]s};
-    \\}}
-    \\code {{
-    \\ background-color: {[our_background]s};
-    \\}}
-    \\</style>
-;
-const code_css =
-    \\<style type="text/css" >
-    \\pre > code {
-    \\  display: block;
-    \\  overflow: auto;
-    \\  padding: 0.5em;
-    \\  color: black;
-    \\}
-    \\
-    \\details {
-    \\  margin-bottom: 0.5em;
-    \\  -webkit-touch-callout: none; /* iOS Safari */
-    \\    -webkit-user-select: none; /* Safari */
-    \\     -khtml-user-select: none; /* Konqueror HTML */
-    \\       -moz-user-select: none; /* Old versions of Firefox */
-    \\        -ms-user-select: none; /* Internet Explorer/Edge */
-    \\            user-select: none; /* Non-prefixed version, currently
-    \\                                  supported by Chrome, Edge, Opera and Firefox */
-    \\}
-    \\
-    \\.tok {
-    \\  color: #333;
-    \\  font-style: normal;
-    \\}
-    \\
-    \\.code {
-    \\  font-family: monospace;
-    \\  font-size: 0.8em;
-    \\}
-    \\
-    \\.tok-kw {
-    \\  color: #333;
-    \\  font-weight: bold;
-    \\}
-    \\
-    \\.tok-str {
-    \\  color: #d14;
-    \\}
-    \\
-    \\.tok-builtin {
-    \\  color: #0086b3;
-    \\}
-    \\
-    \\code.zig {
-    \\  color: #777;
-    \\  font-style: italic;
-    \\}
-    \\
-    \\.tok-fn {
-    \\  color: #900;
-    \\  font-weight: bold;
-    \\}
-    \\
-    \\.tok-null {
-    \\  color: #008080;
-    \\}
-    \\
-    \\.tok-number {
-    \\  color: #008080;
-    \\}
-    \\
-    \\.tok-type {
-    \\  color: #458;
-    \\  font-weight: bold;
-    \\}
-    \\</style>
-;
