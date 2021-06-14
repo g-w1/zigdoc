@@ -231,8 +231,8 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
     defer {
         var iter = file_to_anal_map.iterator();
         while (iter.next()) |entry| {
-            entry.value.deinit(ally);
-            ally.free(entry.key);
+            entry.value_ptr.deinit(ally);
+            ally.free(entry.key_ptr.*);
         }
         file_to_anal_map.deinit();
     }
@@ -270,20 +270,20 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
     var iter = file_to_anal_map.iterator();
     if (opts.type == .html) {
         while (iter.next()) |entry| {
-            cur_file = entry.key;
-            const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
+            cur_file = entry.key_ptr.*;
+            const dname = std.fs.path.dirname(entry.key_ptr.*).?[1..]; // remove the first /
             var output_path = if (!std.mem.eql(u8, dname, ""))
                 (output_dir.makeOpenPath(dname, .{}) catch |e| fatalArgs("could not make dir {s}: {}", .{ dname, e }))
             else
                 (output_dir.openDir(".", .{}) catch |e| fatalArgs("could not open dir '.': {}", .{e}));
             defer output_path.close();
-            const name_to_open = std.fs.path.basename(entry.key);
+            const name_to_open = std.fs.path.basename(entry.key_ptr.*);
             const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".html" });
             defer ally.free(catted);
             const output_file = output_path.createFile(catted, .{}) catch |e| fatalArgs("could not create file {s}: {}", .{ catted, e });
             defer output_file.close();
             const w = output_file.writer();
-            const anal_list = entry.value;
+            const anal_list = entry.value_ptr;
 
             try w.print(our_css, .{ .our_background = background_color });
             try w.writeAll(code_css);
@@ -302,19 +302,19 @@ pub fn main() (error{ OutOfMemory, Overflow, InvalidCmdLine, TimerUnsupported } 
         }
     } else {
         while (iter.next()) |entry| {
-            const dname = std.fs.path.dirname(entry.key).?[1..]; // remove the first /
+            const dname = std.fs.path.dirname(entry.key_ptr.*).?[1..]; // remove the first /
             var output_path = if (!std.mem.eql(u8, dname, ""))
                 (output_dir.makeOpenPath(dname, .{}) catch |e| fatalArgs("could not make dir {s}: {}", .{ dname, e }))
             else
                 (output_dir.openDir(".", .{}) catch |e| fatalArgs("could not open dir '.': {}", .{e}));
             defer output_path.close();
-            const name_to_open = std.fs.path.basename(entry.key);
+            const name_to_open = std.fs.path.basename(entry.key_ptr.*);
             const catted = try std.mem.concat(ally, u8, &.{ name_to_open, ".json" });
             defer ally.free(catted);
             const output_file = output_path.createFile(catted, .{}) catch |e| fatalArgs("could not create file {s}: {}", .{ catted, e });
             defer output_file.close();
             const w = output_file.writer();
-            const anal_list = entry.value;
+            const anal_list = entry.value_ptr;
 
             try w.writeAll("[");
             try std.json.stringify(anal_list, .{}, w);
@@ -440,7 +440,7 @@ fn recAnalListOfDecls(
 
             var sig: []const u8 = undefined;
             {
-                var start = util.tokenLocation(tree, fn_proto.extern_export_token.?);
+                var start = util.tokenLocation(tree, fn_proto.extern_export_inline_token.?);
                 // return type can be 0 when user wrote incorrect fn signature
                 // to ensure we don't break, just end the signature at end of fn token
                 if (fn_proto.ast.return_type == 0) sig = tree.source[start.start..start.end];

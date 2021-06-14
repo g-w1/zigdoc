@@ -91,7 +91,7 @@ pub fn getDocCommentTokenIndex(tree: ast.Tree, node: ast.Node.Index) ?ast.TokenI
 
 /// Gets a function signature (keywords, name, return value)
 pub fn getFunctionSignature(tree: ast.Tree, func: ast.full.FnProto) []const u8 {
-    const start = if (func.extern_export_token) |ex| tokenLocation(tree, ex) else tokenLocation(tree, func.ast.fn_token);
+    const start = if (func.extern_export_inline_token) |ex| tokenLocation(tree, ex) else tokenLocation(tree, func.ast.fn_token);
     // return type can be 0 when user wrote incorrect fn signature
     // to ensure we don't break, just end the signature at end of fn token
     if (func.ast.return_type == 0) return tree.source[start.start..start.end];

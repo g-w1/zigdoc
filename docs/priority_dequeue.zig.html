@@ -1,0 +1,157 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//priority_dequeue.zig"><h1>/priority_dequeue.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Priority Dequeue for storing generic data. Initialize with `init`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">PriorityDequeue</span><span class="tok tok-symbol">(</span><span class="tok tok-kw">comptime</span> <span class="tok">T</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">type</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">type</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">items</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok">T</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">allocator</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Allocator</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">compareFn</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">fn</span> <span class="tok tok-symbol">(</span><span class="tok">a</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">b</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">Order</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Iterator</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">queue</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">PriorityDequeue</span><span class="tok tok-symbol">(</span><span class="tok">T</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">count</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">next</span><span class="tok tok-symbol">(</span><span class="tok">it</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Iterator</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">count</span> <span class="tok tok-symbol">&gt;=</span> <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">queue</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">const</span> <span class="tok">out</span> <span class="tok tok-symbol">=</span> <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">count</span><span class="tok tok-symbol">;</span>
+    <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">count</span> <span class="tok tok-symbol">+=</span> <span class="tok tok-number">1</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">queue</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">[</span><span class="tok">out</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">reset</span><span class="tok tok-symbol">(</span><span class="tok">it</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Iterator</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">it</span><span class="tok tok-symbol">.</span><span class="tok">count</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><b>Initialize and return a new priority dequeue. Provide `compareFn`
+that returns `Order.lt` when its first argument should
+get min-popped before its second argument, `Order.eq` if the
+arguments are of equal priority, or `Order.gt` if the second
+argument should be min-popped first. Popping the max element works
+in reverse. For example, to make `popMin` return the smallest
+number, provide
+
+`fn lessThan(a: T, b: T) Order { return std.math.order(a, b); }`
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">allocator</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Allocator</span><span class="tok tok-symbol">,</span> <span class="tok">compareFn</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">fn</span> <span class="tok tok-symbol">(</span><span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">Order</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span></code></pre></div><div class="anal-decl"><b>Free memory used by the dequeue.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">deinit</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">allocator</span><span class="tok tok-symbol">.</span><span class="tok">free</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Insert a new element, maintaining priority.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">add</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">elem</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">try</span> <span class="tok">ensureCapacity</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">1</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">addUnchecked</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">,</span> <span class="tok">elem</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Add each element in `items` to the dequeue.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">addSlice</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">items</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">try</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">ensureCapacity</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">+</span> <span class="tok">items</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">for</span> <span class="tok tok-symbol">(</span><span class="tok">items</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span><span class="tok">e</span><span class="tok tok-symbol">|</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">addUnchecked</span><span class="tok tok-symbol">(</span><span class="tok">e</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-symbol">}</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Look at the smallest element in the dequeue. Returns
+`null` if empty.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">peekMin</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">&gt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">]</span> <span class="tok tok-kw">else</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Look at the largest element in the dequeue. Returns
+`null` if empty.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">peekMax</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">==</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">return</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">==</span> <span class="tok tok-number">1</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">==</span> <span class="tok tok-number">2</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">[</span><span class="tok tok-number">1</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">bestItemAtIndices</span><span class="tok tok-symbol">(</span><span class="tok tok-number">1</span><span class="tok tok-symbol">,</span> <span class="tok tok-number">2</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">gt</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">item</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Pop the smallest element from the dequeue. Returns
+`null` if empty.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeMinOrNull</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">&gt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">removeMin</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">else</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove and return the smallest element from the
+dequeue.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeMin</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">removeIndex</span><span class="tok tok-symbol">(</span><span class="tok tok-number">0</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Pop the largest element from the dequeue. Returns
+`null` if empty.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeMaxOrNull</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">&gt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">removeMax</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">else</span> <span class="tok tok-null">null</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove and return the largest element from the
+dequeue.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeMax</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok">T</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">removeIndex</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">maxIndex</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok tok-symbol">?</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Remove and return element at index. Indices are in the
+same order as iterator, which is not necessarily priority
+order.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">removeIndex</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">index</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok">T</span></code></pre></div><div class="anal-decl"><b>Return the number of elements remaining in the dequeue
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">count</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Return the number of elements that can be added to the
+dequeue before more memory is allocated.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">capacity</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Dequeue takes ownership of the passed in slice. The slice must have been
+allocated with `allocator`.
+De-initialize with `deinit`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">fromOwnedSlice</span><span class="tok tok-symbol">(</span><span class="tok">allocator</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Allocator</span><span class="tok tok-symbol">,</span> <span class="tok">compareFn</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">fn</span> <span class="tok tok-symbol">(</span><span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">Order</span><span class="tok tok-symbol">,</span> <span class="tok">items</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok">Self</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">ensureCapacity</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">new_capacity</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Reduce allocated capacity to `new_len`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">shrinkAndFree</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">new_len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">update</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">,</span> <span class="tok">elem</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">new_elem</span><span class="tok tok-symbol">:</span> <span class="tok">T</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">old_index</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span> <span class="tok tok-symbol">=</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">mem</span><span class="tok tok-symbol">.</span><span class="tok">indexOfScalar</span><span class="tok tok-symbol">(</span><span class="tok">T</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">items</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">..</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">,</span> <span class="tok">elem</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">orelse</span> <span class="tok tok-kw">return</span> <span class="tok tok-kw">error</span><span class="tok tok-symbol">.</span><span class="tok">ElementNotFound</span><span class="tok tok-symbol">;</span>
+    <span class="tok">_</span> <span class="tok tok-symbol">=</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">removeIndex</span><span class="tok tok-symbol">(</span><span class="tok">old_index</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">addUnchecked</span><span class="tok tok-symbol">(</span><span class="tok">new_elem</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>Return an iterator that walks the queue without consuming
+it. Invalidated if the queue is modified.
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">iterator</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Self</span><span class="tok tok-symbol">)</span> <span class="tok">Iterator</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">return</span> <span class="tok">Iterator</span><span class="tok tok-symbol">{</span>
+        <span class="tok tok-symbol">.</span><span class="tok">queue</span> <span class="tok tok-symbol">=</span> <span class="tok">self</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">.</span><span class="tok">count</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div></div></details></div></div><div class="more-decls"></div></html>

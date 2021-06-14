@@ -1,0 +1,92 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//os/windows/winmm.zig"><h1>/os/windows/winmm.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">MMTIME</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">wType</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">u</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">union</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">ms</span><span class="tok tok-symbol">:</span> <span class="tok">DWORD</span><span class="tok tok-symbol">,</span>
+        <span class="tok">sample</span><span class="tok tok-symbol">:</span> <span class="tok">DWORD</span><span class="tok tok-symbol">,</span>
+        <span class="tok">cb</span><span class="tok tok-symbol">:</span> <span class="tok">DWORD</span><span class="tok tok-symbol">,</span>
+        <span class="tok">ticks</span><span class="tok tok-symbol">:</span> <span class="tok">DWORD</span><span class="tok tok-symbol">,</span>
+        <span class="tok">smpte</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span> <span class="tok tok-symbol">{</span>
+            <span class="tok">hour</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">min</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">sec</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">frame</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">fps</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">dummy</span><span class="tok tok-symbol">:</span> <span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+            <span class="tok">pad</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">2</span><span class="tok tok-symbol">]</span><span class="tok">BYTE</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+        <span class="tok">midi</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span> <span class="tok tok-symbol">{</span>
+            <span class="tok">songptrpos</span><span class="tok tok-symbol">:</span> <span class="tok">DWORD</span><span class="tok tok-symbol">,</span>
+        <span class="tok tok-symbol">}</span><span class="tok tok-symbol">,</span>
+    <span class="tok tok-symbol">}</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">TIMECAPS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">wPeriodMin</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">wPeriodMax</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">extern</span> <span class="tok tok-str">&quot;winmm&quot;</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">timeBeginPeriod</span><span class="tok tok-symbol">(</span><span class="tok">uPeriod</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok">WINAPI</span><span class="tok tok-symbol">)</span> <span class="tok">MMRESULT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">extern</span> <span class="tok tok-str">&quot;winmm&quot;</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">timeEndPeriod</span><span class="tok tok-symbol">(</span><span class="tok">uPeriod</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok">WINAPI</span><span class="tok tok-symbol">)</span> <span class="tok">MMRESULT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">extern</span> <span class="tok tok-str">&quot;winmm&quot;</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">timeGetDevCaps</span><span class="tok tok-symbol">(</span><span class="tok">ptc</span><span class="tok tok-symbol">:</span> <span class="tok">LPTIMECAPS</span><span class="tok tok-symbol">,</span> <span class="tok">cbtc</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok">WINAPI</span><span class="tok tok-symbol">)</span> <span class="tok">MMRESULT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">extern</span> <span class="tok tok-str">&quot;winmm&quot;</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">timeGetSystemTime</span><span class="tok tok-symbol">(</span><span class="tok">pmmt</span><span class="tok tok-symbol">:</span> <span class="tok">LPMMTIME</span><span class="tok tok-symbol">,</span> <span class="tok">cbmmt</span><span class="tok tok-symbol">:</span> <span class="tok">UINT</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok">WINAPI</span><span class="tok tok-symbol">)</span> <span class="tok">MMRESULT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">extern</span> <span class="tok tok-str">&quot;winmm&quot;</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">timeGetTime</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">callconv</span><span class="tok tok-symbol">(</span><span class="tok">WINAPI</span><span class="tok tok-symbol">)</span> <span class="tok">DWORD</span></code></pre></div></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMRESULT</span> <span class="tok tok-symbol">=</span> <span class="tok">UINT</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIMERR_BASE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">96</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_ERROR</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">1</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_BADDEVICEID</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">2</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_NOTENABLED</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">3</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_ALLOCATED</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">4</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_INVALHANDLE</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">5</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_NODRIVER</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">6</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_NOMEM</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">7</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_NOTSUPPORTED</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">8</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_BADERRNUM</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">9</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_INVALFLAG</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">10</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_INVALPARAM</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">11</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_HANDLEBUSY</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">12</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_INVALIDALIAS</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">13</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_BADDB</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">14</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_KEYNOTFOUND</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">15</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_READERROR</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">16</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_WRITEERROR</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">17</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_DELETEERROR</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">18</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_VALNOTFOUND</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">19</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_NODRIVERCB</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">20</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_MOREDATA</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">21</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MMSYSERR_LASTERROR</span> <span class="tok tok-symbol">=</span> <span class="tok">MMSYSERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">21</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">LPMMTIME</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">*</span><span class="tok">MMTIME</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_MS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0001</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_SAMPLES</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0002</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_BYTES</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0004</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_SMPTE</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0008</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_MIDI</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0010</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIME_TICKS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x0020</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">LPTIMECAPS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">*</span><span class="tok">TIMECAPS</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIMERR_NOERROR</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIMERR_NOCANDO</span> <span class="tok tok-symbol">=</span> <span class="tok">TIMERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">1</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">TIMERR_STRUCT</span> <span class="tok tok-symbol">=</span> <span class="tok">TIMERR_BASE</span> <span class="tok tok-symbol">+</span> <span class="tok tok-number">33</span></code></pre></div></div></html>

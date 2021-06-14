@@ -1,0 +1,86 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//Thread/Futex.zig"><h1>/Thread/Futex.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>Checks if `ptr` still contains the value `expect` and, if so, blocks the caller until either:
+- The value at `ptr` is no longer equal to `expect`.
+- The caller is unblocked by a matching `wake()`.
+- The caller is unblocked spuriously by an arbitrary internal signal.
+
+If `timeout` is provided, and the caller is blocked for longer than `timeout` nanoseconds`, `error.TimedOut` is returned.
+
+The checking of `ptr` and `expect`, along with blocking the caller, is done atomically
+and totally ordered (sequentially consistent) with respect to other wait()/wake() calls on the same `ptr`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">wait</span><span class="tok tok-symbol">(</span><span class="tok">ptr</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok">Atomic</span><span class="tok tok-symbol">(</span><span class="tok tok-type">u32</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span> <span class="tok">expect</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span><span class="tok tok-symbol">,</span> <span class="tok">timeout</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-kw">error</span><span class="tok tok-symbol">{</span><span class="tok">TimedOut</span><span class="tok tok-symbol">}</span><span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Unblocks at most `num_waiters` callers blocked in a `wait()` call on `ptr`.
+`num_waiters` of 1 unblocks at most one `wait(ptr, ...)` and `maxInt(u32)` unblocks effectively all `wait(ptr, ...)`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">wake</span><span class="tok tok-symbol">(</span><span class="tok">ptr</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-kw">const</span> <span class="tok">Atomic</span><span class="tok tok-symbol">(</span><span class="tok tok-type">u32</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span> <span class="tok">num_waiters</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div><div class="more-decls"></div></html>

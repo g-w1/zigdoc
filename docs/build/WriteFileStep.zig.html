@@ -1,0 +1,76 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//build/WriteFileStep.zig"><h1>/build/WriteFileStep.zig</h1></a><h2 style="color: orange;">fields:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">step</span><span class="tok tok-symbol">:</span> <span class="tok">Step</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">builder</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Builder</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">output_dir</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">files</span><span class="tok tok-symbol">:</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">TailQueue</span><span class="tok tok-symbol">(</span><span class="tok">File</span><span class="tok tok-symbol">)</span></code></pre></div></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">File</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">source</span><span class="tok tok-symbol">:</span> <span class="tok">build</span><span class="tok tok-symbol">.</span><span class="tok">GeneratedFile</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">basename</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">bytes</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span></code></pre></div></div></details></div></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">builder</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">Builder</span><span class="tok tok-symbol">)</span> <span class="tok">WriteFileStep</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">add</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">WriteFileStep</span><span class="tok tok-symbol">,</span> <span class="tok">basename</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">bytes</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>Gets a file source for the given basename. If the file does not exist, returns `null`.
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">getFileSource</span><span class="tok tok-symbol">(</span><span class="tok">step</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">WriteFileStep</span><span class="tok tok-symbol">,</span> <span class="tok">basename</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">?</span><span class="tok">build</span><span class="tok tok-symbol">.</span><span class="tok">FileSource</span></code></pre></div></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">base_id</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">.</span><span class="tok">write_file</span></code></pre></div></div></html>

@@ -1,0 +1,75 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//os/bits/linux/xdp.zig"><h1>/os/bits/linux/xdp.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">sockaddr_xdp</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">family</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u16</span> <span class="tok tok-symbol">=</span> <span class="tok">AF_XDP</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u16</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">ifindex</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">queue_id</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">shared_umem_fd</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_ring_offset</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">producer</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">consumer</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">desc</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_mmap_offsets</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">rx</span><span class="tok tok-symbol">:</span> <span class="tok">xdp_ring_offset</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">tx</span><span class="tok tok-symbol">:</span> <span class="tok">xdp_ring_offset</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">fr</span><span class="tok tok-symbol">:</span> <span class="tok">xdp_ring_offset</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">cr</span><span class="tok tok-symbol">:</span> <span class="tok">xdp_ring_offset</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_umem_reg</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">addr</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">chunk_size</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">headroom</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_statistics</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">rx_dropped</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">rx_invalid_descs</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">tx_invalid_descs</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">rx_ring_full</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">rx_fill_ring_empty_descs</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">tx_ring_empty_descs</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_options</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">xdp_desc</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">addr</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">options</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span></code></pre></div></div></details></div></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_SHARED_UMEM</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_COPY</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">1</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_ZEROCOPY</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">2</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_UNALIGNED_CHUNK_FLAG</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_USE_NEED_WAKEUP</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">3</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_MMAP_OFFSETS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">1</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_RX_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">2</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_TX_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">3</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_REG</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">4</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_FILL_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">5</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_COMPLETION_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">6</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_STATISTICS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">7</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_OPTIONS</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">8</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_OPTIONS_ZEROCOPY</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">)</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_PGOFF_RX_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_PGOFF_TX_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x80000000</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_PGOFF_FILL_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x100000000</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XDP_UMEM_PGOFF_COMPLETION_RING</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0x180000000</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XSK_UNALIGNED_BUF_OFFSET_SHIFT</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">48</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">XSK_UNALIGNED_BUF_ADDR_MASK</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-number">1</span> <span class="tok tok-symbol">&lt;&lt;</span> <span class="tok">XSK_UNALIGNED_BUF_OFFSET_SHIFT</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">-</span> <span class="tok tok-number">1</span></code></pre></div></div></html>

@@ -1,0 +1,234 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//crypto/pcurves/p256/p256_scalar_64.zig"><h1>/crypto/pcurves/p256/p256_scalar_64.zig</h1></a><div class="more-decls"></div><div class="more-decls"></div><h2 style="color: orange;">funcs:</h2><div class="more-decls"><div class="anal-decl"><b>The function mul multiplies two field elements in the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+0 ≤ eval arg2 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = (eval (from_montgomery arg1) * eval (from_montgomery arg2)) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">mul</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg2</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function square squares a field element in the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = (eval (from_montgomery arg1) * eval (from_montgomery arg1)) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">square</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function add adds two field elements in the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+0 ≤ eval arg2 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = (eval (from_montgomery arg1) + eval (from_montgomery arg2)) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">add</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg2</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function sub subtracts two field elements in the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+0 ≤ eval arg2 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = (eval (from_montgomery arg1) - eval (from_montgomery arg2)) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">sub</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg2</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function opp negates a field element in the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = -eval (from_montgomery arg1) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">opp</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function fromMontgomery translates a field element out of the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+eval out1 mod m = (eval arg1 * ((2^64)⁻¹ mod m)^4) mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">fromMontgomery</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">NonMontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function toMontgomery translates a field element into the Montgomery domain.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+eval (from_montgomery out1) mod m = eval arg1 mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">toMontgomery</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok">NonMontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function nonzero outputs a single non-zero word if the input is non-zero and zero otherwise.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+out1 = 0 ↔ eval (from_montgomery arg1) mod m = 0
+
+Input Bounds:
+arg1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+Output Bounds:
+out1: [0x0 ~&gt; 0xffffffffffffffff]
+</b><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">nonzero</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-builtin">@setRuntimeSafety</span><span class="tok tok-symbol">(</span><span class="tok">mode</span> <span class="tok tok-symbol">==</span> <span class="tok tok-symbol">.</span><span class="tok">Debug</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+
+    <span class="tok tok-kw">const</span> <span class="tok">x1</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">(</span><span class="tok tok-symbol">(</span><span class="tok">arg1</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-symbol">(</span><span class="tok tok-symbol">(</span><span class="tok">arg1</span><span class="tok tok-symbol">[</span><span class="tok tok-number">1</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-symbol">(</span><span class="tok tok-symbol">(</span><span class="tok">arg1</span><span class="tok tok-symbol">[</span><span class="tok tok-number">2</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">|</span> <span class="tok tok-symbol">(</span><span class="tok">arg1</span><span class="tok tok-symbol">[</span><span class="tok tok-number">3</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok">out1</span><span class="tok tok-symbol">.*</span> <span class="tok tok-symbol">=</span> <span class="tok">x1</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><b>The function selectznz is a multi-limb conditional select.
+
+Postconditions:
+eval out1 = (if arg1 = 0 then eval arg2 else eval arg3)
+
+Input Bounds:
+arg1: [0x0 ~&gt; 0x1]
+arg2: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+arg3: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+Output Bounds:
+out1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">selectznz</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u1</span><span class="tok tok-symbol">,</span> <span class="tok">arg2</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg3</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function toBytes serializes a field element NOT in the Montgomery domain to bytes in little-endian order.
+
+Preconditions:
+0 ≤ eval arg1 &lt; m
+Postconditions:
+out1 = map (λ x, ⌊((eval arg1 mod m) mod 2^(8 * (x + 1))) / 2^(8 * x)⌋) [0..31]
+
+Input Bounds:
+arg1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+Output Bounds:
+out1: [[0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">toBytes</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function fromBytes deserializes a field element NOT in the Montgomery domain from bytes in little-endian order.
+
+Preconditions:
+0 ≤ bytes_eval arg1 &lt; m
+Postconditions:
+eval out1 mod m = bytes_eval arg1 mod m
+0 ≤ eval out1 &lt; m
+
+Input Bounds:
+arg1: [[0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff], [0x0 ~&gt; 0xff]]
+Output Bounds:
+out1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">fromBytes</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">32</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function setOne returns the field element one in the Montgomery domain.
+
+Postconditions:
+eval (from_montgomery out1) mod m = 1 mod m
+0 ≤ eval out1 &lt; m
+
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">setOne</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok">MontgomeryDomainFieldElement</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function msat returns the saturated representation of the prime modulus.
+
+Postconditions:
+twos_complement_eval out1 = m
+0 ≤ eval out1 &lt; m
+
+Output Bounds:
+out1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">msat</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">5</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function divstep computes a divstep.
+
+Preconditions:
+0 ≤ eval arg4 &lt; m
+0 ≤ eval arg5 &lt; m
+Postconditions:
+out1 = (if 0 &lt; arg1 ∧ (twos_complement_eval arg3) is odd then 1 - arg1 else 1 + arg1)
+twos_complement_eval out2 = (if 0 &lt; arg1 ∧ (twos_complement_eval arg3) is odd then twos_complement_eval arg3 else twos_complement_eval arg2)
+twos_complement_eval out3 = (if 0 &lt; arg1 ∧ (twos_complement_eval arg3) is odd then ⌊(twos_complement_eval arg3 - twos_complement_eval arg2) / 2⌋ else ⌊(twos_complement_eval arg3 + (twos_complement_eval arg3 mod 2) * twos_complement_eval arg2) / 2⌋)
+eval (from_montgomery out4) mod m = (if 0 &lt; arg1 ∧ (twos_complement_eval arg3) is odd then (2 * eval (from_montgomery arg5)) mod m else (2 * eval (from_montgomery arg4)) mod m)
+eval (from_montgomery out5) mod m = (if 0 &lt; arg1 ∧ (twos_complement_eval arg3) is odd then (eval (from_montgomery arg4) - eval (from_montgomery arg4)) mod m else (eval (from_montgomery arg5) + (twos_complement_eval arg3 mod 2) * eval (from_montgomery arg4)) mod m)
+0 ≤ eval out5 &lt; m
+0 ≤ eval out5 &lt; m
+0 ≤ eval out2 &lt; m
+0 ≤ eval out3 &lt; m
+
+Input Bounds:
+arg1: [0x0 ~&gt; 0xffffffffffffffff]
+arg2: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+arg3: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+arg4: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+arg5: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+Output Bounds:
+out1: [0x0 ~&gt; 0xffffffffffffffff]
+out2: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+out3: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+out4: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+out5: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">divstep</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">out2</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">5</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">out3</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">5</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">out4</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">out5</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg1</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg2</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">5</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg3</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">5</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg4</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">,</span> <span class="tok">arg5</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><b>The function divstepPrecomp returns the precomputed value for Bernstein-Yang-inversion (in montgomery form).
+
+Postconditions:
+eval (from_montgomery out1) = ⌊(m - 1) / 2⌋^(if ⌊log2 m⌋ + 1 &lt; 46 then ⌊(49 * (⌊log2 m⌋ + 1) + 80) / 17⌋ else ⌊(49 * (⌊log2 m⌋ + 1) + 57) / 17⌋)
+0 ≤ eval out1 &lt; m
+
+Output Bounds:
+out1: [[0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff], [0x0 ~&gt; 0xffffffffffffffff]]
+</b><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">divstepPrecomp</span><span class="tok tok-symbol">(</span><span class="tok">out1</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">*</span><span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span></code></pre></div></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">MontgomeryDomainFieldElement</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">NonMontgomeryDomainFieldElement</span> <span class="tok tok-symbol">=</span> <span class="tok tok-symbol">[</span><span class="tok tok-number">4</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u64</span></code></pre></div></div></html>

@@ -1,0 +1,117 @@
+<style type="text/css" >
+.more-decls {
+    padding-left: 50px;
+}
+.anal-decl {
+ background-color: #F7A41D77;
+}
+code {
+ background-color: #F7A41D77;
+}
+</style><style type="text/css" >
+pre > code {
+  display: block;
+  overflow: auto;
+  padding: 0.5em;
+  color: black;
+}
+
+details {
+  margin-bottom: 0.5em;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.tok {
+  color: #333;
+  font-style: normal;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.tok-kw {
+  color: #333;
+  font-weight: bold;
+}
+
+.tok-str {
+  color: #d14;
+}
+
+.tok-builtin {
+  color: #0086b3;
+}
+
+code.zig {
+  color: #777;
+  font-style: italic;
+}
+
+.tok-fn {
+  color: #900;
+  font-weight: bold;
+}
+
+.tok-null {
+  color: #008080;
+}
+
+.tok-number {
+  color: #008080;
+}
+
+.tok-type {
+  color: #458;
+  font-weight: bold;
+}
+</style><html><a href="null//x/os/io.zig"><h1>/x/os/io.zig</h1></a><div class="more-decls"></div><h2 style="color: orange;">types:</h2><div class="more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Reactor</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">fd</span><span class="tok tok-symbol">:</span> <span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">fd_t</span></code></pre></div></div></details><details><summary>types:</summary><div class="md-types more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">InitFlags</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">enum</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">close_on_exec</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Event</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">data</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">is_error</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">is_hup</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">is_readable</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">is_writable</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span></code></pre></div></div></details></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">const</span> <span class="tok">Interest</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">struct</span></code></pre><details><summary>fields:</summary><div class="md-fields more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok">hup</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">oneshot</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">readable</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok">writable</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">bool</span> <span class="tok tok-symbol">=</span> <span class="tok tok-null">false</span></code></pre></div></div></details></div></div></details><details><summary>funcs</summary><div class="md-funcs more-decls"><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">init</span><span class="tok tok-symbol">(</span><span class="tok">flags</span><span class="tok tok-symbol">:</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">enums</span><span class="tok tok-symbol">.</span><span class="tok">EnumFieldStruct</span><span class="tok tok-symbol">(</span><span class="tok">Reactor</span><span class="tok tok-symbol">.</span><span class="tok">InitFlags</span><span class="tok tok-symbol">,</span> <span class="tok tok-type">bool</span><span class="tok tok-symbol">,</span> <span class="tok tok-null">false</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok">Reactor</span> <span class="tok tok-symbol">{</span>
+    <span class="tok tok-kw">var</span> <span class="tok">raw_flags</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">u32</span> <span class="tok tok-symbol">=</span> <span class="tok tok-number">0</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">const</span> <span class="tok">set</span> <span class="tok tok-symbol">=</span> <span class="tok">std</span><span class="tok tok-symbol">.</span><span class="tok">EnumSet</span><span class="tok tok-symbol">(</span><span class="tok">Reactor</span><span class="tok tok-symbol">.</span><span class="tok">InitFlags</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">.</span><span class="tok">init</span><span class="tok tok-symbol">(</span><span class="tok">flags</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">set</span><span class="tok tok-symbol">.</span><span class="tok">contains</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">.</span><span class="tok">close_on_exec</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">)</span> <span class="tok">raw_flags</span> <span class="tok tok-symbol">|=</span> <span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">EPOLL_CLOEXEC</span><span class="tok tok-symbol">;</span>
+    <span class="tok tok-kw">return</span> <span class="tok">Reactor</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">fd</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">try</span> <span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">epoll_create1</span><span class="tok tok-symbol">(</span><span class="tok">raw_flags</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">deinit</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Reactor</span><span class="tok tok-symbol">)</span> <span class="tok tok-type">void</span> <span class="tok tok-symbol">{</span>
+    <span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">close</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">fd</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">;</span>
+<span class="tok tok-symbol">}</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">update</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Reactor</span><span class="tok tok-symbol">,</span> <span class="tok">fd</span><span class="tok tok-symbol">:</span> <span class="tok">os</span><span class="tok tok-symbol">.</span><span class="tok">fd_t</span><span class="tok tok-symbol">,</span> <span class="tok">identifier</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span> <span class="tok">interest</span><span class="tok tok-symbol">:</span> <span class="tok">Reactor</span><span class="tok tok-symbol">.</span><span class="tok">Interest</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div><div class="anal-decl"><pre><code class="zig"><span class="tok tok-kw">fn</span> <span class="tok tok-fn">poll</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Reactor</span><span class="tok tok-symbol">,</span> <span class="tok tok-kw">comptime</span> <span class="tok">max_num_events</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">comptime_int</span><span class="tok tok-symbol">,</span> <span class="tok">closure</span><span class="tok tok-symbol">:</span> <span class="tok tok-kw">anytype</span><span class="tok tok-symbol">,</span> <span class="tok">timeout_milliseconds</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">?</span><span class="tok tok-type">u64</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">!</span><span class="tok tok-type">void</span></code></pre></div></div></details></div></div><div class="more-decls"></div><h2 style="color: orange;">values:</h2><div class="more-decls"><div class="anal-decl"><b>POSIX `iovec`, or Windows `WSABUF`. The difference between the two are the ordering
+of fields, alongside the length being represented as either a ULONG or a size_t.
+</b><pre><code class="zig"><span class="tok tok-kw">const</span> <span class="tok">Buffer</span> <span class="tok tok-symbol">=</span> <span class="tok tok-kw">if</span> <span class="tok tok-symbol">(</span><span class="tok">native_os</span><span class="tok tok-symbol">.</span><span class="tok">tag</span> <span class="tok tok-symbol">==</span> <span class="tok tok-symbol">.</span><span class="tok">windows</span><span class="tok tok-symbol">)</span>
+    <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">c_ulong</span><span class="tok tok-symbol">,</span>
+        <span class="tok">ptr</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">from</span><span class="tok tok-symbol">(</span><span class="tok">slice</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Buffer</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@intCast</span><span class="tok tok-symbol">(</span><span class="tok tok-type">c_ulong</span><span class="tok tok-symbol">,</span> <span class="tok">slice</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">ptr</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@ptrToInt</span><span class="tok tok-symbol">(</span><span class="tok">slice</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">into</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Buffer</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-builtin">@intToPtr</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">..</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">intoMutable</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Buffer</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-builtin">@intToPtr</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">..</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+    <span class="tok tok-symbol">}</span>
+<span class="tok tok-kw">else</span>
+    <span class="tok tok-kw">extern</span> <span class="tok tok-kw">struct</span> <span class="tok tok-symbol">{</span>
+        <span class="tok">ptr</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span>
+        <span class="tok">len</span><span class="tok tok-symbol">:</span> <span class="tok tok-type">usize</span><span class="tok tok-symbol">,</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">from</span><span class="tok tok-symbol">(</span><span class="tok">slice</span><span class="tok tok-symbol">:</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">)</span> <span class="tok">Buffer</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-symbol">.</span><span class="tok tok-symbol">{</span> <span class="tok tok-symbol">.</span><span class="tok">ptr</span> <span class="tok tok-symbol">=</span> <span class="tok tok-builtin">@ptrToInt</span><span class="tok tok-symbol">(</span><span class="tok">slice</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">,</span> <span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">=</span> <span class="tok">slice</span><span class="tok tok-symbol">.</span><span class="tok">len</span> <span class="tok tok-symbol">}</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">into</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Buffer</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-builtin">@intToPtr</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">]</span><span class="tok tok-kw">const</span> <span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">..</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+
+        <span class="tok tok-kw">pub</span> <span class="tok tok-kw">fn</span> <span class="tok tok-fn">intoMutable</span><span class="tok tok-symbol">(</span><span class="tok">self</span><span class="tok tok-symbol">:</span> <span class="tok">Buffer</span><span class="tok tok-symbol">)</span> <span class="tok tok-symbol">[</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span> <span class="tok tok-symbol">{</span>
+            <span class="tok tok-kw">return</span> <span class="tok tok-builtin">@intToPtr</span><span class="tok tok-symbol">(</span><span class="tok tok-symbol">[</span><span class="tok tok-symbol">*</span><span class="tok tok-symbol">]</span><span class="tok tok-type">u8</span><span class="tok tok-symbol">,</span> <span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">ptr</span><span class="tok tok-symbol">)</span><span class="tok tok-symbol">[</span><span class="tok tok-number">0</span><span class="tok tok-symbol">..</span><span class="tok">self</span><span class="tok tok-symbol">.</span><span class="tok">len</span><span class="tok tok-symbol">]</span><span class="tok tok-symbol">;</span>
+        <span class="tok tok-symbol">}</span>
+    <span class="tok tok-symbol">}</span></code></pre></div></div></html>
